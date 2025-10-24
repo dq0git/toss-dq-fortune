@@ -1,0 +1,320 @@
+{
+  "cards": [
+    {
+      "id": 0,
+      "name": "바보",
+      "name_en": "The Fool",
+      "image": "/cards/00-fool.jpg",
+      "back_image": "/cards/back.jpg",
+      "meanings": {
+        "love_single_past": "과거에는 새로운 사랑에 대한 순수한 기대와 설렘이 있었습니다. 아직 경험이 부족했지만 마음은 열려있었죠.",
+        "love_single_present": "현재 새로운 만남이나 기회가 다가오고 있습니다. 편견 없이 마음을 열고 받아들이세요.",
+        "love_single_future": "미래에는 새로운 사랑의 시작이 기다리고 있습니다. 두려워하지 말고 용기 있게 나아가세요.",
+        "love_couple_past": "과거에는 관계에서 새로운 시작이나 변화의 기회가 있었습니다.",
+        "love_couple_present": "현재 관계에 새로운 에너지가 필요합니다. 서로에게 더 열린 마음으로 다가가세요.",
+        "love_couple_future": "미래에는 관계가 새로운 단계로 발전할 것입니다. 함께 모험을 떠나보세요.",
+        "love_breakup_past": "과거에는 이별에 대한 두려움보다는 새로운 시작에 대한 기대가 컸습니다.",
+        "love_breakup_present": "현재 이별의 아픔을 딛고 새로운 시작을 준비하고 있습니다.",
+        "love_breakup_future": "미래에는 완전히 새로운 사랑이 찾아올 것입니다. 과거에 얽매이지 마세요.",
+        "career_past": "과거에는 새로운 직업이나 도전에 대한 순수한 열정이 있었습니다.",
+        "career_present": "현재 새로운 기회나 프로젝트가 다가오고 있습니다. 두려워하지 말고 도전하세요.",
+        "career_future": "미래에는 완전히 새로운 분야에서의 성공이 기다리고 있습니다.",
+        "general_past": "과거에는 새로운 시작에 대한 순수한 마음과 열정이 있었습니다.",
+        "general_present": "현재 새로운 기회가 다가오고 있습니다. 편견 없이 받아들이세요.",
+        "general_future": "미래에는 새로운 모험과 성장이 기다리고 있습니다."
+      }
+    },
+    {
+      "id": 1,
+      "name": "마법사",
+      "name_en": "The Magician",
+      "image": "/cards/01-magician.jpg",
+      "back_image": "/cards/back.jpg",
+      "meanings": {
+        "love_single_past": "과거에는 자신의 매력을 활용하여 좋은 인상을 남기려고 노력했습니다.",
+        "love_single_present": "현재 자신의 능력과 매력을 제대로 활용할 때입니다. 자신감을 가지고 접근하세요.",
+        "love_single_future": "미래에는 자신의 능력으로 이상적인 상대를 만날 것입니다.",
+        "love_couple_past": "과거에는 관계에서 자신의 능력을 발휘하여 문제를 해결했습니다.",
+        "love_couple_present": "현재 관계를 발전시키기 위한 능력과 의지가 충분합니다.",
+        "love_couple_future": "미래에는 관계가 더욱 발전하고 성숙해질 것입니다.",
+        "love_breakup_past": "과거에는 이별 상황을 자신의 능력으로 극복하려고 했습니다.",
+        "love_breakup_present": "현재 이별의 아픔을 극복할 능력과 의지가 있습니다.",
+        "love_breakup_future": "미래에는 새로운 사랑을 찾기 위한 능력을 발휘할 것입니다.",
+        "career_past": "과거에는 자신의 능력을 발휘하여 성공을 거두었습니다.",
+        "career_present": "현재 목표를 달성하기 위한 모든 능력이 준비되어 있습니다.",
+        "career_future": "미래에는 자신의 능력으로 큰 성공을 거둘 것입니다.",
+        "general_past": "과거에는 자신의 능력을 활용하여 목표를 달성했습니다.",
+        "general_present": "현재 목표를 달성하기 위한 모든 것이 준비되어 있습니다.",
+        "general_future": "미래에는 자신의 능력으로 원하는 것을 모두 얻을 것입니다."
+      }
+    },
+    {
+      "id": 2,
+      "name": "여교황",
+      "name_en": "The High Priestess",
+      "image": "/cards/02-high-priestess.jpg",
+      "back_image": "/cards/back.jpg",
+      "meanings": {
+        "love_single_past": "과거에는 직감에 따라 사랑을 찾았습니다. 내면의 목소리를 들었죠.",
+        "love_single_present": "현재 직감이 중요한 역할을 합니다. 마음의 소리에 귀 기울이세요.",
+        "love_single_future": "미래에는 직감적인 만남이 있을 것입니다. 신비로운 인연을 기대하세요.",
+        "love_couple_past": "과거에는 직감으로 관계의 진실을 파악했습니다.",
+        "love_couple_present": "현재 관계에서 직감이 중요한 역할을 합니다. 마음을 읽어보세요.",
+        "love_couple_future": "미래에는 관계의 깊이가 더욱 깊어질 것입니다.",
+        "love_breakup_past": "과거에는 직감으로 이별의 조짐을 느꼈습니다.",
+        "love_breakup_present": "현재 이별의 진실을 직감적으로 이해하고 있습니다.",
+        "love_breakup_future": "미래에는 새로운 사랑의 신호를 직감으로 받을 것입니다.",
+        "career_past": "과거에는 직감으로 중요한 결정을 내렸습니다.",
+        "career_present": "현재 직감이 중요한 역할을 합니다. 내면의 목소리를 들어보세요.",
+        "career_future": "미래에는 직감적인 판단으로 성공할 것입니다.",
+        "general_past": "과거에는 직감에 따라 중요한 결정을 내렸습니다.",
+        "general_present": "현재 직감이 중요한 역할을 합니다. 마음의 소리에 귀 기울이세요.",
+        "general_future": "미래에는 직감적인 판단으로 원하는 것을 얻을 것입니다."
+      }
+    },
+    {
+      "id": 3,
+      "name": "여황제",
+      "name_en": "The Empress",
+      "image": "/cards/03-empress.jpg",
+      "back_image": "/cards/back.jpg",
+      "meanings": {
+        "love_single_past": "과거에는 풍요로운 사랑의 에너지가 있었습니다. 사랑받고 사랑하는 마음이 충만했죠.",
+        "love_single_present": "현재 사랑의 에너지가 넘치고 있습니다. 자신의 매력을 믿고 나아가세요.",
+        "love_single_future": "미래에는 풍요로운 사랑이 찾아올 것입니다. 아름다운 관계가 기다립니다.",
+        "love_couple_past": "과거에는 관계에서 풍요로움과 행복이 넘쳤습니다.",
+        "love_couple_present": "현재 관계가 풍요롭고 행복한 시기입니다. 이 순간을 즐기세요.",
+        "love_couple_future": "미래에는 관계가 더욱 풍요로워질 것입니다.",
+        "love_breakup_past": "과거에는 사랑이 풍요로웠지만 이제는 끝이 났습니다.",
+        "love_breakup_present": "현재 이별의 아픔을 겪고 있지만 새로운 사랑의 가능성이 있습니다.",
+        "love_breakup_future": "미래에는 새로운 풍요로운 사랑이 찾아올 것입니다.",
+        "career_past": "과거에는 창조적이고 풍요로운 시기였습니다.",
+        "career_present": "현재 창조적 에너지가 넘치고 있습니다. 새로운 아이디어를 실행하세요.",
+        "career_future": "미래에는 창조적 성공이 기다리고 있습니다.",
+        "general_past": "과거에는 풍요롭고 창조적인 시기였습니다.",
+        "general_present": "현재 창조적 에너지가 넘치고 있습니다. 새로운 시작을 준비하세요.",
+        "general_future": "미래에는 풍요로운 성공이 기다리고 있습니다."
+      }
+    },
+    {
+      "id": 4,
+      "name": "황제",
+      "name_en": "The Emperor",
+      "image": "/cards/04-emperor.jpg",
+      "back_image": "/cards/back.jpg",
+      "meanings": {
+        "love_single_past": "과거에는 안정적이고 신뢰할 수 있는 사랑을 원했습니다.",
+        "love_single_present": "현재 안정적인 관계를 원하고 있습니다. 신뢰할 수 있는 상대를 찾으세요.",
+        "love_single_future": "미래에는 안정적이고 신뢰할 수 있는 관계가 생길 것입니다.",
+        "love_couple_past": "과거에는 관계에서 안정성과 신뢰가 중요했습니다.",
+        "love_couple_present": "현재 관계가 안정적이고 신뢰할 수 있는 단계입니다.",
+        "love_couple_future": "미래에는 관계가 더욱 안정적이고 신뢰할 수 있게 될 것입니다.",
+        "love_breakup_past": "과거에는 안정적인 관계를 원했지만 이별이 일어났습니다.",
+        "love_breakup_present": "현재 안정적인 관계를 원하고 있지만 아직 준비가 필요합니다.",
+        "love_breakup_future": "미래에는 안정적이고 신뢰할 수 있는 새로운 관계가 생길 것입니다.",
+        "career_past": "과거에는 리더십과 안정성을 발휘했습니다.",
+        "career_present": "현재 리더십을 발휘할 때입니다. 안정적으로 나아가세요.",
+        "career_future": "미래에는 리더십으로 큰 성공을 거둘 것입니다.",
+        "general_past": "과거에는 안정성과 리더십이 중요했습니다.",
+        "general_present": "현재 안정적으로 리더십을 발휘할 때입니다.",
+        "general_future": "미래에는 안정적인 성공과 리더십이 기다리고 있습니다."
+      }
+    },
+    {
+      "id": 5,
+      "name": "교황",
+      "name_en": "The Hierophant",
+      "image": "/cards/05-hierophant.jpg",
+      "back_image": "/cards/back.jpg",
+      "meanings": {
+        "love_single_past": "과거에는 전통적이고 안정적인 사랑을 원했습니다.",
+        "love_single_present": "현재 전통적인 방식의 만남을 원하고 있습니다. 주변의 조언을 들어보세요.",
+        "love_single_future": "미래에는 전통적이고 안정적인 관계가 생길 것입니다.",
+        "love_couple_past": "과거에는 관계에서 전통과 안정성이 중요했습니다.",
+        "love_couple_present": "현재 관계가 전통적이고 안정적인 단계입니다.",
+        "love_couple_future": "미래에는 관계가 더욱 전통적이고 안정적이 될 것입니다.",
+        "love_breakup_past": "과거에는 전통적인 관계를 원했지만 이별이 일어났습니다.",
+        "love_breakup_present": "현재 전통적인 관계를 원하고 있지만 아직 준비가 필요합니다.",
+        "love_breakup_future": "미래에는 전통적이고 안정적인 새로운 관계가 생길 것입니다.",
+        "career_past": "과거에는 전통적인 방식으로 일했습니다.",
+        "career_present": "현재 전통적인 방식으로 일할 때입니다. 기존의 방법을 따르세요.",
+        "career_future": "미래에는 전통적인 방식으로 성공할 것입니다.",
+        "general_past": "과거에는 전통과 안정성이 중요했습니다.",
+        "general_present": "현재 전통적인 방식으로 나아갈 때입니다.",
+        "general_future": "미래에는 전통적인 방식으로 성공할 것입니다."
+      }
+    },
+    {
+      "id": 6,
+      "name": "연인",
+      "name_en": "The Lovers",
+      "image": "/cards/06-lovers.jpg",
+      "back_image": "/cards/back.jpg",
+      "meanings": {
+        "love_single_past": "과거에는 진정한 사랑에 대한 갈망이 있었습니다.",
+        "love_single_present": "현재 진정한 사랑을 찾고 있습니다. 마음을 열고 받아들이세요.",
+        "love_single_future": "미래에는 진정한 사랑이 찾아올 것입니다.",
+        "love_couple_past": "과거에는 진정한 사랑의 관계였습니다.",
+        "love_couple_present": "현재 진정한 사랑의 관계입니다. 이 순간을 소중히 여기세요.",
+        "love_couple_future": "미래에는 관계가 더욱 깊어질 것입니다.",
+        "love_breakup_past": "과거에는 진정한 사랑이었지만 이제는 끝이 났습니다.",
+        "love_breakup_present": "현재 진정한 사랑을 원하고 있지만 아직 준비가 필요합니다.",
+        "love_breakup_future": "미래에는 진정한 사랑이 찾아올 것입니다.",
+        "career_past": "과거에는 진정한 열정으로 일했습니다.",
+        "career_present": "현재 진정한 열정으로 일할 때입니다.",
+        "career_future": "미래에는 진정한 열정으로 성공할 것입니다.",
+        "general_past": "과거에는 진정한 선택을 했습니다.",
+        "general_present": "현재 진정한 선택을 할 때입니다.",
+        "general_future": "미래에는 진정한 선택으로 성공할 것입니다."
+      }
+    },
+    {
+      "id": 7,
+      "name": "전차",
+      "name_en": "The Chariot",
+      "image": "/cards/07-chariot.jpg",
+      "back_image": "/cards/back.jpg",
+      "meanings": {
+        "love_single_past": "과거에는 사랑을 위해 노력했습니다.",
+        "love_single_present": "현재 사랑을 위해 노력하고 있습니다. 포기하지 마세요.",
+        "love_single_future": "미래에는 노력의 결과로 사랑을 얻을 것입니다.",
+        "love_couple_past": "과거에는 관계를 위해 노력했습니다.",
+        "love_couple_present": "현재 관계를 위해 노력하고 있습니다.",
+        "love_couple_future": "미래에는 노력의 결과로 관계가 발전할 것입니다.",
+        "love_breakup_past": "과거에는 관계를 위해 노력했지만 이별이 일어났습니다.",
+        "love_breakup_present": "현재 새로운 사랑을 위해 노력하고 있습니다.",
+        "love_breakup_future": "미래에는 노력의 결과로 새로운 사랑을 얻을 것입니다.",
+        "career_past": "과거에는 목표를 위해 노력했습니다.",
+        "career_present": "현재 목표를 위해 노력하고 있습니다.",
+        "career_future": "미래에는 노력의 결과로 성공할 것입니다.",
+        "general_past": "과거에는 목표를 위해 노력했습니다.",
+        "general_present": "현재 목표를 위해 노력하고 있습니다.",
+        "general_future": "미래에는 노력의 결과로 성공할 것입니다."
+      }
+    },
+    {
+      "id": 8,
+      "name": "힘",
+      "name_en": "Strength",
+      "image": "/cards/08-strength.jpg",
+      "back_image": "/cards/back.jpg",
+      "meanings": {
+        "love_single_past": "과거에는 내적 힘으로 사랑을 극복했습니다.",
+        "love_single_present": "현재 내적 힘을 발휘할 때입니다. 자신을 믿으세요.",
+        "love_single_future": "미래에는 내적 힘으로 사랑을 얻을 것입니다.",
+        "love_couple_past": "과거에는 내적 힘으로 관계를 유지했습니다.",
+        "love_couple_present": "현재 내적 힘으로 관계를 유지하고 있습니다.",
+        "love_couple_future": "미래에는 내적 힘으로 관계가 발전할 것입니다.",
+        "love_breakup_past": "과거에는 내적 힘으로 이별을 극복했습니다.",
+        "love_breakup_present": "현재 내적 힘으로 이별을 극복하고 있습니다.",
+        "love_breakup_future": "미래에는 내적 힘으로 새로운 사랑을 얻을 것입니다.",
+        "career_past": "과거에는 내적 힘으로 어려움을 극복했습니다.",
+        "career_present": "현재 내적 힘을 발휘할 때입니다.",
+        "career_future": "미래에는 내적 힘으로 성공할 것입니다.",
+        "general_past": "과거에는 내적 힘으로 어려움을 극복했습니다.",
+        "general_present": "현재 내적 힘을 발휘할 때입니다.",
+        "general_future": "미래에는 내적 힘으로 성공할 것입니다."
+      }
+    },
+    {
+      "id": 9,
+      "name": "은자",
+      "name_en": "The Hermit",
+      "image": "/cards/09-hermit.jpg",
+      "back_image": "/cards/back.jpg",
+      "meanings": {
+        "love_single_past": "과거에는 혼자서 사랑을 생각했습니다.",
+        "love_single_present": "현재 혼자서 사랑을 생각하고 있습니다. 내면을 들여다보세요.",
+        "love_single_future": "미래에는 내면의 지혜로 사랑을 찾을 것입니다.",
+        "love_couple_past": "과거에는 관계에서 내면을 들여다봤습니다.",
+        "love_couple_present": "현재 관계에서 내면을 들여다보고 있습니다.",
+        "love_couple_future": "미래에는 내면의 지혜로 관계가 발전할 것입니다.",
+        "love_breakup_past": "과거에는 혼자서 이별을 생각했습니다.",
+        "love_breakup_present": "현재 혼자서 이별을 생각하고 있습니다.",
+        "love_breakup_future": "미래에는 내면의 지혜로 새로운 사랑을 찾을 것입니다.",
+        "career_past": "과거에는 혼자서 일했습니다.",
+        "career_present": "현재 혼자서 일하고 있습니다. 내면의 지혜를 찾으세요.",
+        "career_future": "미래에는 내면의 지혜로 성공할 것입니다.",
+        "general_past": "과거에는 혼자서 생각했습니다.",
+        "general_present": "현재 혼자서 생각하고 있습니다. 내면의 지혜를 찾으세요.",
+        "general_future": "미래에는 내면의 지혜로 성공할 것입니다."
+      }
+    },
+    {
+      "id": 10,
+      "name": "운명의 바퀴",
+      "name_en": "Wheel of Fortune",
+      "image": "/cards/10-wheel-of-fortune.jpg",
+      "back_image": "/cards/back.jpg",
+      "meanings": {
+        "love_single_past": "과거에는 운명적인 만남이 있었습니다.",
+        "love_single_present": "현재 운명이 바뀌고 있습니다. 기회를 잡으세요.",
+        "love_single_future": "미래에는 운명적인 만남이 있을 것입니다.",
+        "love_couple_past": "과거에는 운명적인 관계였습니다.",
+        "love_couple_present": "현재 운명이 바뀌고 있습니다.",
+        "love_couple_future": "미래에는 운명적인 관계가 될 것입니다.",
+        "love_breakup_past": "과거에는 운명이 바뀌었습니다.",
+        "love_breakup_present": "현재 운명이 바뀌고 있습니다.",
+        "love_breakup_future": "미래에는 운명적인 새로운 만남이 있을 것입니다.",
+        "career_past": "과거에는 운명적인 기회가 있었습니다.",
+        "career_present": "현재 운명이 바뀌고 있습니다. 기회를 잡으세요.",
+        "career_future": "미래에는 운명적인 성공이 있을 것입니다.",
+        "general_past": "과거에는 운명이 바뀌었습니다.",
+        "general_present": "현재 운명이 바뀌고 있습니다. 기회를 잡으세요.",
+        "general_future": "미래에는 운명적인 성공이 있을 것입니다."
+      }
+    }
+  ],
+  "topics": {
+    "love": {
+      "name": "연애운",
+      "icon": "💖",
+      "subtopics": {
+        "single": {
+          "name": "솔로/썸",
+          "description": "새로운 만남이나 현재 썸타는 관계에 대해"
+        },
+        "couple": {
+          "name": "커플/짝사랑",
+          "description": "현재 연인 관계나 짝사랑 상황에 대해"
+        },
+        "breakup": {
+          "name": "재회/이별",
+          "description": "이별 후 상황이나 재회 가능성에 대해"
+        }
+      }
+    },
+    "career": {
+      "name": "직업·금전운",
+      "icon": "💼",
+      "subtopics": {
+        "job": {
+          "name": "직장/이직",
+          "description": "현재 직장이나 새로운 직장에 대해"
+        },
+        "money": {
+          "name": "투자/수입",
+          "description": "금전 상황이나 투자에 대해"
+        },
+        "business": {
+          "name": "사업/창업",
+          "description": "사업이나 창업에 대해"
+        }
+      }
+    },
+    "general": {
+      "name": "종합운",
+      "icon": "✨",
+      "subtopics": {}
+    }
+  },
+  "spreads": {
+    "three_card": {
+      "positions": ["과거", "현재", "미래"],
+      "description": "과거, 현재, 미래의 흐름을 통해 상황을 파악합니다."
+    },
+    "advice_card": {
+      "description": "현재 상황에 대한 구체적인 조언을 제공합니다."
+    }
+  }
+}
