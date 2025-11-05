@@ -178,15 +178,15 @@ const TarotCardApp = () => {
     const startIndex = currentPage * VISIBLE_CARDS;
     const endIndex = Math.min(startIndex + VISIBLE_CARDS, TOTAL_CARDS);
     const visibleCount = endIndex - startIndex;
-    
+
     const isInCurrentPage = index >= startIndex && index < endIndex;
     const isInPrevPage = index >= (currentPage - 1) * VISIBLE_CARDS && index < startIndex;
     const isInNextPage = index >= endIndex && index < (currentPage + 1) * VISIBLE_CARDS;
-    
+
     if (!isInCurrentPage && !isInPrevPage && !isInNextPage) return null;
-    
+
     let visibleIndex, pageOffset = 0;
-    
+
     if (isInCurrentPage) {
       visibleIndex = index - startIndex;
       pageOffset = 0;
@@ -197,25 +197,26 @@ const TarotCardApp = () => {
       visibleIndex = index - endIndex;
       pageOffset = 1;
     }
-    
-    const arcAngle = 110;
-    const radius = 200;
+
+    const arcAngle = 100;
+    const radius = 150;
     const angleStep = arcAngle / (visibleCount - 1);
     const angle = -arcAngle / 2 + (visibleIndex * angleStep);
-    
-    const pageSlideOffset = pageOffset * window.innerWidth * 1.2;
+
+    const containerWidth = 400; // Approximate container width
+    const pageSlideOffset = pageOffset * containerWidth * 1.2;
     const x = Math.sin(angle * Math.PI / 180) * radius + swipeOffset + pageSlideOffset;
     const y = -Math.cos(angle * Math.PI / 180) * radius * 0.6;
-    
+
     const distanceFromCenter = Math.abs(visibleIndex - (visibleCount - 1) / 2);
     const scale = 1 - (distanceFromCenter / visibleCount) * 0.3;
-    
+
     let opacity = 1;
-    
+
     if (isTransitioning && swipeOffset === 0) {
       opacity = isInCurrentPage ? 0 : ((isInPrevPage && pageOffset === -1) || (isInNextPage && pageOffset === 1)) ? 1 : 0;
     } else if (swipeOffset !== 0) {
-      const swipeProgress = Math.abs(swipeOffset) / window.innerWidth;
+      const swipeProgress = Math.abs(swipeOffset) / containerWidth;
       if (isInCurrentPage) {
         opacity = 1 - swipeProgress;
       } else if ((isInPrevPage && swipeOffset > 0) || (isInNextPage && swipeOffset < 0)) {
@@ -226,17 +227,17 @@ const TarotCardApp = () => {
     } else {
       opacity = isInCurrentPage ? 1 : 0;
     }
-    
+
     return { x, y, rotation: angle, scale, opacity: Math.max(0, Math.min(1, opacity)), isVisible: true };
   };
 
   const renderCard = (card: Card, position: any) => {
     if (!position) return null;
-    
+
     const isSelected = selectedCards.includes(card.id);
     const isHovered = hoveredCard === card.id;
     const selectionIndex = selectedCards.indexOf(card.id);
-    
+
     let finalScale = position.scale;
     if (isHovered && !isSelected) finalScale *= 1.15;
     if (isSelected) finalScale *= 1.2;
@@ -244,39 +245,31 @@ const TarotCardApp = () => {
     return (
       <div
         key={card.id}
-        className="absolute cursor-pointer transition-all"
+        className="spread-card"
         style={{
-          left: '50%',
-          top: '50%',
-          transform: `translate(-50%, -50%) translate(${position.x}px, ${position.y}px) rotate(${position.rotation}deg) scale(${finalScale})`,
-          transitionDuration: swipeOffset !== 0 ? '0ms' : isTransitioning ? '600ms' : '400ms',
-          transitionTimingFunction: isTransitioning ? 'cubic-bezier(0.4, 0, 0.2, 1)' : 'ease',
-          zIndex: isSelected ? 100 : isHovered ? 50 : 10,
+          transform: `translate(${position.x}px, ${position.y}px) rotate(${position.rotation}deg) scale(${finalScale})`,
           opacity: position.opacity * (isHovered || isSelected ? 1 : 0.85),
+          zIndex: isSelected ? 100 : isHovered ? 50 : 10,
         }}
-        onClick={() => phase === 'selecting' && handleCardClick(card.id)}
+        onClick={() => handleCardClick(card.id)}
         onMouseEnter={() => setHoveredCard(card.id)}
         onMouseLeave={() => setHoveredCard(null)}
       >
-        <div 
-          className="relative"
+        <div
+          className="card-back-container"
           style={{
-            width: '55px',
-            height: '85px',
-            filter: isSelected ? `drop-shadow(0 0 20px ${backDesign?.colorScheme.primary}aa)` : 
-                    isHovered ? `drop-shadow(0 0 10px ${backDesign?.colorScheme.primary}66)` : 
+            filter: isSelected ? `drop-shadow(0 0 20px rgba(255, 215, 0, 0.7))` :
+                    isHovered ? `drop-shadow(0 0 10px rgba(255, 215, 0, 0.4))` :
                     'drop-shadow(0 4px 6px rgba(0,0,0,0.3))',
           }}
         >
-          <CardBack config={backDesign} />
+          <img
+            src={new URL(`../assets/cards/back.png`, import.meta.url).href}
+            alt="카드 뒷면"
+            className="card-back-image"
+          />
           {isSelected && (
-            <div 
-              className="absolute -top-2 -right-2 w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold"
-              style={{
-                backgroundColor: backDesign?.colorScheme.primary,
-                color: backDesign?.colorScheme.bg,
-              }}
-            >
+            <div className="selection-indicator">
               {selectionIndex + 1}
             </div>
           )}
@@ -290,95 +283,92 @@ const TarotCardApp = () => {
   // Skip revealing and result phases - navigate to app's result page instead
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-slate-900 flex flex-col">
-      <style>{`
-        @keyframes fade-in {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in {
-          animation: fade-in 0.5s ease-out;
-        }
-      `}</style>
+    <div className="card-selection">
+      <div className="screen-container">
+        <header className="screen-header">
+          <h1>🔮 심층 운세</h1>
+          <p>마음에 드는 카드를 선택하세요</p>
+        </header>
 
-      <div className="p-4 text-center">
-        <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-yellow-200 mb-2">
-          마음에 드는 카드를 선택하세요
-        </h2>
-        <p className="text-purple-200">{selectedCards.length}/3 선택됨</p>
-      </div>
-
-      <div 
-        className="flex-1 relative overflow-hidden" 
-        style={{ minHeight: '400px' }}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
-        {currentPage === 0 && swipeOffset === 0 && selectedCards.length === 0 && (
-          <div className="absolute top-4 left-1/2 transform -translate-x-1/2 text-purple-300 text-sm animate-pulse z-50">
-            ← 좌우로 스와이프하여 카드 탐색 →
+        <div className="card-selection-progress">
+          <div className="progress-text">
+            {selectedCards.length}/3 장 선택됨
           </div>
-        )}
-        
-        {cards.map((card, index) => {
-          const position = calculateCardPosition(index);
-          return position?.isVisible ? renderCard(card, position) : null;
-        })}
-      </div>
-
-      <div className="flex justify-center items-center gap-2 py-4">
-        <button
-          onClick={prevPage}
-          disabled={currentPage === 0 || isTransitioning}
-          className="p-2 rounded-full bg-purple-800/50 hover:bg-purple-700/50 disabled:opacity-30 disabled:cursor-not-allowed transition-all active:scale-95 text-white text-xl"
-        >
-          ‹
-        </button>
-        
-        <div className="flex gap-2 px-4">
-          {Array.from({ length: TOTAL_PAGES }).map((_, i) => (
-            <button
-              key={i}
-              onClick={() => {
-                if (!isTransitioning) {
-                  setIsTransitioning(true);
-                  setCurrentPage(i);
-                  setTimeout(() => setIsTransitioning(false), 600);
-                }
-              }}
-              className={`h-2 rounded-full transition-all ${
-                i === currentPage ? 'bg-yellow-400 w-8' : 'bg-purple-400/30 hover:bg-purple-400/50 w-2'
-              }`}
-            />
-          ))}
+          <div className="progress-bar">
+            <div
+              className="progress-fill"
+              style={{ width: `${(selectedCards.length / 3) * 100}%` }}
+            ></div>
+          </div>
         </div>
-        
-        <button
-          onClick={nextPage}
-          disabled={currentPage === TOTAL_PAGES - 1 || isTransitioning}
-          className="p-2 rounded-full bg-purple-800/50 hover:bg-purple-700/50 disabled:opacity-30 disabled:cursor-not-allowed transition-all active:scale-95 text-white text-xl"
-        >
-          ›
-        </button>
-      </div>
 
-      <div className="p-4 space-y-3">
-        <button
-          onClick={handleComplete}
-          disabled={selectedCards.length !== 3}
-          className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed text-white font-bold py-4 px-6 rounded-lg shadow-lg transition-all disabled:opacity-50"
-        >
-          {selectedCards.length === 3 ? '선택 완료' : `${3 - selectedCards.length}장 더 선택하세요`}
-        </button>
-        
-        <button
-          onClick={handleRandomPick}
-          className="w-full bg-purple-700/50 hover:bg-purple-600/50 text-white font-bold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-all"
-        >
-          ✨
-          <span>운명에 맡기기 (랜덤 3장)</span>
-        </button>
+        <div className="card-reveal-section">
+          <div
+            className="card-spread-container"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
+            {currentPage === 0 && swipeOffset === 0 && selectedCards.length === 0 && (
+              <div className="swipe-hint">
+                ← 좌우로 스와이프하여 카드 탐색 →
+              </div>
+            )}
+
+            {cards.map((card, index) => {
+              const position = calculateCardPosition(index);
+              return position?.isVisible ? renderCard(card, position) : null;
+            })}
+          </div>
+
+          <div className="spread-navigation">
+            <button
+              onClick={prevPage}
+              disabled={currentPage === 0 || isTransitioning}
+              className="nav-button"
+            >
+              ‹
+            </button>
+
+            <div className="page-indicators">
+              {Array.from({ length: TOTAL_PAGES }).map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => {
+                    if (!isTransitioning) {
+                      setIsTransitioning(true);
+                      setCurrentPage(i);
+                      setTimeout(() => setIsTransitioning(false), 600);
+                    }
+                  }}
+                  className={`page-dot ${i === currentPage ? 'active' : ''}`}
+                />
+              ))}
+            </div>
+
+            <button
+              onClick={nextPage}
+              disabled={currentPage === TOTAL_PAGES - 1 || isTransitioning}
+              className="nav-button"
+            >
+              ›
+            </button>
+          </div>
+        </div>
+
+        <div className="card-selection-actions">
+          <button
+            onClick={handleRandomPick}
+            className="action-button secondary"
+          >
+            ✨ 운명에 맡기기 (랜덤 3장)
+          </button>
+          {selectedCards.length === 3 && (
+            <button className="confirm-button" onClick={handleComplete}>
+              🔮 카드 해석 보기
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
