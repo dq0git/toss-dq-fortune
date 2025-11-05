@@ -8,9 +8,17 @@ const repoName = 'toss-dq-fortune'; // 이 부분을 수정하세요!
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: `/${repoName}/`,
+  base: '/',
   server: {
-    port: 3000,
+    port: 5173,
     open: true
+  },
+  optimizeDeps: {
+    exclude: ['@swc/core', '@swc/wasm', '@swc/core-darwin-arm64']
+  },
+  build: {
+    rollupOptions: {
+      external: id => id.includes('@swc/') || id.endsWith('.node')
+    }
   }
 })

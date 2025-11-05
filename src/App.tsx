@@ -1,98 +1,27 @@
-import { useState } from 'react'
+import { Routes, Route } from 'react-router-dom';
 import './App.css'
-import MainScreen from './components/MainScreen'
-import TopicSelection from './components/TopicSelection'
-import SubTopicSelection from './components/SubTopicSelection'
-import CardSelection from './components/CardSelection'
-import ResultScreen from './components/ResultScreen'
-import DailyCard from './components/DailyCard'
+import IndexPage from './pages/index';
+import TopicSelectionPage from './pages/topic-selection';
+import SubTopicSelectionPage from './pages/subtopic-selection';
+import CardSelectionPage from './pages/card-selection';
+import ResultPage from './pages/result';
+import DailyCardPage from './pages/daily-card';
+import TarotTalismanPage from './pages/tarot-talisman';
+import CameraPage from './pages/camera';
 
 function App() {
-  const [currentScreen, setCurrentScreen] = useState('main')
-  const [selectedTopic, setSelectedTopic] = useState(null)
-  const [selectedSubTopic, setSelectedSubTopic] = useState(null)
-  const [selectedCards, setSelectedCards] = useState([])
-  const [readingResult, setReadingResult] = useState(null)
-
-  const handleScreenChange = (screen) => {
-    setCurrentScreen(screen)
-  }
-
-  const handleTopicSelect = (topic) => {
-    setSelectedTopic(topic)
-    if (topic === 'general') {
-      setCurrentScreen('card-selection')
-    } else {
-      setCurrentScreen('subtopic-selection')
-    }
-  }
-
-  const handleSubTopicSelect = (subTopic) => {
-    setSelectedSubTopic(subTopic)
-    setCurrentScreen('card-selection')
-  }
-
-  const handleCardsSelect = (cards) => {
-    setSelectedCards(cards)
-    setCurrentScreen('result')
-  }
-
-  const handleBackToMain = () => {
-    setCurrentScreen('main')
-    setSelectedTopic(null)
-    setSelectedSubTopic(null)
-    setSelectedCards([])
-    setReadingResult(null)
-  }
-
-  const renderScreen = () => {
-    switch (currentScreen) {
-      case 'main':
-        return <MainScreen onScreenChange={handleScreenChange} />
-      case 'topic-selection':
-        return <TopicSelection onTopicSelect={handleTopicSelect} onBack={handleBackToMain} />
-      case 'subtopic-selection':
-        return (
-          <SubTopicSelection 
-            topic={selectedTopic} 
-            onSubTopicSelect={handleSubTopicSelect} 
-            onBack={() => setCurrentScreen('topic-selection')} 
-          />
-        )
-      case 'card-selection':
-        return (
-          <CardSelection 
-            topic={selectedTopic} 
-            subTopic={selectedSubTopic} 
-            onCardsSelect={handleCardsSelect} 
-            onBack={() => {
-              if (selectedTopic === 'general') {
-                setCurrentScreen('topic-selection')
-              } else {
-                setCurrentScreen('subtopic-selection')
-              }
-            }} 
-          />
-        )
-      case 'result':
-        return (
-          <ResultScreen 
-            topic={selectedTopic} 
-            subTopic={selectedSubTopic} 
-            cards={selectedCards} 
-            onBackToMain={handleBackToMain} 
-          />
-        )
-      case 'daily-card':
-        return <DailyCard onBack={handleBackToMain} />
-      default:
-        return <MainScreen onScreenChange={handleScreenChange} />
-    }
-  }
-
   return (
     <div className="App">
-      {renderScreen()}
+      <Routes>
+        <Route path="/" element={<IndexPage />} />
+        <Route path="/topic-selection" element={<TopicSelectionPage />} />
+        <Route path="/subtopic-selection" element={<SubTopicSelectionPage />} />
+        <Route path="/card-selection" element={<CardSelectionPage />} />
+        <Route path="/result" element={<ResultPage />} />
+        <Route path="/daily-card" element={<DailyCardPage />} />
+        <Route path="/tarot-talisman" element={<TarotTalismanPage />} />
+        <Route path="/camera" element={<CameraPage />} />
+      </Routes>
     </div>
   )
 }

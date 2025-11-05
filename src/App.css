@@ -277,6 +277,172 @@
   transition: width 0.3s ease;
 }
 
+/* 카드 뒤집기 인터페이스 */
+.card-reveal-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 30px 0;
+}
+
+.cards-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.card-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.card-position-label {
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.card-back-reveal {
+  width: 180px;
+  height: 270px;
+  background: linear-gradient(135deg, #8B5CF6, #A855F7);
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.card-back-reveal:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 15px 35px rgba(139, 92, 246, 0.6);
+}
+
+.flip-hint {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 0.9rem;
+  opacity: 0.8;
+  text-align: center;
+  width: 80%;
+  font-weight: 500;
+}
+
+.card-revealed {
+  width: 180px;
+  height: 270px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 15px;
+  padding: 15px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: cardReveal 0.5s ease-out;
+}
+
+@keyframes cardReveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) rotateY(180deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotateY(0deg);
+  }
+}
+
+.card-image-revealed {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #8B5CF6, #A855F7);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-placeholder-large {
+  text-align: center;
+  color: white;
+}
+
+.card-name-large {
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 5px;
+}
+
+.card-direction-large {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  font-style: italic;
+  color: #ffe66d;
+}
+
+/* 부채꼴 카드 레이아웃 */
+.card-fan-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.card-fan {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  height: 200px;
+  transform-origin: bottom center;
+}
+
+.fan-card {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform-origin: bottom center;
+  width: 50px;
+  height: 75px;
+  background: linear-gradient(135deg, #8B5CF6, #A855F7);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.fan-card:hover:not(.drawn) {
+  transform: scale(1.1) !important;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.6);
+}
+
+.fan-card.drawn {
+  pointer-events: none;
+}
+
+.tarot-back-pattern {
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.1) 2px, transparent 2px),
+    radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 2px, transparent 2px),
+    radial-gradient(circle at 40% 60%, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px, 20px 20px, 10px 10px;
+}
+
+/* 기존 그리드 레이아웃 (백업용) */
 .card-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -403,6 +569,14 @@
   font-size: 0.7rem;
   font-weight: 600;
   line-height: 1.2;
+}
+
+.card-direction {
+  font-size: 0.6rem;
+  opacity: 0.8;
+  margin-top: 2px;
+  font-style: italic;
+  color: #ffe66d;
 }
 
 .card-meaning {
@@ -632,6 +806,14 @@
   line-height: 1.3;
 }
 
+.card-direction-large {
+  font-size: 0.8rem;
+  opacity: 0.8;
+  margin-top: 5px;
+  font-style: italic;
+  color: #ffe66d;
+}
+
 .daily-meaning h3 {
   color: white;
   font-size: 1.2rem;
@@ -674,6 +856,372 @@
   font-size: 0.9rem;
 }
 
+/* 타로 부적 스타일 */
+.tarot-talisman {
+  min-height: 100vh;
+}
+
+.talisman-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 30px 0;
+}
+
+.talisman-intro {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.talisman-intro h3 {
+  color: white;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.talisman-intro p {
+  color: white;
+  opacity: 0.8;
+  font-size: 0.95rem;
+}
+
+.talisman-card-back {
+  width: 200px;
+  height: 300px;
+  background: linear-gradient(135deg, #8B5CF6, #A855F7);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  margin: 0 auto;
+  box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+}
+
+.talisman-card-back:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 15px 40px rgba(139, 92, 246, 0.6);
+}
+
+.generate-hint {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 0.9rem;
+  opacity: 0.8;
+  text-align: center;
+  width: 80%;
+}
+
+.talisman-result-section {
+  width: 100%;
+}
+
+.current-talisman {
+  text-align: center;
+}
+
+.current-talisman h3 {
+  color: white;
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.talisman-card {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  padding: 30px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 20px;
+}
+
+.talisman-type {
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.talisman-meaning p {
+  color: white;
+  line-height: 1.6;
+  font-size: 1rem;
+  margin-top: 15px;
+}
+
+.talisman-selection h3 {
+  color: white;
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.talisman-options {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.talisman-option {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 15px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+  min-width: 150px;
+}
+
+.talisman-option:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.talisman-option .card-image {
+  width: 80px;
+  height: 120px;
+  background: linear-gradient(135deg, #8B5CF6, #A855F7);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px auto;
+}
+
+.talisman-label {
+  color: white;
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin-top: 10px;
+}
+
+/* 잠금 해제 모달 */
+.unlock-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.unlock-content {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  padding: 30px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+  max-width: 400px;
+  margin: 20px;
+}
+
+.unlock-content h3 {
+  color: white;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.unlock-content p {
+  color: white;
+  opacity: 0.9;
+  margin-bottom: 25px;
+  line-height: 1.5;
+}
+
+.unlock-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.unlock-button {
+  padding: 15px 20px;
+  border-radius: 15px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  color: white;
+}
+
+.unlock-button.share {
+  background: linear-gradient(135deg, #4ecdc4, #44a08d);
+  box-shadow: 0 4px 15px rgba(78, 205, 196, 0.4);
+}
+
+.unlock-button.share:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(78, 205, 196, 0.6);
+}
+
+.unlock-button.ad {
+  background: linear-gradient(135deg, #ff6b9d, #ffe66d);
+  box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
+}
+
+.unlock-button.ad:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 107, 157, 0.6);
+}
+
+.unlock-cancel {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 15px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.unlock-cancel:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* 후속 액션 버튼 */
+.follow-up-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.follow-up-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 15px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.follow-up-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+/* 로딩 및 에러 화면 */
+.loading-screen,
+.error-screen {
+  text-align: center;
+  padding: 60px 20px;
+  color: white;
+}
+
+.loading-screen h2,
+.error-screen h2 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.loading-screen p,
+.error-screen p {
+  font-size: 1rem;
+  opacity: 0.8;
+  margin-bottom: 30px;
+}
+
+/* 수호 카드 스타일 */
+.guardian-card-section {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 25px;
+  margin-top: 30px;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 215, 0, 0.3);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.2);
+}
+
+.guardian-card-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.guardian-card-header h3 {
+  color: white;
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.guardian-subtitle {
+  color: white;
+  opacity: 0.85;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.guardian-timing {
+  color: #ffe66d;
+  opacity: 0.9;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  margin: 5px 0 0 0;
+  font-style: italic;
+}
+
+.guardian-card-display {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 15px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.guardian-card-info {
+  text-align: center;
+}
+
+.guardian-card-name {
+  color: #ffe66d;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.card-direction-small {
+  color: #ffd700;
+  font-size: 0.9rem;
+  opacity: 0.9;
+  font-style: italic;
+}
+
+.guardian-card-message {
+  color: white;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.guardian-card-message p {
+  margin: 0 0 10px 0;
+  opacity: 0.95;
+}
+
 /* 반응형 디자인 */
 @media (max-width: 480px) {
   .screen-container {
@@ -696,5 +1244,18 @@
   .card-back-large {
     width: 160px;
     height: 240px;
+  }
+  
+  .guardian-card-section {
+    padding: 20px;
+    margin-top: 25px;
+  }
+  
+  .guardian-card-header h3 {
+    font-size: 1.2rem;
+  }
+  
+  .guardian-card-name {
+    font-size: 1.1rem;
   }
 }
