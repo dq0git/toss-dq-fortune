@@ -1,7 +1,7 @@
-import CardSelection from '../components/CardSelection';
+import TarotCardApp from '../components/tex';
 
 const CardSelectionPage = () => {
-  return <CardSelection />;
+  return <TarotCardApp />;
 };
 
 export default CardSelectionPage;
