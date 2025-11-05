@@ -1353,6 +1353,22 @@
   }
 }
 
+/* tex.tsx 컴포넌트 오버라이드 - 앱 레이아웃에 맞게 조정 */
+.card-selection .min-h-screen {
+  min-height: auto !important;
+  background: transparent !important;
+}
+
+.card-selection .bg-gradient-to-br {
+  background: transparent !important;
+}
+
+.card-selection .from-indigo-950,
+.card-selection .via-purple-900,
+.card-selection .to-slate-900 {
+  background: transparent !important;
+}
+
 /* 반응형 디자인 */
 @media (max-width: 480px) {
   .screen-container {
