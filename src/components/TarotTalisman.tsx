@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { tarotAPI, TarotReading } from '../lib/supabase'
 import { Card } from '../types'
 import { getImageId } from '../lib/cardImages'
+import CardBack from './CardBack'
 
 
 interface Props {
@@ -140,14 +141,11 @@ const TarotTalisman = ({ onBack }: Props) => {
               </div>
               
             <div className="talisman-card-back" onClick={handleGenerateTalisman}>
-              <img
-                src={new URL(`../assets/cards/back.png`, import.meta.url).href}
-                alt="카드 뒷면"
+              <CardBack
                 className="card-back-image"
                 style={{
                   width: '100%',
                   height: '100%',
-                  objectFit: 'cover',
                   borderRadius: '20px'
                 }}
               />
@@ -210,14 +208,11 @@ const TarotTalisman = ({ onBack }: Props) => {
                         {getTalismanTypeIcon(currentTalisman!.type)} {getTalismanTypeName(currentTalisman!.type)}
                       </div>
                       <div className="card-image">
-                        <img
-                          src={new URL(`../assets/cards/${getImageId(currentTalisman!.card.tarot_id)}.png`, import.meta.url).href}
-                          alt={currentTalisman!.card.card_name_kr}
+                        <CardBack
                           className="card-image-display"
                           style={{
                             width: '100%',
                             height: '100%',
-                            objectFit: 'contain',
                             borderRadius: '6px'
                           }}
                         />
@@ -230,14 +225,11 @@ const TarotTalisman = ({ onBack }: Props) => {
                         {getTalismanTypeIcon(newTalisman!.type)} {getTalismanTypeName(newTalisman!.type)}
                       </div>
                       <div className="card-image">
-                        <img
-                          src={new URL(`../assets/cards/${getImageId(newTalisman!.card.tarot_id)}.png`, import.meta.url).href}
-                          alt={newTalisman!.card.card_name_kr}
+                        <CardBack
                           className="card-image-display"
                           style={{
                             width: '100%',
                             height: '100%',
-                            objectFit: 'contain',
                             borderRadius: '6px'
                           }}
                         />

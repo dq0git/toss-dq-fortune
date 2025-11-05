@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from '../router.gen';
 import { tarotAPI, TarotReading } from '../lib/supabase'
+import CardBack from '../components/CardBack'
 
 // 디버깅 모드 설정 (true로 하면 데이터 소스가 표시됨)
 const DEBUG_MODE = true
@@ -106,14 +107,11 @@ const DailyCard = () => {
           {!isRevealed ? (
             <div className="card-reveal-section">
               <div className="card-back-large" onClick={handleRevealCard}>
-                <img
-                  src={new URL(`../assets/cards/back.png`, import.meta.url).href}
-                  alt="카드 뒷면"
+                <CardBack
                   className="card-back-image"
                   style={{
                     width: '100%',
                     height: '100%',
-                    objectFit: 'cover',
                     borderRadius: '20px'
                   }}
                 />

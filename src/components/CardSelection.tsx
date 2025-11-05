@@ -3,6 +3,7 @@ import { useNavigate, useParams } from '../router.gen.ts'
 import { tarotAPI, TarotReading } from '../lib/supabase'
 import { Card } from '../types'
 import { hasCardImage, getCardFallback, getImageId } from '../lib/cardImages'
+import CardBack from './CardBack'
 
 const CardSelection = () => {
   const navigate = useNavigate()
@@ -425,14 +426,11 @@ const CardSelection = () => {
                       className="card-back-reveal"
                       onClick={() => handleCardFlip(index)}
                     >
-                      <img
-                        src={new URL(`../assets/cards/back.png`, import.meta.url).href}
-                        alt="카드 뒷면"
+                      <CardBack
                         className="card-back-image"
                         style={{
                           width: '100%',
                           height: '100%',
-                          objectFit: 'cover',
                           borderRadius: '15px'
                         }}
                       />
@@ -441,17 +439,14 @@ const CardSelection = () => {
                   ) : (
                     <div className="card-revealed">
                       <div className="card-image-revealed">
-                        <img
-                          src={new URL(`../assets/cards/${getImageId(card.tarot_id)}.png`, import.meta.url).href}
-                          alt={card.card_name_kr}
-                          className="card-image-display"
-                          style={{
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'contain',
-                            borderRadius: '8px'
-                          }}
-                        />
+                      <CardBack
+                        className="card-back-image"
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          borderRadius: '15px'
+                        }}
+                      />
                       </div>
                     </div>
                   )}

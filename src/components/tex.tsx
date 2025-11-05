@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import CardBack from './CardBack';
 
 interface Card {
   id: number;
@@ -263,11 +264,7 @@ const TarotCardApp = () => {
                     'drop-shadow(0 4px 6px rgba(0,0,0,0.3))',
           }}
         >
-          <img
-            src={new URL(`../assets/cards/back.png`, import.meta.url).href}
-            alt="카드 뒷면"
-            className="card-back-image"
-          />
+          <CardBack className="card-back-image" />
           {isSelected && (
             <div className="selection-indicator">
               {selectionIndex + 1}
@@ -374,93 +371,6 @@ const TarotCardApp = () => {
   );
 };
 
-const CardBack = ({ config }: { config: BackDesign | null }) => {
-  if (!config) return null;
-  const { colorScheme, centerSymbol, glowIntensity } = config;
 
-  const renderSymbol = () => {
-    const cx = 27.5, cy = 42.5;
-    switch (centerSymbol) {
-      case 'moon':
-        return (
-          <>
-            <circle cx={cx} cy={cy} r="12" fill="url(#moonGlow)" opacity={glowIntensity * 0.6} />
-            <circle cx={cx} cy={cy} r="8" fill={colorScheme.bg} />
-            <path d="M 22,42.5 A 8,8 0 1,1 22,42.5 A 6,6 0 1,0 22,42.5" fill="url(#goldGradient)" />
-          </>
-        );
-      case 'sun':
-        return (
-          <>
-            <circle cx={cx} cy={cy} r="12" fill="url(#moonGlow)" opacity={glowIntensity} />
-            <circle cx={cx} cy={cy} r="6" fill="url(#goldGradient)" />
-            {[...Array(8)].map((_, i) => (
-              <line 
-                key={i} x1={cx} y1={cy}
-                x2={cx + Math.cos(i * Math.PI / 4) * 10}
-                y2={cy + Math.sin(i * Math.PI / 4) * 10}
-                stroke="url(#goldGradient)" strokeWidth="1.5" strokeLinecap="round"
-              />
-            ))}
-          </>
-        );
-      case 'star':
-        return (
-          <>
-            <circle cx={cx} cy={cy} r="11" fill="url(#moonGlow)" opacity={glowIntensity} />
-            <path d="M 27.5,33 L 30,40 L 37,40.5 L 32,45 L 33.5,52 L 27.5,48 L 21.5,52 L 23,45 L 18,40.5 L 25,40 Z"
-                  fill="url(#goldGradient)" stroke={colorScheme.bg} strokeWidth="0.5" />
-          </>
-        );
-      case 'eye':
-        return (
-          <>
-            <ellipse cx={cx} cy={cy} rx="11" ry="7" fill="url(#moonGlow)" opacity={glowIntensity} />
-            <ellipse cx={cx} cy={cy} rx="9" ry="5" fill="url(#goldGradient)" />
-            <ellipse cx={cx} cy={cy} rx="7" ry="4" fill={colorScheme.bg} />
-            <circle cx={cx} cy={cy} r="2.5" fill="url(#goldGradient)" />
-          </>
-        );
-      case 'pentagram':
-        return (
-          <>
-            <circle cx={cx} cy={cy} r="12" fill="url(#moonGlow)" opacity={glowIntensity} />
-            <circle cx={cx} cy={cy} r="8" fill="none" stroke="url(#goldGradient)" strokeWidth="0.5" />
-            <path d="M 27.5,35.5 L 30,41 L 36,41 L 31.5,44.5 L 33.5,50 L 27.5,46 L 21.5,50 L 23.5,44.5 L 19,41 L 25,41 Z"
-                  fill="none" stroke="url(#goldGradient)" strokeWidth="0.8" />
-          </>
-        );
-      default:
-        return null;
-    }
-  };
-
-  return (
-    <svg viewBox="0 0 55 85" className="w-full h-full">
-      <defs>
-        <radialGradient id="moonGlow">
-          <stop offset="0%" style={{ stopColor: colorScheme.primary, stopOpacity: 0.9 }} />
-          <stop offset="100%" style={{ stopColor: colorScheme.bg, stopOpacity: 0 }} />
-        </radialGradient>
-        <linearGradient id="goldGradient">
-          <stop offset="0%" style={{ stopColor: colorScheme.primary }} />
-          <stop offset="100%" style={{ stopColor: colorScheme.secondary }} />
-        </linearGradient>
-        <g id="star">
-          <path d="M 0,-2 L 0.5,-0.5 L 2,-0.5 L 1,0.5 L 1.5,2 L 0,1 L -1.5,2 L -1,0.5 L -2,-0.5 L -0.5,-0.5 Z" fill="url(#goldGradient)" />
-        </g>
-      </defs>
-      <rect width="55" height="85" rx="3" fill={colorScheme.bg} />
-      <rect x="2" y="2" width="51" height="81" rx="2" fill="none" stroke="url(#goldGradient)" strokeWidth="0.8" />
-      {renderSymbol()}
-      <g opacity="0.6">
-        <use href="#star" x="27.5" y="20" transform="scale(0.8)" />
-        <use href="#star" x="15" y="25" transform="scale(0.6)" />
-        <use href="#star" x="40" y="25" transform="scale(0.6)" />
-        <use href="#star" x="27.5" y="65" transform="scale(0.7)" />
-      </g>
-    </svg>
-  );
-};
 
 export default TarotCardApp;
