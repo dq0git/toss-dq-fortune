@@ -199,29 +199,35 @@ const TarotCardApp = () => {
       pageOffset = 1;
     }
 
-    const arcAngle = 100;
-    const radius = 150;
-    const angleStep = arcAngle / (visibleCount - 1);
-    const angle = -arcAngle / 2 + (visibleIndex * angleStep);
+    // Adjust arc angle and radius for better fit
+    const arcAngle = Math.min(90, visibleCount * 15); // Reduce angle for fewer cards
+    const radius = Math.min(120, 200 / visibleCount * 2); // Adjust radius based on card count
+    const angleStep = visibleCount > 1 ? arcAngle / (visibleCount - 1) : 0;
+    const angle = visibleCount > 1 ? -arcAngle / 2 + (visibleIndex * angleStep) : 0;
 
-    const containerWidth = 400; // Approximate container width
-    const pageSlideOffset = pageOffset * containerWidth * 1.2;
-    const x = Math.sin(angle * Math.PI / 180) * radius + swipeOffset + pageSlideOffset;
-    const y = -Math.cos(angle * Math.PI / 180) * radius * 0.6;
+    // Use responsive container width
+    const containerWidth = Math.min(400, window.innerWidth - 40);
+    const pageSlideOffset = pageOffset * containerWidth * 1.1;
+
+    // Center the spread and constrain positioning
+    const centerX = 0;
+    const centerY = 20; // Move slightly down from center
+    const x = centerX + Math.sin(angle * Math.PI / 180) * radius + swipeOffset + pageSlideOffset;
+    const y = centerY + Math.cos(angle * Math.PI / 180) * radius * 0.5;
 
     const distanceFromCenter = Math.abs(visibleIndex - (visibleCount - 1) / 2);
-    const scale = 1 - (distanceFromCenter / visibleCount) * 0.3;
+    const scale = 1 - (distanceFromCenter / visibleCount) * 0.2; // Reduce scale variation
 
     let opacity = 1;
 
     if (isTransitioning && swipeOffset === 0) {
-      opacity = isInCurrentPage ? 0 : ((isInPrevPage && pageOffset === -1) || (isInNextPage && pageOffset === 1)) ? 1 : 0;
+      opacity = isInCurrentPage ? 1 : 0;
     } else if (swipeOffset !== 0) {
       const swipeProgress = Math.abs(swipeOffset) / containerWidth;
       if (isInCurrentPage) {
-        opacity = 1 - swipeProgress;
+        opacity = 1 - swipeProgress * 0.5;
       } else if ((isInPrevPage && swipeOffset > 0) || (isInNextPage && swipeOffset < 0)) {
-        opacity = swipeProgress;
+        opacity = swipeProgress * 0.5;
       } else {
         opacity = 0;
       }
@@ -229,7 +235,7 @@ const TarotCardApp = () => {
       opacity = isInCurrentPage ? 1 : 0;
     }
 
-    return { x, y, rotation: angle, scale, opacity: Math.max(0, Math.min(1, opacity)), isVisible: true };
+    return { x, y, rotation: angle, scale: Math.max(0.7, scale), opacity: Math.max(0, Math.min(1, opacity)), isVisible: true };
   };
 
   const renderCard = (card: Card, position: any) => {
@@ -305,6 +311,12 @@ const TarotCardApp = () => {
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
+            style={{
+              width: '100%',
+              maxWidth: '500px',
+              margin: '0 auto',
+              position: 'relative'
+            }}
           >
             {currentPage === 0 && swipeOffset === 0 && selectedCards.length === 0 && (
               <div className="swipe-hint">
