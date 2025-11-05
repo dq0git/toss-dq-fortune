@@ -311,12 +311,6 @@ const TarotCardApp = () => {
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
-            style={{
-              width: '100%',
-              maxWidth: '500px',
-              margin: '0 auto',
-              position: 'relative'
-            }}
           >
             {currentPage === 0 && swipeOffset === 0 && selectedCards.length === 0 && (
               <div className="swipe-hint">
