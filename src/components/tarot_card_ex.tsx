@@ -369,8 +369,9 @@ const TarotCardApp = () => {
   }
 
   if (phase === 'revealing') {
+    console.log('Rendering revealing phase');
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-slate-900 flex items-center justify-center overflow-hidden">
+      <div className="fixed inset-0 bg-gradient-to-br from-indigo-950 via-purple-900 to-slate-900 flex items-center justify-center z-50">
         <style>{`
           @keyframes sparkle {
             0%, 100% { transform: scale(0) rotate(0deg); opacity: 0; }
@@ -430,11 +431,12 @@ const TarotCardApp = () => {
             }}
           >
             <div
-              className="text-center space-y-6 px-8 py-12 rounded-2xl max-w-md mx-auto"
+              className="text-center space-y-6 px-8 py-12 rounded-2xl max-w-md mx-auto shadow-2xl"
               style={{
-                background: `radial-gradient(circle, ${backDesign?.colorScheme.bg}dd, ${backDesign?.colorScheme.bg}99)`,
+                background: `radial-gradient(circle, ${backDesign?.colorScheme.bg}ee, ${backDesign?.colorScheme.bg}aa)`,
                 backdropFilter: 'blur(20px)',
-                border: `1px solid ${backDesign?.colorScheme.primary}33`,
+                border: `2px solid ${backDesign?.colorScheme.primary}66`,
+                boxShadow: `0 0 50px ${backDesign?.colorScheme.primary}33`,
               }}
             >
               <div className="text-6xl mb-4 animate-pulse">🔮</div>
