@@ -1,55 +1,134 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from '../router.gen.ts'
 import tarotData from '../data/tarot-data.json'
 
 const TopicSelection = () => {
   const navigate = useNavigate()
   const topics = tarotData.topics
+  const [selectedTopic, setSelectedTopic] = useState<string | null>(null)
+
+  const handleSubtopicSelect = (topicKey: string, subtopicKey: string) => {
+    navigate(`/card-selection?topic=${topicKey}&subTopic=${subtopicKey}`)
+  }
+
+  const getTopicData = (topicKey: string) => {
+    return topics[topicKey as keyof typeof topics]
+  }
 
   return (
     <div className="topic-selection">
+      <style>{`
+        @keyframes slideDown {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
       <div className="screen-container">
         <header className="screen-header">
           <h1>무엇이 궁금하신가요??</h1>
-          <p>궁금한 주제를 선택해주세요</p>
+          <p>궁금한 주제와 상황을 선택해주세요</p>
         </header>
 
         <div className="topic-options">
-          <div
-            className="topic-card love"
-            onClick={() => navigate('/subtopic-selection?topic=love')}
-          >
-            <div className="topic-icon">💖</div>
-            <h2>애정운</h2>
-            <p>사랑과 관계에 대한 운세를 확인하세요</p>
-            <div className="topic-subtitle">솔로/썸 • 커플/짝사랑 • 재회/이별</div>
-          </div>
+          {Object.entries(topics).filter(([key]) => key !== 'general').map(([topicKey, topicData]) => (
+            <div key={topicKey} style={{ marginBottom: '1rem' }}>
+              <div
+                className={`topic-card ${topicKey}`}
+                onClick={() => setSelectedTopic(selectedTopic === topicKey ? null : topicKey)}
+                style={{
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  position: 'relative',
+                  transform: selectedTopic === topicKey ? 'scale(1.02)' : 'scale(1)',
+                  boxShadow: selectedTopic === topicKey ? '0 8px 25px rgba(0,0,0,0.15)' : 'none'
+                }}
+              >
+                <div className="topic-icon">{topicData.icon}</div>
+                <h2>{topicData.name}</h2>
+                <p>{topicKey === 'love' ? '사랑과 관계에 대한 운세를 확인하세요' :
+                     topicKey === 'money' ? '재정과 투자에 대한 운세를 확인하세요' :
+                     '목표 달성과 성공에 대한 운세를 확인하세요'}</p>
+                <div className="topic-subtitle">
+                  {Object.values(topicData.subtopics).map(subtopic => subtopic.name).join(' • ')}
+                </div>
+                <div style={{
+                  position: 'absolute',
+                  top: '1rem',
+                  right: '1rem',
+                  fontSize: '1.2rem',
+                  color: 'rgba(255,255,255,0.7)',
+                  transition: 'transform 0.3s ease'
+                }}>
+                  {selectedTopic === topicKey ? '▲' : '▼'}
+                </div>
+              </div>
 
-          <div
-            className="topic-card money"
-            onClick={() => navigate('/subtopic-selection?topic=money')}
-          >
-            <div className="topic-icon">💰</div>
-            <h2>금전운</h2>
-            <p>재정과 투자에 대한 운세를 확인하세요</p>
-            <div className="topic-subtitle">수입/지출 • 투자/저축 • 부업/사업</div>
-          </div>
-
-          <div
-            className="topic-card success"
-            onClick={() => navigate('/subtopic-selection?topic=success')}
-          >
-            <div className="topic-icon">⭐</div>
-            <h2>성공운</h2>
-            <p>목표 달성과 성공에 대한 운세를 확인하세요</p>
-            <div className="topic-subtitle">목표달성 • 성공/승진 • 도전/변화</div>
-          </div>
+              {selectedTopic === topicKey && (
+                <div style={{
+                  marginTop: '1rem',
+                  animation: 'slideDown 0.3s ease-out'
+                }}>
+                  {Object.entries(topicData.subtopics).map(([subtopicKey, subtopicData]) => (
+                    <div
+                      key={subtopicKey}
+                      style={{
+                        background: 'rgba(255,255,255,0.1)',
+                        border: '1px solid rgba(255,255,255,0.2)',
+                        borderRadius: '12px',
+                        padding: '1rem',
+                        marginBottom: '0.5rem',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between'
+                      }}
+                      onClick={() => handleSubtopicSelect(topicKey, subtopicKey)}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = 'rgba(255,255,255,0.15)';
+                        e.currentTarget.style.transform = 'translateX(4px)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
+                        e.currentTarget.style.transform = 'translateX(0)';
+                      }}
+                    >
+                      <div>
+                        <h3 style={{
+                          margin: '0 0 0.25rem 0',
+                          fontSize: '1rem',
+                          fontWeight: '600'
+                        }}>{subtopicData.name}</h3>
+                        <p style={{
+                          margin: 0,
+                          fontSize: '0.85rem',
+                          opacity: 0.8
+                        }}>{subtopicData.description}</p>
+                      </div>
+                      <div style={{
+                        fontSize: '1.2rem',
+                        opacity: 0.7
+                      }}>→</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
         </div>
 
         <div className="selection-hint">
-          <p>💡 각 주제별로 세부 상황을 선택할 수 있습니다</p>
+          <p>💡 주제를 선택하면 세부 상황을 고를 수 있습니다</p>
         </div>
       </div>
+
+
     </div>
   )
 }
