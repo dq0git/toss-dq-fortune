@@ -120,7 +120,7 @@ const TarotCardApp = () => {
       setTimeout(() => {
         console.log('Setting phase to result');
         setPhase('result');
-      }, 5000); // 5초로 테스트용으로 줄임 (원래 300000ms = 5분)
+      }, 50000); // 5초로 테스트용으로 줄임 (원래 300000ms = 5분)
     }
   };
 
@@ -391,7 +391,7 @@ const TarotCardApp = () => {
           }
         `}</style>
 
-        <div className="relative w-full h-full max-w-2xl">
+        <div className="relative w-full h-full max-w-4xl">
           <div
             className="absolute inset-0 pointer-events-none"
             style={{ animation: 'ray-spin 3s linear infinite' }}
