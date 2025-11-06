@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from '../router.gen.ts';
 import { generateHapticFeedback} from '@apps-in-toss/web-framework';
-import { Button } from '@toss/tds-mobile';
+import { ListRow } from '@toss/tds-mobile';
 
 const MainScreen = () => {
   const navigate = useNavigate();
@@ -13,24 +13,53 @@ const MainScreen = () => {
         </header>
 
         <div className="main-options">
-          <div className="option-card primary" onClick={() => {
-            navigate('/topic-selection');
-            generateHapticFeedback({ type: "tickWeak" });
+          <ListRow
+            left="🔮"
+            content={
+              <div>
+                <div style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '0.25rem' }}>
+                  주제별 운세와 조언 받기
+                </div>
+                <div style={{ fontSize: '0.875rem', color: '#666' }}>
+                  원하는 주제의 운세와 조언을 받아요.
+                </div>
+              </div>
             }
-          }>
-            <h2 style={{ textAlign: 'left' }}>🔮 주제별 운세와 조언 받기</h2>
-            <p style={{ textAlign: 'left' }}>원하는 주제의 운세와<br />조언을 받아요.</p>
-          </div>
+            onClick={() => {
+              navigate('/topic-selection');
+              generateHapticFeedback({ type: "tickWeak" });
+            }}
+          />
 
-          <div className="option-card secondary" onClick={() => navigate('/daily-card')}>
-            <h2 style={{ textAlign: 'left' }}>✨ 오늘의 운세 흐름 보기</h2>
-            <p style={{ textAlign: 'left' }}>매일 가볍게 하루의 에너지와<br />전반적인 흐름을 확인해 보세요.</p>
-          </div>
+          <ListRow
+            left="✨"
+            content={
+              <div>
+                <div style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '0.25rem' }}>
+                  오늘의 운세 흐름 보기
+                </div>
+                <div style={{ fontSize: '0.875rem', color: '#666' }}>
+                  매일 가볍게 하루의 에너지와 전반적인 흐름을 확인해 보세요.
+                </div>
+              </div>
+            }
+            onClick={() => navigate('/daily-card')}
+          />
 
-          <div className="option-card tertiary" onClick={() => navigate('/tarot-talisman')}>
-            <h2 style={{ textAlign: 'left' }}>🛡️ 나의 수호 카드 찾기</h2>
-            <p style={{ textAlign: 'left' }}>수호 카드를 선택하고<br />특정 영역의 운을 보완해 보세요.</p>
-          </div>
+          <ListRow
+            left="🛡️"
+            content={
+              <div>
+                <div style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '0.25rem' }}>
+                  나의 수호 카드 찾기
+                </div>
+                <div style={{ fontSize: '0.875rem', color: '#666' }}>
+                  수호 카드를 선택하고 특정 영역의 운을 보완해 보세요.
+                </div>
+              </div>
+            }
+            onClick={() => navigate('/tarot-talisman')}
+          />
         </div>
 
         <div className="main-footer">
