@@ -48,7 +48,7 @@ const TarotCardApp = () => {
   const [flippedCards, setFlippedCards] = useState<number[]>([]);
 
   const TOTAL_CARDS = 78;
-  const VISIBLE_CARDS = 9;
+  const VISIBLE_CARDS = 10; // 2줄로 5장씩 배치
   const TOTAL_PAGES = Math.ceil(TOTAL_CARDS / VISIBLE_CARDS);
   const MIN_SWIPE_DISTANCE = 50;
   // Transition timing (ms) - adjust here to change swipe/slide speed
@@ -197,15 +197,15 @@ const TarotCardApp = () => {
     const startIndex = currentPage * VISIBLE_CARDS;
     const endIndex = Math.min(startIndex + VISIBLE_CARDS, TOTAL_CARDS);
     const visibleCount = endIndex - startIndex;
-    
+
     const isInCurrentPage = index >= startIndex && index < endIndex;
     const isInPrevPage = index >= (currentPage - 1) * VISIBLE_CARDS && index < startIndex;
     const isInNextPage = index >= endIndex && index < (currentPage + 1) * VISIBLE_CARDS;
-    
+
     if (!isInCurrentPage && !isInPrevPage && !isInNextPage) return null;
-    
+
     let visibleIndex, pageOffset = 0;
-    
+
     if (isInCurrentPage) {
       visibleIndex = index - startIndex;
       pageOffset = 0;
@@ -216,24 +216,32 @@ const TarotCardApp = () => {
       visibleIndex = index - endIndex;
       pageOffset = 1;
     }
-    
-  const arcAngle = 110;
-  // Increased radius for wider card spacing
-  const radius = 180;
-  const angleStep = arcAngle / Math.max(1, (visibleCount - 1));
-    const angle = -arcAngle / 2 + (visibleIndex * angleStep);
-    
+
+    // 2줄로 배치: 상단 5장, 하단 5장
+    const isTopRow = visibleIndex < 5;
+    const rowIndex = isTopRow ? visibleIndex : visibleIndex - 5;
+    const cardsPerRow = 5;
+
+    // 각 행의 호 각도와 반지름 설정
+    const arcAngle = 100; // 각 행의 호 각도
+    const radius = 160;   // 각 행의 반지름
+    const verticalSpacing = 80; // 상하 행 간격
+
+    const angleStep = arcAngle / Math.max(1, (cardsPerRow - 1));
+    const angle = -arcAngle / 2 + (rowIndex * angleStep);
+
     const pageSlideOffset = pageOffset * window.innerWidth * 1.2;
     const x = Math.sin(angle * Math.PI / 180) * radius + swipeOffset + pageSlideOffset;
-  // reduce vertical spread so cards sit closer to the horizontal center
-  const y = -Math.cos(angle * Math.PI / 180) * radius * 0.45;
-    
-  const distanceFromCenter = Math.abs(visibleIndex - (visibleCount - 1) / 2);
-  // clamp scale so outer cards don't shrink too much
-  const scale = Math.max(0.75, 1 - (distanceFromCenter / Math.max(1, visibleCount)) * 0.28);
-    
+
+    // 상단 행은 위로, 하단 행은 아래로 배치
+    const baseY = isTopRow ? -verticalSpacing : verticalSpacing;
+    const y = baseY + Math.cos(angle * Math.PI / 180) * radius * 0.3;
+
+    const distanceFromCenter = Math.abs(rowIndex - (cardsPerRow - 1) / 2);
+    const scale = Math.max(0.75, 1 - (distanceFromCenter / Math.max(1, cardsPerRow)) * 0.25);
+
     let opacity = 1;
-    
+
     if (isTransitioning && swipeOffset === 0) {
       opacity = isInCurrentPage ? 0 : ((isInPrevPage && pageOffset === -1) || (isInNextPage && pageOffset === 1)) ? 1 : 0;
     } else if (swipeOffset !== 0) {
@@ -248,7 +256,7 @@ const TarotCardApp = () => {
     } else {
       opacity = isInCurrentPage ? 1 : 0;
     }
-    
+
     return { x, y, rotation: angle, scale, opacity: Math.max(0, Math.min(1, opacity)), isVisible: true };
   };
 
