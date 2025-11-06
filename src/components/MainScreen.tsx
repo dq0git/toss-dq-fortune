@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from '../router.gen.ts';
 import { generateHapticFeedback} from '@apps-in-toss/web-framework';
-import { ListRow } from '@toss/tds-mobile';
+import { ListRow, Button } from '@toss/tds-mobile';
 
 const MainScreen = () => {
   const navigate = useNavigate();
@@ -15,49 +15,28 @@ const MainScreen = () => {
         <div className="main-options">
           <ListRow
             left="🔮"
-            content={
-              <div>
-                <div style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '0.25rem' }}>
-                  주제별 운세와 조언 받기
-                </div>
-                <div style={{ fontSize: '0.875rem', color: '#666' }}>
-                  원하는 주제의 운세와 조언을 받아요.
-                </div>
-              </div>
-            }
+            contents={<ListRow.Texts type="2RowTypeA" top="주제별 운세와 조언 받기" bottom="원하는 주제의 운세와 조언을 받아요." />}
             onClick={() => {
               navigate('/topic-selection');
               generateHapticFeedback({ type: "tickWeak" });
             }}
+            right={
+            <Button color="primary" size="small" variant="weak">
+              이동
+            </Button>
+  }
           />
 
           <ListRow
             left="✨"
-            content={
-              <div>
-                <div style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '0.25rem' }}>
-                  오늘의 운세 흐름 보기
-                </div>
-                <div style={{ fontSize: '0.875rem', color: '#666' }}>
-                  매일 가볍게 하루의 에너지와 전반적인 흐름을 확인해 보세요.
-                </div>
-              </div>
-            }
+            contents={<ListRow.Texts type="2RowTypeA" top="오늘의 운세 흐름 보기" bottom="매일 가볍게 하루의 에너지와 전반적인 흐름을 확인해 보세요." />}
+             
             onClick={() => navigate('/daily-card')}
           />
 
           <ListRow
             left="🛡️"
-            content={
-              <div>
-                <div style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '0.25rem' }}>
-                  나의 수호 카드 찾기
-                </div>
-                <div style={{ fontSize: '0.875rem', color: '#666' }}>
-                  수호 카드를 선택하고 특정 영역의 운을 보완해 보세요.
-                </div>
-              </div>
-            }
+            contents={<ListRow.Texts type="2RowTypeA" top="나의 수호 카드 찾기" bottom="수호 카드를 선택하고 특정 영역의 운을 보완해 보세요." />}
             onClick={() => navigate('/tarot-talisman')}
           />
         </div>
