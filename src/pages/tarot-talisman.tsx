@@ -5,13 +5,13 @@ import { Card } from '../types';
 import { tarotAPI } from '../lib/supabase';
 import cardsData from '../data/cards.json';
 
+type GuardianType = 'love' | 'career' | 'money';
+
 const typeMapping: Record<GuardianType, keyof typeof cardsData> = {
   love: 'love',
   career: 'success',
   money: 'wealth'
 };
-
-type GuardianType = 'love' | 'career' | 'money';
 
 interface Guardian {
   card: Card;

@@ -1,18 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles, ChevronLeft, ChevronRight, RotateCcw } from 'lucide-react';
 
+type Phase = 'start' | 'selecting' | 'revealing' | 'result';
+
+type CardConfig = {
+  colorScheme: {
+    bg: string;
+    primary: string;
+    secondary: string;
+  };
+  centerSymbol: string;
+  glowIntensity: number;
+};
+
+type Card = {
+  id: number;
+  isFlipped: boolean;
+};
+
+type CardPosition = {
+  x: number;
+  y: number;
+  rotation: number;
+  scale: number;
+  opacity: number;
+  isVisible: boolean;
+};
+
 const TarotCardApp = () => {
-  const [phase, setPhase] = useState('start');
-  const [backDesign, setBackDesign] = useState(null);
+  const [phase, setPhase] = useState<Phase>('start');
+  const [backDesign, setBackDesign] = useState<CardConfig | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
-  const [selectedCards, setSelectedCards] = useState([]);
-  const [hoveredCard, setHoveredCard] = useState(null);
-  const [cards, setCards] = useState([]);
-  const [touchStart, setTouchStart] = useState(null);
-  const [touchEnd, setTouchEnd] = useState(null);
+  const [selectedCards, setSelectedCards] = useState<number[]>([]);
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [cards, setCards] = useState<Card[]>([]);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [swipeOffset, setSwipeOffset] = useState(0);
-  const [flippedCards, setFlippedCards] = useState([]);
+  const [flippedCards, setFlippedCards] = useState<number[]>([]);
 
   const TOTAL_CARDS = 78;
   const VISIBLE_CARDS = 9;
@@ -36,7 +62,7 @@ const TarotCardApp = () => {
     setCards(initCards);
   }, []);
 
-  function generateRandomConfig() {
+  function generateRandomConfig(): CardConfig {
     const colorSchemes = [
       { bg: '#1a1a4a', primary: '#FFD700', secondary: '#FFA500' },
       { bg: '#0f1419', primary: '#00D9FF', secondary: '#00FFFF' },
@@ -64,7 +90,7 @@ const TarotCardApp = () => {
     setFlippedCards([]);
   };
 
-  const handleCardClick = (cardId) => {
+  const handleCardClick = (cardId: number) => {
     if (selectedCards.includes(cardId)) {
       setSelectedCards(selectedCards.filter(id => id !== cardId));
     } else if (selectedCards.length < 3) {
@@ -81,7 +107,7 @@ const TarotCardApp = () => {
     }
   };
 
-  const handleCardFlip = (index) => {
+  const handleCardFlip = (index: number) => {
     if (!flippedCards.includes(index)) {
       setFlippedCards([...flippedCards, index]);
     }
@@ -103,7 +129,7 @@ const TarotCardApp = () => {
     if (currentPage < TOTAL_PAGES - 1 && !isTransitioning) {
       setIsTransitioning(true);
       setCurrentPage(currentPage + 1);
-      setTimeout(() => setIsTransitioning(false), 600);
+      setTimeout(() => setIsTransitioning(false), 0);
     }
   };
 
@@ -111,16 +137,16 @@ const TarotCardApp = () => {
     if (currentPage > 0 && !isTransitioning) {
       setIsTransitioning(true);
       setCurrentPage(currentPage - 1);
-      setTimeout(() => setIsTransitioning(false), 600);
+      setTimeout(() => setIsTransitioning(false), 0);
     }
   };
 
-  const handleTouchStart = (e) => {
+  const handleTouchStart = (e: React.TouchEvent) => {
     setTouchEnd(null);
     setTouchStart(e.targetTouches[0].clientX);
   };
 
-  const handleTouchMove = (e) => {
+  const handleTouchMove = (e: React.TouchEvent) => {
     setTouchEnd(e.targetTouches[0].clientX);
     if (touchStart) {
       const offset = e.targetTouches[0].clientX - touchStart;
@@ -153,7 +179,7 @@ const TarotCardApp = () => {
     setTouchEnd(null);
   };
 
-  const calculateCardPosition = (index) => {
+  const calculateCardPosition = (index: number): CardPosition | null => {
     const startIndex = currentPage * VISIBLE_CARDS;
     const endIndex = Math.min(startIndex + VISIBLE_CARDS, TOTAL_CARDS);
     const visibleCount = endIndex - startIndex;
@@ -179,8 +205,8 @@ const TarotCardApp = () => {
     
     const arcAngle = 110;
     const radius = 200;
-    const angleStep = arcAngle / (visibleCount - 1);
-    const angle = -arcAngle / 2 + (visibleIndex * angleStep);
+    const angleStep = visibleCount > 1 ? arcAngle / Math.max(visibleCount - 1, 1) : 0;
+    const angle = visibleCount > 1 ? -arcAngle / 2 + (visibleIndex * angleStep) : 0;
     
     const pageSlideOffset = pageOffset * window.innerWidth * 1.2;
     const x = Math.sin(angle * Math.PI / 180) * radius + swipeOffset + pageSlideOffset;
@@ -209,7 +235,7 @@ const TarotCardApp = () => {
     return { x, y, rotation: angle, scale, opacity: Math.max(0, Math.min(1, opacity)), isVisible: true };
   };
 
-  const renderCard = (card, position) => {
+  const renderCard = (card: Card, position: CardPosition) => {
     if (!position) return null;
     
     const isSelected = selectedCards.includes(card.id);
@@ -227,11 +253,14 @@ const TarotCardApp = () => {
         style={{
           left: '50%',
           top: '50%',
-          transform: `translate(-50%, -50%) translate(${position.x}px, ${position.y}px) rotate(${position.rotation}deg) scale(${finalScale})`,
+          transform: `translate(calc(-50% + ${position.x}px), calc(-50% + ${position.y}px)) rotate(${position.rotation}deg) scale(${finalScale})`,
+          transformOrigin: 'center center',
           transitionDuration: swipeOffset !== 0 ? '0ms' : isTransitioning ? '600ms' : '400ms',
           transitionTimingFunction: isTransitioning ? 'cubic-bezier(0.4, 0, 0.2, 1)' : 'ease',
+          transitionProperty: 'transform, opacity',
           zIndex: isSelected ? 100 : isHovered ? 50 : 10,
           opacity: position.opacity * (isHovered || isSelected ? 1 : 0.85),
+          willChange: 'transform',
         }}
         onClick={() => phase === 'selecting' && handleCardClick(card.id)}
         onMouseEnter={() => setHoveredCard(card.id)}
@@ -475,7 +504,12 @@ const TarotCardApp = () => {
 
       <div 
         className="flex-1 relative overflow-hidden" 
-        style={{ minHeight: '400px' }}
+        style={{ 
+          minHeight: '500px',
+          position: 'relative',
+          width: '100%',
+          height: '100%'
+        }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -549,7 +583,11 @@ const TarotCardApp = () => {
   );
 };
 
-const CardBack = ({ config }) => {
+interface CardBackProps {
+  config: CardConfig | null;
+}
+
+const CardBack = ({ config }: CardBackProps) => {
   if (!config) return null;
   const { colorScheme, centerSymbol, glowIntensity } = config;
 

@@ -1,23 +1,59 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles, ChevronLeft, ChevronRight, RotateCcw } from 'lucide-react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { tarotAPI } from '../lib/supabase';
+import { Card } from '../types';
+
+type Phase = 'start' | 'selecting' | 'revealing' | 'result';
+
+type CardConfig = {
+  colorScheme: {
+    bg: string;
+    primary: string;
+    secondary: string;
+  };
+  centerSymbol: string;
+  glowIntensity: number;
+};
+
+type CardData = {
+  id: number;
+  isFlipped: boolean;
+};
+
+type CardPosition = {
+  x: number;
+  y: number;
+  rotation: number;
+  scale: number;
+  opacity: number;
+  isVisible: boolean;
+};
 
 const TarotCardApp = () => {
-  const [phase, setPhase] = useState('start');
-  const [backDesign, setBackDesign] = useState(null);
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const topic = searchParams.get('topic');
+  const subTopic = searchParams.get('subTopic');
+  const [phase, setPhase] = useState<Phase>('start');
+  const [backDesign, setBackDesign] = useState<CardConfig | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
-  const [selectedCards, setSelectedCards] = useState([]);
-  const [hoveredCard, setHoveredCard] = useState(null);
-  const [cards, setCards] = useState([]);
-  const [touchStart, setTouchStart] = useState(null);
-  const [touchEnd, setTouchEnd] = useState(null);
+  const [selectedCards, setSelectedCards] = useState<number[]>([]);
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [cards, setCards] = useState<CardData[]>([]);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [swipeOffset, setSwipeOffset] = useState(0);
-  const [flippedCards, setFlippedCards] = useState([]);
+  const [flippedCards, setFlippedCards] = useState<number[]>([]);
 
   const TOTAL_CARDS = 78;
   const VISIBLE_CARDS = 9;
   const TOTAL_PAGES = Math.ceil(TOTAL_CARDS / VISIBLE_CARDS);
   const MIN_SWIPE_DISTANCE = 50;
+  // Transition timing (ms) - adjust here to change swipe/slide speed
+  const TRANSITION_LONG_MS = 100; // previously 600ms
+  const TRANSITION_SHORT_MS = 100; // previously 400ms
 
   const tarotMeanings = {
     positions: ['과거', '현재', '미래'],
@@ -34,9 +70,13 @@ const TarotCardApp = () => {
       isFlipped: false,
     }));
     setCards(initCards);
-  }, []);
+    // 주제 선택 후 바로 시작
+    if (topic && subTopic) {
+      startReading();
+    }
+  }, [topic, subTopic]);
 
-  function generateRandomConfig() {
+  function generateRandomConfig(): CardConfig {
     const colorSchemes = [
       { bg: '#1a1a4a', primary: '#FFD700', secondary: '#FFA500' },
       { bg: '#0f1419', primary: '#00D9FF', secondary: '#00FFFF' },
@@ -64,7 +104,7 @@ const TarotCardApp = () => {
     setFlippedCards([]);
   };
 
-  const handleCardClick = (cardId) => {
+  const handleCardClick = (cardId: number) => {
     if (selectedCards.includes(cardId)) {
       setSelectedCards(selectedCards.filter(id => id !== cardId));
     } else if (selectedCards.length < 3) {
@@ -77,11 +117,11 @@ const TarotCardApp = () => {
       setPhase('revealing');
       setTimeout(() => {
         setPhase('result');
-      }, 3000);
+      }, 300000);
     }
   };
 
-  const handleCardFlip = (index) => {
+  const handleCardFlip = (index: number) => {
     if (!flippedCards.includes(index)) {
       setFlippedCards([...flippedCards, index]);
     }
@@ -103,7 +143,7 @@ const TarotCardApp = () => {
     if (currentPage < TOTAL_PAGES - 1 && !isTransitioning) {
       setIsTransitioning(true);
       setCurrentPage(currentPage + 1);
-      setTimeout(() => setIsTransitioning(false), 600);
+  setTimeout(() => setIsTransitioning(false), TRANSITION_LONG_MS);
     }
   };
 
@@ -111,16 +151,16 @@ const TarotCardApp = () => {
     if (currentPage > 0 && !isTransitioning) {
       setIsTransitioning(true);
       setCurrentPage(currentPage - 1);
-      setTimeout(() => setIsTransitioning(false), 600);
+  setTimeout(() => setIsTransitioning(false), TRANSITION_LONG_MS);
     }
   };
 
-  const handleTouchStart = (e) => {
+  const handleTouchStart = (e: React.TouchEvent) => {
     setTouchEnd(null);
     setTouchStart(e.targetTouches[0].clientX);
   };
 
-  const handleTouchMove = (e) => {
+  const handleTouchMove = (e: React.TouchEvent) => {
     setTouchEnd(e.targetTouches[0].clientX);
     if (touchStart) {
       const offset = e.targetTouches[0].clientX - touchStart;
@@ -153,7 +193,7 @@ const TarotCardApp = () => {
     setTouchEnd(null);
   };
 
-  const calculateCardPosition = (index) => {
+  const calculateCardPosition = (index: number): CardPosition | null => {
     const startIndex = currentPage * VISIBLE_CARDS;
     const endIndex = Math.min(startIndex + VISIBLE_CARDS, TOTAL_CARDS);
     const visibleCount = endIndex - startIndex;
@@ -177,17 +217,20 @@ const TarotCardApp = () => {
       pageOffset = 1;
     }
     
-    const arcAngle = 110;
-    const radius = 200;
-    const angleStep = arcAngle / (visibleCount - 1);
+  const arcAngle = 110;
+  // Increased radius for wider card spacing
+  const radius = 180;
+  const angleStep = arcAngle / Math.max(1, (visibleCount - 1));
     const angle = -arcAngle / 2 + (visibleIndex * angleStep);
     
     const pageSlideOffset = pageOffset * window.innerWidth * 1.2;
     const x = Math.sin(angle * Math.PI / 180) * radius + swipeOffset + pageSlideOffset;
-    const y = -Math.cos(angle * Math.PI / 180) * radius * 0.6;
+  // reduce vertical spread so cards sit closer to the horizontal center
+  const y = -Math.cos(angle * Math.PI / 180) * radius * 0.45;
     
-    const distanceFromCenter = Math.abs(visibleIndex - (visibleCount - 1) / 2);
-    const scale = 1 - (distanceFromCenter / visibleCount) * 0.3;
+  const distanceFromCenter = Math.abs(visibleIndex - (visibleCount - 1) / 2);
+  // clamp scale so outer cards don't shrink too much
+  const scale = Math.max(0.75, 1 - (distanceFromCenter / Math.max(1, visibleCount)) * 0.28);
     
     let opacity = 1;
     
@@ -209,7 +252,7 @@ const TarotCardApp = () => {
     return { x, y, rotation: angle, scale, opacity: Math.max(0, Math.min(1, opacity)), isVisible: true };
   };
 
-  const renderCard = (card, position) => {
+  const renderCard = (card: CardData, position: CardPosition) => {
     if (!position) return null;
     
     const isSelected = selectedCards.includes(card.id);
@@ -228,7 +271,7 @@ const TarotCardApp = () => {
           left: '50%',
           top: '50%',
           transform: `translate(-50%, -50%) translate(${position.x}px, ${position.y}px) rotate(${position.rotation}deg) scale(${finalScale})`,
-          transitionDuration: swipeOffset !== 0 ? '0ms' : isTransitioning ? '600ms' : '400ms',
+          transitionDuration: swipeOffset !== 0 ? '0ms' : isTransitioning ? `${TRANSITION_LONG_MS}ms` : `${TRANSITION_SHORT_MS}ms`,
           transitionTimingFunction: isTransitioning ? 'cubic-bezier(0.4, 0, 0.2, 1)' : 'ease',
           zIndex: isSelected ? 100 : isHovered ? 50 : 10,
           opacity: position.opacity * (isHovered || isSelected ? 1 : 0.85),
@@ -391,7 +434,7 @@ const TarotCardApp = () => {
                   <div 
                     className="relative cursor-pointer transition-all duration-500 hover:scale-105"
                     style={{
-                      width: '120px',
+                      width: '',
                       height: '180px',
                       transformStyle: 'preserve-3d',
                       transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
@@ -455,7 +498,7 @@ const TarotCardApp = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-slate-900 flex flex-col">
+    <div className="h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-slate-900 flex flex-col overflow-hidden">
       <style>{`
         @keyframes fade-in {
           from { opacity: 0; transform: translateY(20px); }
@@ -466,23 +509,28 @@ const TarotCardApp = () => {
         }
       `}</style>
 
-      <div className="p-4 text-center">
-        <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-yellow-200 mb-2">
+      <div className="p-3 text-center flex-shrink-0">
+        <h2 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-yellow-200 mb-1">
           마음에 드는 카드를 선택하세요
         </h2>
-        <p className="text-purple-200">{selectedCards.length}/3 선택됨</p>
+        <p className="text-purple-200 text-sm">{selectedCards.length}/3 선택됨</p>
       </div>
 
       <div 
-        className="flex-1 relative overflow-hidden" 
-        style={{ minHeight: '400px' }}
+        className="flex-1 relative overflow-hidden flex items-center justify-center" 
+        style={{ 
+          minHeight: '320px',
+          maxHeight: 'calc(100vh - 220px)',
+          paddingTop: '12px',
+          paddingBottom: '12px'
+        }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
         {currentPage === 0 && swipeOffset === 0 && selectedCards.length === 0 && (
-          <div className="absolute top-4 left-1/2 transform -translate-x-1/2 text-purple-300 text-sm animate-pulse z-50">
-            ← 좌우로 스와이프하여 카드 탐색 →
+          <div className="absolute top-2 transform -translate-x-1/2 text-purple-300 text-xxs animate-pulse z-50 pointer-events-none">
+            ← 좌우로 스와이프 →
           </div>
         )}
         
@@ -492,13 +540,13 @@ const TarotCardApp = () => {
         })}
       </div>
 
-      <div className="flex justify-center items-center gap-2 py-4">
+      <div className="flex justify-center items-center gap-2 py-2 flex-shrink-0">
         <button
           onClick={prevPage}
           disabled={currentPage === 0 || isTransitioning}
           className="p-2 rounded-full bg-purple-800/50 hover:bg-purple-700/50 disabled:opacity-30 disabled:cursor-not-allowed transition-all active:scale-95"
         >
-          <ChevronLeft size={24} className="text-white" />
+          <ChevronLeft size={20} className="text-white" />
         </button>
         
         <div className="flex gap-2 px-4">
@@ -509,7 +557,7 @@ const TarotCardApp = () => {
                 if (!isTransitioning) {
                   setIsTransitioning(true);
                   setCurrentPage(i);
-                  setTimeout(() => setIsTransitioning(false), 600);
+                  setTimeout(() => setIsTransitioning(false), TRANSITION_LONG_MS);
                 }
               }}
               className={`h-2 rounded-full transition-all ${
@@ -524,24 +572,24 @@ const TarotCardApp = () => {
           disabled={currentPage === TOTAL_PAGES - 1 || isTransitioning}
           className="p-2 rounded-full bg-purple-800/50 hover:bg-purple-700/50 disabled:opacity-30 disabled:cursor-not-allowed transition-all active:scale-95"
         >
-          <ChevronRight size={24} className="text-white" />
+          <ChevronRight size={20} className="text-white" />
         </button>
       </div>
 
-      <div className="p-4 space-y-3">
+      <div className="p-3 space-y-2 flex-shrink-0">
         <button
           onClick={handleComplete}
           disabled={selectedCards.length !== 3}
-          className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed text-white font-bold py-4 px-6 rounded-lg shadow-lg transition-all disabled:opacity-50"
+          className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all disabled:opacity-50 text-sm"
         >
           {selectedCards.length === 3 ? '선택 완료' : `${3 - selectedCards.length}장 더 선택하세요`}
         </button>
         
         <button
           onClick={handleRandomPick}
-          className="w-full bg-purple-700/50 hover:bg-purple-600/50 text-white font-bold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-all"
+          className="w-full bg-purple-700/50 hover:bg-purple-600/50 text-white font-bold py-2.5 px-6 rounded-lg flex items-center justify-center gap-2 transition-all text-sm"
         >
-          <Sparkles size={20} />
+          <Sparkles size={18} />
           <span>운명에 맡기기 (랜덤 3장)</span>
         </button>
       </div>
@@ -549,7 +597,11 @@ const TarotCardApp = () => {
   );
 };
 
-const CardBack = ({ config }) => {
+interface CardBackProps {
+  config: CardConfig | null;
+}
+
+const CardBack = ({ config }: CardBackProps) => {
   if (!config) return null;
   const { colorScheme, centerSymbol, glowIntensity } = config;
 
