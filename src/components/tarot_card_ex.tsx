@@ -217,10 +217,10 @@ const TarotCardApp = () => {
       pageOffset = 1;
     }
 
-    // 2줄로 배치: 상단 5장, 하단 5장
-    const isTopRow = visibleIndex < 5;
-    const rowIndex = isTopRow ? visibleIndex : visibleIndex - 5;
-    const cardsPerRow = 5;
+    // 2줄로 배치: 상단 6장, 하단 7장
+    const isTopRow = visibleIndex < 6;
+    const rowIndex = isTopRow ? visibleIndex : visibleIndex - 6;
+    const cardsPerRow = isTopRow ? 6 : 7;
 
     // 각 행의 호 각도와 반지름 설정
     const arcAngle = 100; // 각 행의 호 각도
