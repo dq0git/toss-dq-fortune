@@ -48,23 +48,49 @@ const TopicSelection = () => {
                   transform: selectedTopic === topicKey ? 'scale(1.02)' : 'scale(1)',
                   boxShadow: selectedTopic === topicKey ? '0 8px 25px rgba(0,0,0,0.15)' : 'none',
                   maxWidth: '320px',
-                  margin: '0 auto'
+                  margin: '0 auto',
+                  padding: '1rem',
+                  minHeight: '80px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center'
                 }}
               >
-                <div className="topic-icon">{topicData.icon}</div>
-                <h2>{topicData.name}</h2>
-                <p>{topicKey === 'love' ? '사랑과 관계에 대한 운세를 확인하세요' :
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.75rem',
+                  marginBottom: '0.5rem'
+                }}>
+                  <div className="topic-icon" style={{ fontSize: '1.5rem', lineHeight: '1' }}>{topicData.icon}</div>
+                  <h2 style={{
+                    margin: 0,
+                    fontSize: '1.1rem',
+                    fontWeight: '600',
+                    lineHeight: '1.2'
+                  }}>{topicData.name}</h2>
+                </div>
+                <p style={{
+                  margin: '0 0 0.25rem 0',
+                  fontSize: '0.85rem',
+                  opacity: 0.9,
+                  lineHeight: '1.3'
+                }}>{topicKey === 'love' ? '사랑과 관계에 대한 운세를 확인하세요' :
                      topicKey === 'money' ? '재정과 투자에 대한 운세를 확인하세요' :
                      '목표 달성과 성공에 대한 운세를 확인하세요'}</p>
-                <div className="topic-subtitle">
+                <div className="topic-subtitle" style={{
+                  fontSize: '0.75rem',
+                  opacity: 0.7,
+                  lineHeight: '1.2'
+                }}>
                   {Object.values(topicData.subtopics).map(subtopic => subtopic.name).join(' • ')}
                 </div>
                 <div style={{
                   position: 'absolute',
-                  top: '1rem',
-                  right: '1rem',
-                  fontSize: '1.2rem',
-                  color: 'rgba(255,255,255,0.7)',
+                  top: '0.75rem',
+                  right: '0.75rem',
+                  fontSize: '1rem',
+                  color: 'rgba(255,255,255,0.6)',
                   transition: 'transform 0.3s ease'
                 }}>
                   {selectedTopic === topicKey ? '▲' : '▼'}
