@@ -48,7 +48,7 @@ const TarotCardApp = () => {
   const [flippedCards, setFlippedCards] = useState<number[]>([]);
 
   const TOTAL_CARDS = 78;
-  const VISIBLE_CARDS = 13; // 2줄로 6장 + 7장 배치
+  const VISIBLE_CARDS = 26; // 4줄로 6-7-6-7 배치
   const TOTAL_PAGES = Math.ceil(TOTAL_CARDS / VISIBLE_CARDS);
   const MIN_SWIPE_DISTANCE = 50;
   // Transition timing (ms) - adjust here to change swipe/slide speed
@@ -217,15 +217,37 @@ const TarotCardApp = () => {
       pageOffset = 1;
     }
 
-    // 2줄로 배치: 상단 6장, 하단 7장
-    const isTopRow = visibleIndex < 6;
-    const rowIndex = isTopRow ? visibleIndex : visibleIndex - 6;
-    const cardsPerRow = isTopRow ? 6 : 7;
+    // 4줄로 배치: 6-7-6-7
+    let rowIndex: number;
+    let cardsPerRow: number;
+    let rowNumber: number;
+
+    if (visibleIndex < 6) {
+      // Row 1: cards 0-5 (6 cards)
+      rowIndex = visibleIndex;
+      cardsPerRow = 6;
+      rowNumber = 0;
+    } else if (visibleIndex < 13) {
+      // Row 2: cards 6-12 (7 cards)
+      rowIndex = visibleIndex - 6;
+      cardsPerRow = 7;
+      rowNumber = 1;
+    } else if (visibleIndex < 19) {
+      // Row 3: cards 13-18 (6 cards)
+      rowIndex = visibleIndex - 13;
+      cardsPerRow = 6;
+      rowNumber = 2;
+    } else {
+      // Row 4: cards 19-25 (7 cards)
+      rowIndex = visibleIndex - 19;
+      cardsPerRow = 7;
+      rowNumber = 3;
+    }
 
     // 각 행의 호 각도와 반지름 설정
-    const arcAngle = 110; // 각 행의 호 각도 (좀 더 넓게)
-    const radius = 180;   // 각 행의 반지름 (좀 더 크게)
-    const verticalSpacing = 90; // 상하 행 간격 (좀 더 넓게)
+    const arcAngle = 45; // 각 행의 호 각도
+    const radius = 200;  // 각 행의 반지름
+    const verticalSpacing = 60; // 행 간 간격
 
     const angleStep = arcAngle / Math.max(1, (cardsPerRow - 1));
     const angle = -arcAngle / 2 + (rowIndex * angleStep);
@@ -233,9 +255,9 @@ const TarotCardApp = () => {
     const pageSlideOffset = pageOffset * window.innerWidth * 1.2;
     const x = Math.sin(angle * Math.PI / 180) * radius + swipeOffset + pageSlideOffset;
 
-    // 상단 행은 위로, 하단 행은 아래로 배치
-    const baseY = isTopRow ? -verticalSpacing : verticalSpacing;
-    const y = baseY + Math.cos(angle * Math.PI / 180) * radius * 0.3;
+    // 4줄 배치를 위한 Y 좌표 계산
+    const baseY = (rowNumber - 1.5) * verticalSpacing; // -1.5에서 1.5 사이의 값
+    const y = baseY + Math.cos(angle * Math.PI / 180) * radius * 0.2;
 
     const distanceFromCenter = Math.abs(rowIndex - (cardsPerRow - 1) / 2);
     const scale = Math.max(0.75, 1 - (distanceFromCenter / Math.max(1, cardsPerRow)) * 0.25);
