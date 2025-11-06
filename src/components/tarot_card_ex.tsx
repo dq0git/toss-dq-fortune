@@ -117,7 +117,7 @@ const TarotCardApp = () => {
       setPhase('revealing');
       setTimeout(() => {
         setPhase('result');
-      }, 300000);
+      }, 5000); // 5초로 테스트용으로 줄임 (원래 300000ms = 5분)
     }
   };
 
