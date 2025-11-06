@@ -391,7 +391,7 @@ const TarotCardApp = () => {
           }
         `}</style>
 
-        <div className="relative w-full h-full max-w-4xl">
+        <div className="relative w-full h-full max-w-full">
           <div
             className="absolute inset-0 pointer-events-none"
             style={{ animation: 'ray-spin 3s linear infinite' }}
@@ -424,12 +424,7 @@ const TarotCardApp = () => {
             </div>
           ))}
 
-          <div
-            className="absolute inset-0 flex items-center justify-center"
-            style={{
-              animation: 'float 2s ease-in-out infinite, pulse-glow 2s ease-in-out infinite',
-            }}
-          >
+          <div className="absolute inset-0 flex items-center justify-center">
             <div
               className="text-center space-y-6 px-8 py-12 rounded-2xl max-w-md mx-auto shadow-2xl"
               style={{
@@ -437,6 +432,7 @@ const TarotCardApp = () => {
                 backdropFilter: 'blur(20px)',
                 border: `2px solid ${backDesign?.colorScheme.primary}66`,
                 boxShadow: `0 0 50px ${backDesign?.colorScheme.primary}33`,
+                animation: 'float 2s ease-in-out infinite, pulse-glow 2s ease-in-out infinite',
               }}
             >
               <div className="text-6xl mb-4 animate-pulse">🔮</div>
