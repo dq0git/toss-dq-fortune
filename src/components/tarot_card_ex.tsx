@@ -245,9 +245,9 @@ const TarotCardApp = () => {
     }
 
     // 각 행의 호 각도와 반지름 설정
-    const arcAngle = 60; // 각 행의 호 각도 (좀 더 좁게)
-    const radius = 330;  // 각 행의 반지름 (적절한 크기로 조정)
-    const verticalSpacing = 90; // 행 간 간격 (좀 더 좁게)
+    const arcAngle = 55; // 각 행의 호 각도 (좀 더 좁게)
+    const radius = 320;  // 각 행의 반지름 (적절한 크기로 조정)
+    const verticalSpacing = 100; // 행 간 간격 (좀 더 좁게)
 
     const angleStep = arcAngle / Math.max(1, (cardsPerRow - 1));
     const angle = -arcAngle / 2 + (rowIndex * angleStep);
@@ -367,7 +367,7 @@ const TarotCardApp = () => {
 
   if (phase === 'revealing') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-slate-900 flex items-center justify-center p-4 overflow-hidden">
+      <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-slate-900 flex items-center justify-center overflow-hidden">
         <style>{`
           @keyframes sparkle {
             0%, 100% { transform: scale(0) rotate(0deg); opacity: 0; }
@@ -386,9 +386,9 @@ const TarotCardApp = () => {
             to { transform: rotate(360deg); }
           }
         `}</style>
-        
-        <div className="relative w-full max-w-2xl aspect-square">
-          <div 
+
+        <div className="relative w-full h-full max-w-2xl">
+          <div
             className="absolute inset-0 pointer-events-none"
             style={{ animation: 'ray-spin 3s linear infinite' }}
           >
@@ -420,20 +420,22 @@ const TarotCardApp = () => {
             </div>
           ))}
 
-          <div 
+          <div
             className="absolute inset-0 flex items-center justify-center"
             style={{
               animation: 'float 2s ease-in-out infinite, pulse-glow 2s ease-in-out infinite',
             }}
           >
-            <div 
-              className="text-center space-y-6 p-8 rounded-2xl"
+            <div
+              className="text-center space-y-6 px-8 py-12 rounded-2xl max-w-md mx-auto"
               style={{
                 background: `radial-gradient(circle, ${backDesign?.colorScheme.bg}dd, ${backDesign?.colorScheme.bg}99)`,
+                backdropFilter: 'blur(20px)',
+                border: `1px solid ${backDesign?.colorScheme.primary}33`,
               }}
             >
               <div className="text-6xl mb-4 animate-pulse">🔮</div>
-              <h2 
+              <h2
                 className="text-3xl font-bold"
                 style={{ color: backDesign?.colorScheme.primary }}
               >
