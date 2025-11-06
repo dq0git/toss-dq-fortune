@@ -48,7 +48,7 @@ const TarotCardApp = () => {
   const [flippedCards, setFlippedCards] = useState<number[]>([]);
 
   const TOTAL_CARDS = 78;
-  const VISIBLE_CARDS = 10; // 2줄로 5장씩 배치
+  const VISIBLE_CARDS = 13; // 2줄로 6장 + 7장 배치
   const TOTAL_PAGES = Math.ceil(TOTAL_CARDS / VISIBLE_CARDS);
   const MIN_SWIPE_DISTANCE = 50;
   // Transition timing (ms) - adjust here to change swipe/slide speed
@@ -223,9 +223,9 @@ const TarotCardApp = () => {
     const cardsPerRow = isTopRow ? 6 : 7;
 
     // 각 행의 호 각도와 반지름 설정
-    const arcAngle = 100; // 각 행의 호 각도
-    const radius = 160;   // 각 행의 반지름
-    const verticalSpacing = 80; // 상하 행 간격
+    const arcAngle = 110; // 각 행의 호 각도 (좀 더 넓게)
+    const radius = 180;   // 각 행의 반지름 (좀 더 크게)
+    const verticalSpacing = 90; // 상하 행 간격 (좀 더 넓게)
 
     const angleStep = arcAngle / Math.max(1, (cardsPerRow - 1));
     const angle = -arcAngle / 2 + (rowIndex * angleStep);
