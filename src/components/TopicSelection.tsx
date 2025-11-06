@@ -46,7 +46,9 @@ const TopicSelection = () => {
                   transition: 'all 0.3s ease',
                   position: 'relative',
                   transform: selectedTopic === topicKey ? 'scale(1.02)' : 'scale(1)',
-                  boxShadow: selectedTopic === topicKey ? '0 8px 25px rgba(0,0,0,0.15)' : 'none'
+                  boxShadow: selectedTopic === topicKey ? '0 8px 25px rgba(0,0,0,0.15)' : 'none',
+                  maxWidth: '320px',
+                  margin: '0 auto'
                 }}
               >
                 <div className="topic-icon">{topicData.icon}</div>
