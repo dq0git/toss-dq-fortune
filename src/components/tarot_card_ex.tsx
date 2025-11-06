@@ -113,9 +113,12 @@ const TarotCardApp = () => {
   };
 
   const handleComplete = () => {
+    console.log('handleComplete called, selectedCards:', selectedCards.length);
     if (selectedCards.length === 3) {
+      console.log('Setting phase to revealing');
       setPhase('revealing');
       setTimeout(() => {
+        console.log('Setting phase to result');
         setPhase('result');
       }, 5000); // 5초로 테스트용으로 줄임 (원래 300000ms = 5분)
     }
