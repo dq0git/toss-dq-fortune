@@ -245,9 +245,9 @@ const TarotCardApp = () => {
     }
 
     // 각 행의 호 각도와 반지름 설정
-    const arcAngle = 45; // 각 행의 호 각도
-    const radius = 200;  // 각 행의 반지름
-    const verticalSpacing = 60; // 행 간 간격
+    const arcAngle = 45; // 각 행의 호 각도 (좀 더 좁게)
+    const radius = 220;  // 각 행의 반지름 (적절한 크기로 조정)
+    const verticalSpacing = 70; // 행 간 간격 (좀 더 좁게)
 
     const angleStep = arcAngle / Math.max(1, (cardsPerRow - 1));
     const angle = -arcAngle / 2 + (rowIndex * angleStep);
@@ -255,8 +255,10 @@ const TarotCardApp = () => {
     const pageSlideOffset = pageOffset * window.innerWidth * 1.2;
     const x = Math.sin(angle * Math.PI / 180) * radius + swipeOffset + pageSlideOffset;
 
-    // 4줄 배치를 위한 Y 좌표 계산
-    const baseY = (rowNumber - 1.5) * verticalSpacing; // -1.5에서 1.5 사이의 값
+    // 4줄 배치를 위한 Y 좌표 계산 - 전체 카드셋을 수직 중앙 정렬
+    const totalRows = 4;
+    const centerOffset = (totalRows - 1) / 2; // 1.5
+    const baseY = (rowNumber - centerOffset) * verticalSpacing;
     const y = baseY + Math.cos(angle * Math.PI / 180) * radius * 0.2;
 
     const distanceFromCenter = Math.abs(rowIndex - (cardsPerRow - 1) / 2);
