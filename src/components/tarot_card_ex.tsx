@@ -120,7 +120,7 @@ const TarotCardApp = () => {
       setTimeout(() => {
         console.log('Setting phase to result');
         setPhase('result');
-      }, 50000); // 5초로 테스트용으로 줄임 (원래 300000ms = 5분)
+      }, 300000); // 5분 (원래 시간으로 복원)
     }
   };
 
