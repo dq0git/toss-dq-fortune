@@ -267,7 +267,7 @@
   ],
   "topics": {
     "love": {
-      "name": "연애운",
+      "name": "애정운",
       "icon": "💖",
       "subtopics": {
         "single": {
@@ -284,21 +284,39 @@
         }
       }
     },
-    "career": {
-      "name": "직업·금전운",
-      "icon": "💼",
+    "success": {
+      "name": "성공운",
+      "icon": "⭐",
       "subtopics": {
-        "job": {
-          "name": "직장/이직",
-          "description": "현재 직장이나 새로운 직장에 대해"
+        "goal": {
+          "name": "목표달성",
+          "description": "중요한 목표 달성 가능성에 대해"
         },
-        "money": {
-          "name": "투자/수입",
-          "description": "금전 상황이나 투자에 대해"
+        "career": {
+          "name": "성공/승진",
+          "description": "커리어 성공이나 승진 기회에 대해"
         },
-        "business": {
-          "name": "사업/창업",
-          "description": "사업이나 창업에 대해"
+        "challenge": {
+          "name": "도전/변화",
+          "description": "새로운 도전이나 변화에 대해"
+        }
+      }
+    },
+    "money": {
+      "name": "금전운",
+      "icon": "💰",
+      "subtopics": {
+        "income": {
+          "name": "수입/지출",
+          "description": "수입과 지출 관리에 대해"
+        },
+        "investment": {
+          "name": "투자/저축",
+          "description": "투자나 저축 계획에 대해"
+        },
+        "sidejob": {
+          "name": "부업/사업",
+          "description": "부업이나 사업 수입에 대해"
         }
       }
     },

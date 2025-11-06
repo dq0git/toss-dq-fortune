@@ -20,19 +20,9 @@ const TopicSelection = () => {
             onClick={() => navigate('/subtopic-selection?topic=love')}
           >
             <div className="topic-icon">💖</div>
-            <h2>연애운</h2>
+            <h2>애정운</h2>
             <p>사랑과 관계에 대한 운세를 확인하세요</p>
             <div className="topic-subtitle">솔로/썸 • 커플/짝사랑 • 재회/이별</div>
-          </div>
-
-          <div
-            className="topic-card career"
-            onClick={() => navigate('/subtopic-selection?topic=career')}
-          >
-            <div className="topic-icon">💼</div>
-            <h2>직업운</h2>
-            <p>직장과 커리어에 대한 운세를 확인하세요</p>
-            <div className="topic-subtitle">직장/이직 • 승진/전환 • 사업/창업</div>
           </div>
 
           <div
@@ -43,6 +33,16 @@ const TopicSelection = () => {
             <h2>금전운</h2>
             <p>재정과 투자에 대한 운세를 확인하세요</p>
             <div className="topic-subtitle">수입/지출 • 투자/저축 • 부업/사업</div>
+          </div>
+
+          <div
+            className="topic-card success"
+            onClick={() => navigate('/subtopic-selection?topic=success')}
+          >
+            <div className="topic-icon">⭐</div>
+            <h2>성공운</h2>
+            <p>목표 달성과 성공에 대한 운세를 확인하세요</p>
+            <div className="topic-subtitle">목표달성 • 성공/승진 • 도전/변화</div>
           </div>
         </div>
 

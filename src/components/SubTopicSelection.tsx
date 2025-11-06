@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate, useSearchParams } from '../router.gen.ts'
 
-type Topic = 'love' | 'career' | 'money'
+type Topic = 'love' | 'success' | 'money'
 type SubTopic = { name: string; description: string }
 
 const SubTopicSelection = () => {
@@ -10,8 +10,8 @@ const SubTopicSelection = () => {
   const topic = searchParams.get('topic') as Topic
   const getTopicDisplayName = (topic: Topic) => {
     const names = {
-      'love': '연애운',
-      'career': '직업운',
+      'love': '애정운',
+      'success': '성공운',
       'money': '금전운'
     }
     return names[topic] || topic
@@ -20,7 +20,7 @@ const SubTopicSelection = () => {
   const getTopicIcon = (topic: Topic) => {
     const icons = {
       'love': '💖',
-      'career': '💼',
+      'success': '⭐',
       'money': '💰'
     }
     return icons[topic] || '🔮'
@@ -33,10 +33,10 @@ const SubTopicSelection = () => {
         'couple': { name: '커플/짝사랑', description: '현재 연인 관계나 짝사랑 상황에 대해' },
         'breakup': { name: '재회/이별', description: '이별 후 상황이나 재회 가능성에 대해' }
       },
-      'career': {
-        'job': { name: '직장/이직', description: '현재 직장이나 새로운 직장에 대해' },
-        'promotion': { name: '승진/전환', description: '승진이나 직업 전환에 대해' },
-        'business': { name: '사업/창업', description: '사업이나 창업에 대해' }
+      'success': {
+        'goal': { name: '목표달성', description: '중요한 목표 달성 가능성에 대해' },
+        'career': { name: '성공/승진', description: '커리어 성공이나 승진 기회에 대해' },
+        'challenge': { name: '도전/변화', description: '새로운 도전이나 변화에 대해' }
       },
       'money': {
         'income': { name: '수입/지출', description: '수입과 지출 관리에 대해' },
