@@ -245,9 +245,9 @@ const TarotCardApp = () => {
     }
 
     // 각 행의 호 각도와 반지름 설정
-    const arcAngle = 45; // 각 행의 호 각도 (좀 더 좁게)
-    const radius = 220;  // 각 행의 반지름 (적절한 크기로 조정)
-    const verticalSpacing = 70; // 행 간 간격 (좀 더 좁게)
+    const arcAngle = 50; // 각 행의 호 각도 (좀 더 좁게)
+    const radius = 250;  // 각 행의 반지름 (화면에 맞게 축소)
+    const verticalSpacing = 65; // 행 간 간격 (좀 더 좁게)
 
     const angleStep = arcAngle / Math.max(1, (cardsPerRow - 1));
     const angle = -arcAngle / 2 + (rowIndex * angleStep);
