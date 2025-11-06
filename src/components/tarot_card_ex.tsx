@@ -440,11 +440,11 @@ const TarotCardApp = () => {
                 className="text-3xl font-bold"
                 style={{ color: backDesign?.colorScheme.primary }}
               >
-                운명의 카드를 공개합니다
+                운명의 카드를 공개할게요
               </h2>
               <p className="text-purple-200 text-lg">
-                당신이 선택한 세 장의 카드가<br />
-                곧 운명을 알려줄 것입니다...
+                선택한 세 장의 카드가<br />
+                당신의 운명을 알려줄 거예요
               </p>
             </div>
           </div>
@@ -547,7 +547,7 @@ const TarotCardApp = () => {
 
       <div className="p-3 text-center flex-shrink-0">
         <h2 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-yellow-200 mb-1">
-          마음에 드는 카드를 선택하세요
+          집중해서 카드 3장을 골라보세요
         </h2>
         <p className="text-purple-200 text-sm">{selectedCards.length}/3 선택됨</p>
       </div>
@@ -618,7 +618,7 @@ const TarotCardApp = () => {
           disabled={selectedCards.length !== 3}
           className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all disabled:opacity-50 text-sm"
         >
-          {selectedCards.length === 3 ? '선택 완료' : `${3 - selectedCards.length}장 더 선택하세요`}
+          {selectedCards.length === 3 ? '결과 확인하기' : `${3 - selectedCards.length}장 더 골라보세요`}
         </button>
         
         <button
@@ -626,7 +626,7 @@ const TarotCardApp = () => {
           className="w-full bg-purple-700/50 hover:bg-purple-600/50 text-white font-bold py-2.5 px-6 rounded-lg flex items-center justify-center gap-2 transition-all text-sm"
         >
           <Sparkles size={18} />
-          <span>운명에 맡기기 (랜덤 3장)</span>
+          <span>운명에 맡기고 3장 받기</span>
         </button>
       </div>
     </div>
