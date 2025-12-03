@@ -165,14 +165,15 @@ const TarotTalisman = ({ onBack }: Props) => {
                     </div>
                     <div className="card-image-large">
                       <img
-                        src={new URL(`../assets/cards/${getImageId(currentTalisman!.card.tarot_id)}.png`, import.meta.url).href}
+                        src={new URL(`../assets/cards/${getImageId(currentTalisman!.card.tarot_id)}.webp`, import.meta.url).href}
                         alt={currentTalisman!.card.card_name_kr}
                         className="card-image-display"
                         style={{
                           width: '100%',
                           height: '100%',
                           objectFit: 'contain',
-                          borderRadius: '8px'
+                          borderRadius: '8px',
+                          border: '2px solid rgba(0, 0, 0, 0.15)'
                         }}
                       />
                     </div>

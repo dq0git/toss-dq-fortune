@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, ChevronLeft, ChevronRight, RotateCcw } from 'lucide-react';
+import { Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { tarotAPI } from '../lib/supabase';
 import { Card } from '../types';
+import { FixedBottomCTA } from '@toss/tds-mobile';
 
-type Phase = 'start' | 'selecting' | 'revealing' | 'result';
+type Phase = 'selecting' | 'revealing' | 'result';
 
-type CardConfig = {
+export type CardConfig = {
   colorScheme: {
     bg: string;
     primary: string;
@@ -35,7 +36,7 @@ const TarotCardApp = () => {
   const [searchParams] = useSearchParams();
   const topic = searchParams.get('topic');
   const subTopic = searchParams.get('subTopic');
-  const [phase, setPhase] = useState<Phase>('start');
+  const [phase, setPhase] = useState<Phase>('selecting');
   const [backDesign, setBackDesign] = useState<CardConfig | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedCards, setSelectedCards] = useState<number[]>([]);
@@ -46,6 +47,13 @@ const TarotCardApp = () => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [swipeOffset, setSwipeOffset] = useState(0);
   const [flippedCards, setFlippedCards] = useState<number[]>([]);
+  const [sparklePositions, setSparklePositions] = useState<Array<{
+    left: number;
+    top: number;
+    duration: number;
+    delay: number;
+    size: number;
+  }>>([]);
 
   const TOTAL_CARDS = 78;
   const VISIBLE_CARDS = 26; // 4줄로 6-7-6-7 배치
@@ -65,16 +73,38 @@ const TarotCardApp = () => {
   };
 
   useEffect(() => {
+    // 카드 ID를 0부터 77까지로 생성하고 랜덤하게 섞기
     const initCards = Array.from({ length: TOTAL_CARDS }, (_, i) => ({
-      id: i + 1,
+      id: i, // 0부터 77까지
       isFlipped: false,
     }));
+    // Fisher-Yates 셔플 알고리즘으로 랜덤하게 섞기
+    for (let i = initCards.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [initCards[i], initCards[j]] = [initCards[j], initCards[i]];
+    }
     setCards(initCards);
     // 주제 선택 후 바로 시작
     if (topic && subTopic) {
       startReading();
     }
   }, [topic, subTopic]);
+
+  // phase가 'revealing'으로 변경될 때 반짝이는 효과 위치 생성
+  useEffect(() => {
+    if (phase === 'revealing') {
+      const positions = Array.from({ length: 30 }, () => ({
+        left: Math.random() * 100,
+        top: Math.random() * 100,
+        duration: 1 + Math.random() * 2,
+        delay: Math.random() * 2,
+        size: 12 + Math.random() * 20,
+      }));
+      setSparklePositions(positions);
+    } else {
+      setSparklePositions([]);
+    }
+  }, [phase]);
 
   function generateRandomConfig(): CardConfig {
     const colorSchemes = [
@@ -118,9 +148,13 @@ const TarotCardApp = () => {
       console.log('Setting phase to revealing');
       setPhase('revealing');
       setTimeout(() => {
-        console.log('Setting phase to result');
-        setPhase('result');
-      }, 2000); // 5분 (원래 시간으로 복원)
+        console.log('Navigating to result page');
+        // 결과 페이지로 이동하면서 데이터 전달
+        const cardsParam = encodeURIComponent(JSON.stringify(selectedCards));
+        const designParam = encodeURIComponent(JSON.stringify(backDesign));
+        const topicParam = topic ? `&topic=${topic}` : '';
+        navigate(`/tarot-result?cards=${cardsParam}&design=${designParam}${topicParam}`);
+      }, 500);
     }
   };
 
@@ -131,14 +165,14 @@ const TarotCardApp = () => {
   };
 
   const handleReset = () => {
-    setPhase('start');
+    setPhase('selecting');
     setSelectedCards([]);
     setFlippedCards([]);
     setCurrentPage(0);
   };
 
   const handleRandomPick = () => {
-    const shuffled = [...Array(TOTAL_CARDS)].map((_, i) => i + 1).sort(() => Math.random() - 0.5);
+    const shuffled = [...Array(TOTAL_CARDS)].map((_, i) => i).sort(() => Math.random() - 0.5);
     setSelectedCards(shuffled.slice(0, 3));
   };
 
@@ -343,30 +377,7 @@ const TarotCardApp = () => {
     );
   };
 
-  if (phase === 'start') {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-slate-900 flex items-center justify-center p-4">
-        <div className="max-w-md w-full text-center space-y-8">
-          <div className="space-y-4">
-            <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-yellow-200">
-              ✨ 타로 리딩
-            </h1>
-            <p className="text-purple-200 text-lg">
-              마음을 가다듬고 <br />질문을 떠올려보세요
-            </p>
-          </div>
-          
-          <button
-            onClick={startReading}
-            className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-4 px-6 rounded-lg shadow-lg flex items-center justify-center gap-2 transition-all hover:scale-105"
-          >
-            <Sparkles size={24} />
-            <span>리딩 시작</span>
-          </button>
-        </div>
-      </div>
-    );
-  }
+
 
   if (phase === 'revealing') {
     console.log('Rendering revealing phase');
@@ -374,8 +385,24 @@ const TarotCardApp = () => {
       <div className="fixed inset-0 bg-gradient-to-br from-indigo-950 via-purple-900 to-slate-900 flex items-center justify-center z-50">
         <style>{`
           @keyframes sparkle {
-            0%, 100% { transform: scale(0) rotate(0deg); opacity: 0; }
-            50% { transform: scale(1) rotate(180deg); opacity: 1; }
+            0% { 
+              transform: scale(0) rotate(0deg); 
+              opacity: 0; 
+            }
+            20% {
+              opacity: 0.8;
+            }
+            50% { 
+              transform: scale(1.2) rotate(180deg); 
+              opacity: 1; 
+            }
+            80% {
+              opacity: 0.8;
+            }
+            100% { 
+              transform: scale(0) rotate(360deg); 
+              opacity: 0; 
+            }
           }
           @keyframes float {
             0%, 100% { transform: translateY(0px); }
@@ -394,7 +421,7 @@ const TarotCardApp = () => {
         <div className="relative w-full h-full max-w-full">
           <div
             className="absolute inset-0 pointer-events-none"
-            style={{ animation: 'ray-spin 3s linear infinite' }}
+            style={{ animation: 'ray-spin 3s linear infinite', zIndex: 1 }}
           >
             {[...Array(12)].map((_, i) => (
               <div
@@ -409,22 +436,37 @@ const TarotCardApp = () => {
             ))}
           </div>
 
-          {[...Array(30)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animation: `sparkle ${1 + Math.random() * 2}s ease-in-out infinite`,
-                animationDelay: `${Math.random() * 2}s`,
-              }}
-            >
-              <Sparkles size={12 + Math.random() * 20} style={{ color: backDesign?.colorScheme.primary }} />
-            </div>
-          ))}
+          <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 2 }}>
+            {sparklePositions.map((sparkle, i) => (
+              <div
+                key={i}
+                className="absolute"
+                style={{
+                  left: `${sparkle.left}%`,
+                  top: `${sparkle.top}%`,
+                  transform: 'translate(-50%, -50%)',
+                }}
+              >
+                <div
+                  style={{
+                    animation: `sparkle ${sparkle.duration}s ease-in-out infinite`,
+                    animationDelay: `${sparkle.delay}s`,
+                  }}
+                >
+                  <Sparkles 
+                    size={sparkle.size} 
+                    style={{ 
+                      color: backDesign?.colorScheme.primary,
+                      filter: `drop-shadow(0 0 6px ${backDesign?.colorScheme.primary})`,
+                      display: 'block',
+                    }} 
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
 
-          <div className="absolute inset-0 flex items-center justify-center">
+          <div className="absolute inset-0 flex items-center justify-center" style={{ zIndex: 3 }}>
             <div
               className="text-center space-y-6 px-8 py-12 rounded-2xl max-w-md mx-auto shadow-2xl"
               style={{
@@ -453,85 +495,7 @@ const TarotCardApp = () => {
     );
   }
 
-  if (phase === 'result') {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-slate-900 flex items-center justify-center p-4">
-        <div className="max-w-4xl w-full">
-          <h2 className="text-3xl font-bold text-center mb-2 text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-yellow-200">
-            당신의 타로 리딩
-          </h2>
-          <p className="text-center text-purple-300 mb-8">카드를 터치하여 운명을 확인하세요</p>
-          
-          <div className="flex flex-wrap justify-center gap-8 mb-8">
-            {selectedCards.map((cardId, idx) => {
-              const isFlipped = flippedCards.includes(idx);
-              return (
-                <div key={cardId} className="text-center space-y-3">
-                  <div 
-                    className="relative cursor-pointer transition-all duration-500 hover:scale-105"
-                    style={{
-                      width: '',
-                      height: '180px',
-                      transformStyle: 'preserve-3d',
-                      transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
-                      filter: isFlipped ? 'none' : `drop-shadow(0 0 15px ${backDesign?.colorScheme.primary}66)`,
-                    }}
-                    onClick={() => handleCardFlip(idx)}
-                  >
-                    <div className="absolute inset-0" style={{ backfaceVisibility: 'hidden' }}>
-                      <CardBack config={backDesign} />
-                      {!isFlipped && (
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="text-white text-sm font-bold bg-black/50 px-3 py-1 rounded-full animate-pulse">
-                            탭하여 공개
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                    
-                    <div 
-                      className="absolute inset-0 bg-gradient-to-br from-yellow-100 to-yellow-300 rounded-lg flex items-center justify-center p-4"
-                      style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-                    >
-                      <div className="text-center">
-                        <div className="text-5xl mb-3">🌟</div>
-                        <div className="text-sm font-bold text-purple-900 mb-2">
-                          {tarotMeanings.positions[idx]}
-                        </div>
-                        <div className="text-xs text-purple-700">카드 {cardId}</div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className={`transition-all duration-500 ${isFlipped ? 'opacity-100 max-h-40' : 'opacity-0 max-h-0'} overflow-hidden`}>
-                    <div className="text-yellow-300 font-bold text-lg mb-1">
-                      {tarotMeanings.positions[idx]}
-                    </div>
-                    <div className="text-purple-200 text-sm mb-2">카드 {cardId}번</div>
-                    <div className="text-purple-300 text-xs bg-purple-900/30 p-3 rounded-lg">
-                      {tarotMeanings.descriptions[idx]}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          
-          {flippedCards.length === 3 && (
-            <div className="flex justify-center gap-4 animate-fade-in">
-              <button
-                onClick={handleReset}
-                className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg flex items-center gap-2 transition-all"
-              >
-                <RotateCcw size={20} />
-                <span>다시 시작</span>
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  }
+  // result phase는 이제 별도 페이지로 이동하므로 제거됨
 
   return (
     <div className="h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-slate-900 flex flex-col overflow-hidden">
@@ -546,10 +510,13 @@ const TarotCardApp = () => {
       `}</style>
 
       <div className="p-3 text-center flex-shrink-0">
-        <h2 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-yellow-200 mb-1">
-          집중해서 카드 3장을 골라보세요
+        <h2 className="text-xl font-bold mb-1">
+          카드 3장을 골라보세요
         </h2>
-        <p className="text-purple-200 text-sm">{selectedCards.length}/3 선택됨</p>
+        <p className="text-gray-700 text-sm mt-1">
+          마음속 질문에 집중해요
+        </p>
+        {/* <p className="text-purple-200 text-sm">{selectedCards.length}/3 선택됨</p> */}
       </div>
 
       <div 
@@ -564,11 +531,11 @@ const TarotCardApp = () => {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        {currentPage === 0 && swipeOffset === 0 && selectedCards.length === 0 && (
+        {/* {currentPage === 0 && swipeOffset === 0 && selectedCards.length === 0 && (
           <div className="absolute top-2 transform -translate-x-1/2 text-purple-300 text-xxs animate-pulse z-50 pointer-events-none">
             ← 좌우로 스와이프 →
           </div>
-        )}
+        )} */}
         
         {cards.map((card, index) => {
           const position = calculateCardPosition(index);
@@ -580,7 +547,7 @@ const TarotCardApp = () => {
         <button
           onClick={prevPage}
           disabled={currentPage === 0 || isTransitioning}
-          className="p-2 rounded-full bg-purple-800/50 hover:bg-purple-700/50 disabled:opacity-30 disabled:cursor-not-allowed transition-all active:scale-95"
+          className="p-2 rounded-full bg-blue-500 hover:bg-blue-600 disabled:opacity-30 disabled:cursor-not-allowed transition-all active:scale-95"
         >
           <ChevronLeft size={20} className="text-white" />
         </button>
@@ -597,7 +564,7 @@ const TarotCardApp = () => {
                 }
               }}
               className={`h-2 rounded-full transition-all ${
-                i === currentPage ? 'bg-yellow-400 w-8' : 'bg-purple-400/30 hover:bg-purple-400/50 w-2'
+                i === currentPage ? 'bg-blue-400 w-8' : 'bg-blue-400/30 hover:bg-blue-400/50 w-2'
               }`}
             />
           ))}
@@ -606,38 +573,36 @@ const TarotCardApp = () => {
         <button
           onClick={nextPage}
           disabled={currentPage === TOTAL_PAGES - 1 || isTransitioning}
-          className="p-2 rounded-full bg-purple-800/50 hover:bg-purple-700/50 disabled:opacity-30 disabled:cursor-not-allowed transition-all active:scale-95"
+          className="p-2 rounded-full bg-blue-500 hover:bg-blue-600 disabled:opacity-30 disabled:cursor-not-allowed transition-all active:scale-95"
         >
           <ChevronRight size={20} className="text-white" />
         </button>
       </div>
 
-      <div className="p-3 space-y-2 flex-shrink-0">
-        <button
-          onClick={handleComplete}
-          disabled={selectedCards.length !== 3}
-          className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all disabled:opacity-50 text-sm"
-        >
-          {selectedCards.length === 3 ? '결과 확인하기' : `${3 - selectedCards.length}장 더 골라보세요`}
-        </button>
-        
-        <button
-          onClick={handleRandomPick}
-          className="w-full bg-purple-700/50 hover:bg-purple-600/50 text-white font-bold py-2.5 px-6 rounded-lg flex items-center justify-center gap-2 transition-all text-sm"
-        >
-          <Sparkles size={18} />
-          <span>운명에 맡기고 3장 받기</span>
-        </button>
-      </div>
+      {/* 운명에 맡기기 버튼 - 나중 버전에서 사용 예정 */}
+      {/* <button
+        onClick={handleRandomPick}
+        className="w-full bg-purple-700/50 hover:bg-purple-600/50 text-white font-bold py-2.5 px-6 rounded-lg flex items-center justify-center gap-2 transition-all text-sm"
+      >
+        <Sparkles size={18} />
+        <span>운명에 맡기고 3장 받기</span>
+      </button> */}
+      
+      <FixedBottomCTA
+        onClick={handleComplete}
+        disabled={selectedCards.length !== 3}
+      >
+        {selectedCards.length === 3 ? '결과 확인하기' : `${3 - selectedCards.length}장 더 골라보세요`}
+      </FixedBottomCTA>
     </div>
   );
 };
 
-interface CardBackProps {
+export interface CardBackProps {
   config: CardConfig | null;
 }
 
-const CardBack = ({ config }: CardBackProps) => {
+export const CardBack = ({ config }: CardBackProps) => {
   if (!config) return null;
   const { colorScheme, centerSymbol, glowIntensity } = config;
 

@@ -13,6 +13,8 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 .screen-header {
@@ -56,15 +58,15 @@
 /* 메인 화면 */
 .main-screen {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: flex-start;
   min-height: 100vh;
 }
 
 .main-container {
-  text-align: center;
+  text-align: left;
   color: #000000;
-  padding: 20px;
+  width: 100%;
 }
 
 .app-title {
@@ -727,6 +729,11 @@
   align-items: center;
   justify-content: center;
   margin: 30px 0;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-y: visible;
+  box-sizing: border-box;
+  padding: 0 16px;
 }
 
 .card-reveal-section {
@@ -735,14 +742,14 @@
 
 .card-back-large {
   width: 200px;
-  height: 300px;
-  background: linear-gradient(135deg, #8B5CF6, #A855F7);
+  height: 356px;
   border-radius: 20px;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
   margin: 0 auto;
   box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+  overflow: hidden;
 }
 
 .card-back-large:hover {
@@ -775,6 +782,10 @@
 
 .card-revealed-section {
   text-align: center;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 .daily-card-result {
@@ -783,17 +794,22 @@
   padding: 30px;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  max-width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .card-image-large {
   width: 120px;
-  height: 180px;
+  height: 213px;
+  max-width: 100%;
   background: linear-gradient(135deg, #8B5CF6, #A855F7);
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 20px;
+  overflow: hidden;
 }
 
 .card-placeholder-large {
@@ -826,6 +842,429 @@
   color: #000000;
   line-height: 1.6;
   font-size: 1rem;
+}
+
+/* react-bits ProfileCard 스타일 */
+.profile-card {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.profile-card__header {
+  position: relative;
+  width: 100%;
+  padding-top: 60%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.profile-card__image-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.profile-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.profile-card__body {
+  flex: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #fff;
+}
+
+.profile-card__badge {
+  display: inline-block;
+  padding: 4px 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.profile-card__name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a202c;
+  text-align: center;
+}
+
+.profile-card__title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4a5568;
+  text-align: center;
+}
+
+.profile-card__subtitle {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 400;
+  color: #718096;
+  text-align: center;
+}
+
+/* 타로 카드 홀로그램 효과 스타일 */
+:root {
+  --pointer-x: 50%;
+  --pointer-y: 50%;
+  --pointer-from-center: 0;
+  --pointer-from-top: 0.5;
+  --pointer-from-left: 0.5;
+  --card-opacity: 0;
+  --rotate-x: 0deg;
+  --rotate-y: 0deg;
+  --background-x: 50%;
+  --background-y: 50%;
+  --grain: none;
+  --icon: none;
+  --behind-gradient: none;
+  --behind-glow-color: rgba(125, 190, 255, 0.67);
+  --behind-glow-size: 25%;
+  --inner-gradient: none;
+  --sunpillar-1: hsl(2, 100%, 73%);
+  --sunpillar-2: hsl(53, 100%, 69%);
+  --sunpillar-3: hsl(93, 100%, 69%);
+  --sunpillar-4: hsl(176, 100%, 76%);
+  --sunpillar-5: hsl(228, 100%, 74%);
+  --sunpillar-6: hsl(283, 100%, 73%);
+  --sunpillar-clr-1: var(--sunpillar-1);
+  --sunpillar-clr-2: var(--sunpillar-2);
+  --sunpillar-clr-3: var(--sunpillar-3);
+  --sunpillar-clr-4: var(--sunpillar-4);
+  --sunpillar-clr-5: var(--sunpillar-5);
+  --sunpillar-clr-6: var(--sunpillar-6);
+  --card-radius: 22px;
+}
+
+.pc-card-wrapper,
+.tarot-card-wrapper {
+  perspective: 500px;
+  transform: translate3d(0, 0, 0.1px);
+  position: relative;
+  touch-action: none;
+}
+
+/* 수호카드 화면에서 wrapper의 boxShadow 제거 */
+.guardian-card-container .tarot-card-wrapper {
+  box-shadow: none !important;
+}
+
+.pc-behind,
+.tarot-card-behind {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at var(--pointer-x) var(--pointer-y),
+    var(--behind-glow-color) 0%,
+    transparent var(--behind-glow-size)
+  );
+  filter: blur(50px) saturate(1.1);
+  opacity: calc(0.8 * var(--card-opacity));
+  transition: opacity 200ms ease;
+  border-radius: inherit;
+}
+
+.pc-card-wrapper:hover,
+.pc-card-wrapper.active,
+.tarot-card-wrapper:hover,
+.tarot-card-wrapper.active {
+  --card-opacity: 1;
+}
+
+.pc-card,
+.tarot-card-with-effects {
+  /* 단계별 확인: 7단계 - 모든 효과 복원 */
+  display: grid;
+  border-radius: var(--card-radius);
+  position: relative;
+  background-blend-mode: color-dodge, normal, normal, normal;
+  animation: glow-bg 12s linear infinite;
+  box-shadow: rgba(0, 0, 0, 0.8) calc((var(--pointer-from-left) * 10px) - 3px)
+    calc((var(--pointer-from-top) * 20px) - 6px) 20px -5px;
+  transition: transform 1s ease;
+  transform: translateZ(0) rotateX(0deg) rotateY(0deg);
+  background: transparent;
+  backface-visibility: hidden;
+  overflow: hidden;
+}
+
+.pc-card:hover,
+.pc-card.active,
+.tarot-card-with-effects:hover,
+.tarot-card-with-effects.active {
+  transition: none;
+  transform: translateZ(0) rotateX(var(--rotate-y)) rotateY(var(--rotate-x));
+}
+
+.pc-card-shell.entering .pc-card,
+.tarot-card-shell.entering .tarot-card-with-effects {
+  transition: transform 180ms ease-out;
+}
+
+.pc-card-shell,
+.tarot-card-shell {
+  position: relative;
+  z-index: 1;
+}
+
+/* 단계별 확인: 6단계 - grid 레이아웃 복원 (이미지 제외) */
+.pc-card > *:not(img):not(.tarot-card-image),
+.tarot-card-with-effects > *:not(img):not(.tarot-card-image) {
+  display: grid;
+  grid-area: 1/-1;
+  border-radius: var(--card-radius);
+  pointer-events: none;
+}
+
+.pc-inside,
+.tarot-card-inside {
+  inset: 0;
+  position: absolute;
+  background-image: var(--inner-gradient);
+  background-color: transparent;
+  transform: none;
+  z-index: 1;
+  display: block !important;
+  grid-area: 1/-1;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto;
+}
+
+.pc-inside img,
+.tarot-card-inside img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  position: relative;
+  z-index: 1;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto;
+}
+
+/* 단계별 확인: 1단계 - 이미지 CSS 최소화 */
+.tarot-card-image,
+.pc-card img,
+.tarot-card-with-effects img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  position: relative !important;
+  z-index: 1 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  border-radius: inherit;
+  background: transparent !important;
+}
+
+.pc-shine,
+.tarot-card-shine {
+  mask-image: var(--icon);
+  mask-mode: luminance;
+  mask-repeat: repeat;
+  mask-size: 150%;
+  mask-position: top calc(200% - (var(--background-y) * 5)) left calc(100% - var(--background-x));
+  transition: filter 0.8s ease;
+  filter: brightness(0.66) contrast(1.33) saturate(0.33) opacity(0.5);
+  animation: holo-bg 18s linear infinite;
+  animation-play-state: running;
+  mix-blend-mode: color-dodge;
+  pointer-events: none;
+}
+
+.pc-shine,
+.pc-shine::after,
+.tarot-card-shine,
+.tarot-card-shine::after {
+  --space: 5%;
+  --angle: -45deg;
+  transform: translate3d(0, 0, 1px);
+  overflow: hidden;
+  z-index: 11;
+  background: transparent;
+  background-size: cover;
+  background-position: center;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      var(--sunpillar-clr-1) calc(var(--space) * 1),
+      var(--sunpillar-clr-2) calc(var(--space) * 2),
+      var(--sunpillar-clr-3) calc(var(--space) * 3),
+      var(--sunpillar-clr-4) calc(var(--space) * 4),
+      var(--sunpillar-clr-5) calc(var(--space) * 5),
+      var(--sunpillar-clr-6) calc(var(--space) * 6),
+      var(--sunpillar-clr-1) calc(var(--space) * 7)
+    ),
+    repeating-linear-gradient(
+      var(--angle),
+      rgba(14, 21, 46, 0.2) 0%,
+      hsla(180, 10%, 60%, 0.2) 3.8%,
+      hsla(180, 29%, 66%, 0.2) 4.5%,
+      hsla(180, 10%, 60%, 0.2) 5.2%,
+      rgba(14, 21, 46, 0.2) 10%,
+      rgba(14, 21, 46, 0.2) 12%
+    ),
+    radial-gradient(
+      farthest-corner circle at var(--pointer-x) var(--pointer-y),
+      hsla(0, 0%, 0%, 0.02) 12%,
+      hsla(0, 0%, 0%, 0.05) 20%,
+      transparent 120%
+    );
+  background-position:
+    0 var(--background-y),
+    var(--background-x) var(--background-y),
+    center;
+  background-blend-mode: color, hard-light;
+  background-size:
+    500% 500%,
+    300% 300%,
+    200% 200%;
+  background-repeat: repeat;
+}
+
+.pc-shine::before,
+.pc-shine::after,
+.tarot-card-shine::before,
+.tarot-card-shine::after {
+  content: '';
+  background-position: center;
+  background-size: cover;
+  grid-area: 1/1;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.pc-card:hover .pc-shine,
+.pc-card.active .pc-shine,
+.tarot-card-with-effects:hover .tarot-card-shine,
+.tarot-card-with-effects.active .tarot-card-shine {
+  filter: brightness(0.85) contrast(1.5) saturate(0.5);
+  animation-play-state: paused;
+}
+
+.pc-card:hover .pc-shine::before,
+.pc-card.active .pc-shine::before,
+.pc-card:hover .pc-shine::after,
+.pc-card.active .pc-shine::after,
+.tarot-card-with-effects:hover .tarot-card-shine::before,
+.tarot-card-with-effects.active .tarot-card-shine::before,
+.tarot-card-with-effects:hover .tarot-card-shine::after,
+.tarot-card-with-effects.active .tarot-card-shine::after {
+  opacity: 1;
+}
+
+.pc-shine::before,
+.tarot-card-shine::before {
+  background-image:
+    linear-gradient(
+      45deg,
+      var(--sunpillar-4),
+      var(--sunpillar-5),
+      var(--sunpillar-6),
+      var(--sunpillar-1),
+      var(--sunpillar-2),
+      var(--sunpillar-3)
+    ),
+    radial-gradient(circle at var(--pointer-x) var(--pointer-y), hsl(0, 0%, 70%) 0%, hsla(0, 0%, 30%, 0.2) 90%),
+    var(--grain);
+  background-size:
+    250% 250%,
+    100% 100%,
+    220px 220px;
+  background-position:
+    var(--pointer-x) var(--pointer-y),
+    center,
+    calc(var(--pointer-x) * 0.01) calc(var(--pointer-y) * 0.01);
+  background-blend-mode: color-dodge;
+  filter: brightness(calc(2 - var(--pointer-from-center))) contrast(calc(var(--pointer-from-center) + 2))
+    saturate(calc(0.5 + var(--pointer-from-center)));
+  mix-blend-mode: luminosity;
+}
+
+.pc-shine::after,
+.tarot-card-shine::after {
+  background-position:
+    0 var(--background-y),
+    calc(var(--background-x) * 0.4) calc(var(--background-y) * 0.5),
+    center;
+  background-size:
+    200% 300%,
+    700% 700%,
+    100% 100%;
+  mix-blend-mode: difference;
+  filter: brightness(0.8) contrast(1.5);
+}
+
+.pc-glare,
+.tarot-card-glare {
+  transform: translate3d(0, 0, 1.1px);
+  overflow: hidden;
+  background-image: radial-gradient(
+    farthest-corner circle at var(--pointer-x) var(--pointer-y),
+    hsla(248, 25%, 80%, 0.3) 12%,
+    hsla(207, 40%, 30%, 0.2) 90%
+  );
+  mix-blend-mode: overlay;
+  filter: brightness(0.8) contrast(1.2);
+  z-index: 12;
+  border-radius: inherit;
+  opacity: 0.5;
+}
+
+@keyframes glow-bg {
+  0% {
+    --bgrotate: 0deg;
+  }
+  100% {
+    --bgrotate: 360deg;
+  }
+}
+
+@keyframes holo-bg {
+  0% {
+    background-position:
+      0 var(--background-y),
+      0 0,
+      center;
+  }
+  100% {
+    background-position:
+      0 var(--background-y),
+      90% 90%,
+      center;
+  }
 }
 
 .daily-actions {
@@ -1481,6 +1920,46 @@
   }
 }
 
+/* TopicSelection 스크롤 애니메이션 */
+@keyframes scrollLeft {
+  from {
+    /* 100% 밖에서 시작 */
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* tex.tsx 컴포넌트 오버라이드 - 앱 레이아웃에 맞게 조정 */
 .card-selection .min-h-screen {
   min-height: auto !important;
@@ -1518,7 +1997,19 @@
 
   .card-back-large {
     width: 160px;
-    height: 240px;
+    height: 284px;
+    max-width: calc(100% - 40px);
+  }
+
+  .card-image-large {
+    width: 100px;
+    height: 178px;
+    max-width: calc(100% - 40px);
+  }
+
+  .daily-card-result {
+    padding: 20px;
+    max-width: 100%;
   }
 
   .card-spread-container {

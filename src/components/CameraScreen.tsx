@@ -18,10 +18,10 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ onBack }) => {
     try {
       const response = await openCamera({ base64 });
       setImage(response);
-      toast.openToast('프로필을 업데이트했어요', {
-        icon: 'icon-check',
-        iconType: 'circle',
-      });
+      // toast.openToast('프로필을 업데이트했어요', {
+      //   icon: 'icon-check',
+      //   iconType: 'circle',
+      // });
     } catch (error) {
       if (error instanceof OpenCameraPermissionError) {
         console.log('권한 에러');

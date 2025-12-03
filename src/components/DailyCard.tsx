@@ -178,14 +178,18 @@ const DailyCard = () => {
               <div className="daily-card-result">
                 <div className="card-image-large">
                   <img
-                    src={new URL(`../assets/cards/${getImageId(dailyCard.tarot_id)}.png`, import.meta.url).href}
+                    src={new URL(`../assets/cards/${getImageId(dailyCard.tarot_id)}.webp`, import.meta.url).href}
                     alt={dailyCard.card_name_kr}
                     className="card-image-display"
                     style={{
                       width: '100%',
                       height: '100%',
+                      maxWidth: '100%',
+                      maxHeight: '100%',
                       objectFit: 'contain',
-                      borderRadius: '8px'
+                      borderRadius: '8px',
+                      border: '2px solid rgba(0, 0, 0, 0.15)',
+                      boxSizing: 'border-box'
                     }}
                   />
                 </div>
@@ -207,10 +211,7 @@ const DailyCard = () => {
             🔄 메인으로 돌아가기
           </button>
           {isRevealed && (
-            <>
-              <button className="action-button primary">
-                💾 오늘의 카드 저장하기
-              </button>
+            <>     
               <div className="follow-up-actions">
                 <button className="follow-up-button" onClick={() => navigate('/topic-selection')}>
                   🔮 심층 운세 보기

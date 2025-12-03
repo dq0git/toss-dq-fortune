@@ -144,7 +144,8 @@ const ResultScreen = ({ topic, subTopic, cards, onBackToMain }: Props) => {
                         width: '100%',
                         height: '100%',
                         objectFit: 'contain',
-                        borderRadius: '6px'
+                        borderRadius: '6px',
+                        border: '2px solid rgba(0, 0, 0, 0.15)'
                       }}
                     />
                   </div>
@@ -194,7 +195,8 @@ const ResultScreen = ({ topic, subTopic, cards, onBackToMain }: Props) => {
                       width: '100%',
                       height: '100%',
                       objectFit: 'contain',
-                      borderRadius: '6px'
+                      borderRadius: '6px',
+                      border: '2px solid rgba(255, 255, 255, 0.3)'
                     }}
                   />
                 ) : null}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from '../router.gen.ts'
+import { graniteEvent } from '@apps-in-toss/web-framework'
 import { tarotAPI, TarotReading } from '../lib/supabase'
 import { Card } from '../types'
 import { hasCardImage, getCardFallback, getImageId } from '../lib/cardImages'
@@ -29,6 +30,30 @@ const CardSelection = () => {
   useEffect(() => {
     loadAndSelectCards()
   }, [])
+
+  // 뒤로가기 이벤트 감지 (예제 코드 참고)
+  useEffect(() => {
+    console.log('🔙 [카드선택화면] 뒤로가기 이벤트 리스너 등록');
+    
+    const unsubscription = graniteEvent.addEventListener('backEvent', {
+      onEvent: () => {
+        console.log('========================================');
+        console.log('🔙 [카드선택화면] 뒤로가기 이벤트 발생!');
+        console.log('🔙 [카드선택화면] 발생 시간:', new Date().toISOString());
+        console.log('🔙 [카드선택화면] 선택된 카드 수:', selectedCards.length);
+        console.log('🔙 [카드선택화면] 뒤집힌 카드 수:', revealedCards.filter(r => r).length);
+        console.log('========================================');
+        
+        // 뒤로가기 허용 (기본 동작 수행)
+        return false;
+      },
+      onError: (error) => {
+        console.error('❌ [카드선택화면] 뒤로가기 이벤트 처리 오류:', error);
+      },
+    });
+    
+    return unsubscription;
+  }, [selectedCards.length, revealedCards])
 
   const loadAndSelectCards = async () => {
     try {
@@ -257,6 +282,9 @@ const CardSelection = () => {
         onClick={() => handleCardClick(card.tarot_id)}
         onMouseEnter={() => setHoveredCard(card.tarot_id)}
         onMouseLeave={() => setHoveredCard(null)}
+        onTouchStart={(e) => e.stopPropagation()}
+        onTouchMove={(e) => e.stopPropagation()}
+        onTouchEnd={(e) => e.stopPropagation()}
       >
         <div
           className="relative"
@@ -269,7 +297,7 @@ const CardSelection = () => {
           }}
         >
           <img
-            src={new URL(`../assets/cards/back.png`, import.meta.url).href}
+            src={new URL(`../assets/cards/back.webp`, import.meta.url).href}
             alt="카드 뒷면"
             className="w-full h-full object-cover rounded"
           />

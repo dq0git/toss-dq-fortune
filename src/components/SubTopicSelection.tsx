@@ -1,5 +1,6 @@
 import React from 'react'
 import { useNavigate, useSearchParams } from '../router.gen.ts'
+import { Analytics } from '@apps-in-toss/web-framework'
 
 type Topic = 'love' | 'success' | 'money'
 type SubTopic = { name: string; description: string }
@@ -62,7 +63,14 @@ const SubTopicSelection = () => {
             <div
               key={key}
               className="subtopic-card"
-              onClick={() => navigate(`/card-selection?topic=${topic}&subTopic=${key}`)}
+              onClick={() => {
+                Analytics.click({
+                  event_name: 'subtopic_selected',
+                  topic: topic,
+                  subtopic: key
+                });
+                navigate(`/card-selection?topic=${topic}&subTopic=${key}`);
+              }}
             >
               <div className="subtopic-content">
                 <h3>{subtopic.name}</h3>

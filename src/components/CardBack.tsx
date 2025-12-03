@@ -96,7 +96,21 @@ const CardBack: React.FC<CardBackProps> = ({ className = '', style = {} }) => {
   };
 
   return (
-    <svg viewBox="0 0 55 85" className={`w-full h-full ${className}`} style={style}>
+    <svg 
+      viewBox="0 0 55 85" 
+      className={`w-full h-full ${className}`} 
+      style={{
+        ...style,
+        display: 'block',
+        borderRadius: 'inherit',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+      }}
+      preserveAspectRatio="xMidYMid slice"
+    >
       <defs>
         <radialGradient id="moonGlow">
           <stop offset="0%" style={{ stopColor: colorScheme.primary, stopOpacity: 0.9 }} />
@@ -110,8 +124,10 @@ const CardBack: React.FC<CardBackProps> = ({ className = '', style = {} }) => {
           <path d="M 0,-2 L 0.5,-0.5 L 2,-0.5 L 1,0.5 L 1.5,2 L 0,1 L -1.5,2 L -1,0.5 L -2,-0.5 L -0.5,-0.5 Z" fill="url(#goldGradient)" />
         </g>
       </defs>
-      <rect width="55" height="85" rx="3" fill={colorScheme.bg} />
-      <rect x="2" y="2" width="51" height="81" rx="2" fill="none" stroke="url(#goldGradient)" strokeWidth="0.8" />
+      {/* 배경 - 테두리 안쪽에 그려서 테두리가 가장자리에 보이도록 */}
+      <rect x="1.5" y="1.5" width="52" height="82" rx="3.5" fill={colorScheme.bg} />
+      {/* 테두리 - 카드 가장자리에 맞춰서 그리기 */}
+      <rect x="0" y="0" width="55" height="85" rx="4" fill="none" stroke="url(#goldGradient)" strokeWidth="3" />
       {renderSymbol()}
       <g opacity="0.6">
         <use href="#star" x="27.5" y="20" transform="scale(0.8)" />
