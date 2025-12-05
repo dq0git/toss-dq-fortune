@@ -8,6 +8,7 @@ import TarotCardWithEffects from '../components/TarotCardWithEffects';
 import cardTTData from '../data/card_tt.json';
 import { tarotAPI, TarotReading } from '../lib/supabase';
 import { GoogleAdMob, Analytics } from '@apps-in-toss/web-framework';
+import { trackClickEvent } from '../firebase/analytics';
 
 type CardTTData = {
   id: number;
@@ -457,6 +458,11 @@ const TarotResultPage = () => {
         event_name: 'advice_card_requested',
         topic: topic
       });
+      // Firebase Analytics 연동
+      trackClickEvent({
+        event_name: 'advice_card_requested',
+        topic: topic
+      });
       // 광고 로드 실패 확인
       if (allAdsFailed) {
         toast.openToast('광고를 받아올 수 없어요. 나중에 다시 시도해주세요.', {
@@ -487,20 +493,24 @@ const TarotResultPage = () => {
             switch (event.type) {
               case 'dismissed':
                 console.log('✅ [광고 테스트] 리워드 광고 닫힘 - 조언 카드 표시');
-                Analytics.click({
+                const dismissedEvent = {
                   event_name: 'advice_card_unlocked_ad',
                   topic: topic || 'unknown',
                   ad_type: 'rewarded'
-                });
+                };
+                Analytics.click(dismissedEvent);
+                trackClickEvent(dismissedEvent);
                 showAdviceCard();
                 break;
               case 'userEarnedReward':
                 console.log('🎁 [광고 테스트] 리워드 획득 - 조언 카드 표시', event.data);
-                Analytics.click({
+                const earnedEvent = {
                   event_name: 'advice_card_unlocked_ad',
                   topic: topic || 'unknown',
                   ad_type: 'rewarded'
-                });
+                };
+                Analytics.click(earnedEvent);
+                trackClickEvent(earnedEvent);
                 showAdviceCard();
                 break;
               case 'failedToShow':
@@ -538,11 +548,13 @@ const TarotResultPage = () => {
             switch (event.type) {
               case 'dismissed':
                 console.log('✅ [광고 테스트] 전면형 광고 닫힘 - 조언 카드 표시');
-                Analytics.click({
+                const interstitialEvent = {
                   event_name: 'advice_card_unlocked_ad',
                   topic: topic || 'unknown',
                   ad_type: 'interstitial'
-                });
+                };
+                Analytics.click(interstitialEvent);
+                trackClickEvent(interstitialEvent);
                 showAdviceCard();
                 break;
               case 'failedToShow':
@@ -610,22 +622,26 @@ const TarotResultPage = () => {
   const handleCardFlip = (index: number) => {
     if (!flippedCards.includes(index)) {
       const positions = ['과거', '현재', '미래'];
-      Analytics.click({
+      const flipEvent = {
         event_name: 'card_flipped',
         position: positions[index],
         card_index: index,
         topic: topic || 'unknown'
-      });
+      };
+      Analytics.click(flipEvent);
+      trackClickEvent(flipEvent);
       
       const newFlippedCards = [...flippedCards, index];
       setFlippedCards(newFlippedCards);
       
       // 3장 모두 뒤집혔을 때 추적
       if (newFlippedCards.length === 3) {
-        Analytics.click({
+        const allRevealedEvent = {
           event_name: 'all_cards_revealed',
           topic: topic || 'unknown'
-        });
+        };
+        Analytics.click(allRevealedEvent);
+        trackClickEvent(allRevealedEvent);
       }
     }
   };

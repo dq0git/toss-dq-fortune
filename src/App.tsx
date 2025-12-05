@@ -8,8 +8,6 @@ import ResultPage from './pages/result';
 import TarotResultPage from './pages/tarot-result';
 import DailyCardPage from './pages/daily-card';
 import TarotTalismanPage from './pages/tarot-talisman';
-import CameraPage from './pages/camera';
-import FeaturesPage from './pages/features';
 
 function App() {
   return (
@@ -23,8 +21,6 @@ function App() {
         <Route path="/tarot-result" element={<TarotResultPage />} />
         <Route path="/daily-card" element={<DailyCardPage />} />
         <Route path="/tarot-talisman" element={<TarotTalismanPage />} />
-        <Route path="/camera" element={<CameraPage />} />
-        <Route path="/features" element={<FeaturesPage />} />
       </Routes>
     </div>
   )

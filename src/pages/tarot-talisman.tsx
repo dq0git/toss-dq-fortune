@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from '../router.gen';
 import { useSearchParams } from 'react-router-dom';
 import { generateHapticFeedback, GoogleAdMob, Analytics } from '@apps-in-toss/web-framework';
+import { trackClickEvent } from '../firebase/analytics';
 import { Card } from '../types';
 import { tarotAPI } from '../lib/supabase';
 import cardsData from '../data/cards_graded.json';
@@ -401,10 +402,12 @@ const TarotTalisman = () => {
 
   // 주제 선택 핸들러
   const handleTopicSelect = (type: GuardianType) => {
-    Analytics.click({
+    const event = {
       event_name: 'guardian_topic_selected',
       topic: type
-    });
+    };
+    Analytics.click(event);
+    trackClickEvent(event);
     
     const params = new URLSearchParams();
     params.set('topic', type);
@@ -449,10 +452,12 @@ const TarotTalisman = () => {
   const handleFreeDraw = async () => {
     if (!selectedTopic || hasUsedFreeToday || isDrawing) return;
     
-    Analytics.click({
+    const event = {
       event_name: 'guardian_free_draw',
       topic: selectedTopic
-    });
+    };
+    Analytics.click(event);
+    trackClickEvent(event);
     
     setIsDrawing(true);
     setIsFlipping(true);
@@ -534,11 +539,13 @@ const TarotTalisman = () => {
     if (!selectedTopic || isDrawing) return;
     
     // 수호카드 다시뽑기 시도 추적
-    Analytics.click({
+    const event = {
       event_name: 'guardian_card_renew_attempt',
       topic: selectedTopic,
       location: 'main_screen'
-    });
+    };
+    Analytics.click(event);
+    trackClickEvent(event);
     
     // 광고 지원 여부 확인
     if (GoogleAdMob.showAppsInTossAdMob.isSupported() !== true) {
@@ -591,11 +598,13 @@ const TarotTalisman = () => {
           switch (event.type) {
             case 'dismissed':
               console.log('✅ [수호카드 광고 테스트] 전면형 광고 닫힘 - 카드 뽑기');
-              Analytics.click({
+              const adDrawEvent = {
                 event_name: 'guardian_ad_draw',
                 topic: selectedTopic || 'unknown',
                 location: 'main_screen'
-              });
+              };
+              Analytics.click(adDrawEvent);
+              trackClickEvent(adDrawEvent);
               performDraw();
               // 광고 표시 완료 후 다음 광고 미리 로드
               loadNextAd();
@@ -661,11 +670,13 @@ const TarotTalisman = () => {
     if (!selectedTopic || !choices || isDrawing) return;
     
     // 수호카드 다시뽑기 시도 추적 (모달 내)
-    Analytics.click({
+    const modalEvent = {
       event_name: 'guardian_card_renew_attempt',
       topic: selectedTopic,
       location: 'modal'
-    });
+    };
+    Analytics.click(modalEvent);
+    trackClickEvent(modalEvent);
     
     // 광고 지원 여부 확인
     if (GoogleAdMob.showAppsInTossAdMob.isSupported() !== true) {
@@ -718,11 +729,13 @@ const TarotTalisman = () => {
           switch (event.type) {
             case 'dismissed':
               console.log('✅ [수호카드 광고 테스트] 모달 내 전면형 광고 닫힘 - 카드 뽑기');
-              Analytics.click({
+              const modalAdDrawEvent = {
                 event_name: 'guardian_ad_draw',
                 topic: selectedTopic || 'unknown',
                 location: 'modal'
-              });
+              };
+              Analytics.click(modalAdDrawEvent);
+              trackClickEvent(modalAdDrawEvent);
               performDrawFromModal();
               // 광고 표시 완료 후 다음 광고 미리 로드
               loadNextAd();
@@ -772,13 +785,15 @@ const TarotTalisman = () => {
     
     // 카드 선택 추적 (기존/신규 구분은 모달에서 확인)
     const isNewCard = choices?.new === selected;
-    Analytics.click({
+    const selectEvent = {
       event_name: 'guardian_card_selected',
       topic: selectedTopic || 'unknown',
       card_type: isNewCard ? 'new' : 'current',
       card_id: selected.card.tarot_id,
       power_level: selected.powerLevel || 2
-    });
+    };
+    Analytics.click(selectEvent);
+    trackClickEvent(selectEvent);
     
     setPendingSelection(selected);
     setConfirmMode(true);
@@ -1527,10 +1542,12 @@ const TarotTalisman = () => {
                           onClick={() => {
                             if (!showDetails) {
                               // 상세보기 열기: 현재 스크롤 위치 저장
-                              Analytics.click({
+                              const detailViewEvent = {
                                 event_name: 'guardian_detail_viewed',
                                 topic: selectedTopic || 'unknown'
-                              });
+                              };
+                              Analytics.click(detailViewEvent);
+                              trackClickEvent(detailViewEvent);
                               setSavedScrollPosition(window.scrollY);
                               setShowDetails(true);
                               // 약간의 딜레이 후 스크롤 (레이아웃 변경 후)

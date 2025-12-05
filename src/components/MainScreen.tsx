@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback, useLayoutEffect } from 'react'
 import { useNavigate, useLocation } from '../router.gen.ts';
 import { generateHapticFeedback, Analytics, graniteEvent, closeView } from '@apps-in-toss/web-framework';
+import { trackClickEvent } from '../firebase/analytics';
 import { ListRow, Button, Top, Asset, Badge } from '@toss/tds-mobile';
 import { adaptive } from '@toss/tds-colors';
 import './MainScreen.css';
@@ -416,9 +417,9 @@ const MainScreen = () => {
             contents={<ListRow.Texts type="2RowTypeA" top="주제별 운세와 조언 받기" topProps={{ color: adaptive.grey800, fontWeight: `bold` }} bottom="궁금한 주제의 운세와 조언을 받아요" bottomProps={{ color: adaptive.grey600 }}/>}
             arrowType="right"
             onClick={() => {
-              Analytics.click({
-                event_name: 'main_topic_click'
-              });
+              const event = { event_name: 'main_topic_click' };
+              Analytics.click(event);
+              trackClickEvent(event);
               navigate('/topic-selection');
               generateHapticFeedback({ type: "tickWeak" });
             }}
@@ -431,9 +432,9 @@ const MainScreen = () => {
             contents={<ListRow.Texts type="2RowTypeA" top="오늘의 운세흐름 보기" topProps={{ color: adaptive.grey800, fontWeight: `bold` }} bottom="하루의 전반적인 흐름을 확인해요" bottomProps={{ color: adaptive.grey600 }}/>} 
             arrowType="right"
             onClick={() => {
-              Analytics.click({
-                event_name: 'main_daily_card_click'
-              });
+              const event = { event_name: 'main_daily_card_click' };
+              Analytics.click(event);
+              trackClickEvent(event);
               navigate('/daily-card');
             }}
             verticalPadding="small"
@@ -457,9 +458,9 @@ const MainScreen = () => {
             } 
             arrowType="right"
             onClick={() => {
-              Analytics.click({
-                event_name: 'main_guardian_card_click'
-              });
+              const event = { event_name: 'main_guardian_card_click' };
+              Analytics.click(event);
+              trackClickEvent(event);
               navigate('/tarot-talisman');
             }}
             verticalPadding="small"

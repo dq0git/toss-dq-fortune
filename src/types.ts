@@ -1,4 +1,4 @@
-export type Screen = 'main' | 'topic-selection' | 'subtopic-selection' | 'card-selection' | 'result' | 'daily-card' | 'tarot-talisman' | 'camera';
+export type Screen = 'main' | 'topic-selection' | 'subtopic-selection' | 'card-selection' | 'result' | 'daily-card' | 'tarot-talisman';
 
 export interface Card {
   tarot_id: number;

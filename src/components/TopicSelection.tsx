@@ -5,16 +5,19 @@ import { Top, ListRow, Badge, Text } from '@toss/tds-mobile';
 import { adaptive } from '@toss/tds-colors';
 import { Spacing } from './Spacing';
 import { Analytics } from '@apps-in-toss/web-framework';
+import { trackClickEvent } from '../firebase/analytics';
 
 const TopicSelection = () => {
   const navigate = useNavigate();
   const topics = tarotData.topics;
 
   const handleTopicClick = (topicKey: string) => {
-    Analytics.click({
+    const event = {
       event_name: 'topic_selected',
       topic: topicKey
-    });
+    };
+    Analytics.click(event);
+    trackClickEvent(event);
     navigate(`/card-selection?topic=${topicKey}&subTopic=${Object.keys(topics[topicKey as keyof typeof topics].subtopics)[0]}`);
   };
 

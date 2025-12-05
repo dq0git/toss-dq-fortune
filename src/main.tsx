@@ -4,6 +4,8 @@ import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 import './index.css'
 import { TDSMobileAITProvider } from '@toss/tds-mobile-ait';
+// Initialize Firebase Analytics
+import './firebase/init';
 
 // 전역 에러 핸들러 - 권한 관련 에러 무시
 window.addEventListener('error', (event) => {

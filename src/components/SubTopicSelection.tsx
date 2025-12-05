@@ -1,6 +1,7 @@
 import React from 'react'
 import { useNavigate, useSearchParams } from '../router.gen.ts'
 import { Analytics } from '@apps-in-toss/web-framework'
+import { trackClickEvent } from '../firebase/analytics';
 
 type Topic = 'love' | 'success' | 'money'
 type SubTopic = { name: string; description: string }
@@ -64,11 +65,13 @@ const SubTopicSelection = () => {
               key={key}
               className="subtopic-card"
               onClick={() => {
-                Analytics.click({
+                const event = {
                   event_name: 'subtopic_selected',
                   topic: topic,
                   subtopic: key
-                });
+                };
+                Analytics.click(event);
+                trackClickEvent(event);
                 navigate(`/card-selection?topic=${topic}&subTopic=${key}`);
               }}
             >

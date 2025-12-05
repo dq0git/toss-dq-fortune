@@ -7,6 +7,7 @@ import { Top, Post, Button } from '@toss/tds-mobile';
 import { adaptive } from '@toss/tds-colors';
 import cardTTData from '../data/card_tt.json';
 import { Analytics } from '@apps-in-toss/web-framework';
+import { trackClickEvent } from '../firebase/analytics';
 
 // 디버깅 모드 설정 (true로 하면 데이터 소스가 표시됨)
 const DEBUG_MODE = true
@@ -213,11 +214,13 @@ const DailyCard = () => {
   const handleRevealCard = () => {
     if (!hasUsedToday && dailyCard && selectedTopic) {
       // 오늘의 운세흐름 카드 공개 추적
-      Analytics.click({
+      const event = {
         event_name: 'daily_card_revealed',
         card_id: dailyCard.tarot_id,
         topic: selectedTopic
-      });
+      };
+      Analytics.click(event);
+      trackClickEvent(event);
       
       setIsRevealed(true)
       setHasUsedToday(true)
