@@ -106,7 +106,7 @@ const DailyCard = () => {
 
       // 초기화 플래그 확인 (초기화 후인지 확인)
       const wasReset = localStorage.getItem('dailyCardResetFlag') === 'true'
-      
+
       // 초기화 후가 아니면 저장된 카드 데이터 확인
       const storedCardData = !wasReset ? localStorage.getItem('dailyCardData') : null
       if (storedCardData) {
@@ -139,14 +139,14 @@ const DailyCard = () => {
         const startOfYear = new Date(today.getFullYear(), 0, 1, 0, 0, 0, 0)
         const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0, 0)
         const dayOfYear = Math.floor((todayStart.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24)) + 1
-        
+
         // 사용자별 고유 ID 생성 (없으면 생성)
         let userId = localStorage.getItem('dailyCardUserId')
         if (!userId) {
           userId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
           localStorage.setItem('dailyCardUserId', userId)
         }
-        
+
         // 날짜 + 사용자 ID 기반 시드를 사용하여 사용자별로 다른 카드 선택
         // 초기화 후에는 완전히 랜덤하게 선택 (타임스탬프 기반)
         let seed: number
@@ -159,12 +159,12 @@ const DailyCard = () => {
           const userIdNum = parseInt(userId.split('-')[0]) || 0
           seed = today.getFullYear() * 10000 + dayOfYear + (userIdNum % 10000)
         }
-        
+
         // 초기화 플래그 제거
         if (wasReset) {
           localStorage.removeItem('dailyCardResetFlag')
         }
-        
+
         // 더 나은 해시 함수로 개선 (여러 소수 사용)
         let hash = seed
         hash = ((hash << 16) ^ (hash >> 16)) * 2246822507
@@ -198,7 +198,7 @@ const DailyCard = () => {
           selectedTopic,
           wasReset
         })
-        
+
         // 디버깅: localStorage 강제 클리어 (개발용 - 필요시 주석 해제)
         // localStorage.removeItem('dailyCardData')
 
@@ -221,7 +221,7 @@ const DailyCard = () => {
       };
       Analytics.click(event);
       trackClickEvent(event);
-      
+
       setIsRevealed(true)
       setHasUsedToday(true)
 
@@ -275,10 +275,10 @@ const DailyCard = () => {
             </div>
           ) : dailyCard ? (
             <div className="card-revealed-section">
-              <div style={{ 
-                display: 'flex', 
-                flexDirection: 'column', 
-                alignItems: 'center', 
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
                 gap: '64px',
                 padding: '16px',
                 width: '100%',
@@ -286,7 +286,7 @@ const DailyCard = () => {
                 boxSizing: 'border-box'
               }}>
                 {/* 카드 이미지 - 이미지만 표시 */}
-                <div 
+                <div
                   style={{
                     position: 'relative',
                     width: '220px',
@@ -344,7 +344,7 @@ const DailyCard = () => {
                       }}>
                         {cardData.name}
                       </Post.H3>
-                      <Post.Paragraph style={{ 
+                      <Post.Paragraph style={{
                         color: adaptive.grey500,
                         marginBottom: '6px',
                         fontSize: '13px',
@@ -352,7 +352,7 @@ const DailyCard = () => {
                       }}>
                         {cardData.eng_name}
                       </Post.Paragraph>
-                      <Post.Paragraph style={{ 
+                      <Post.Paragraph style={{
                         color: '#1d4ed8',
                         marginBottom: '10px',
                         fontWeight: 600,
@@ -362,7 +362,7 @@ const DailyCard = () => {
                       </Post.Paragraph>
                     </>
                   ) : (
-                    <Post.Paragraph style={{ 
+                    <Post.Paragraph style={{
                       color: adaptive.grey600,
                       marginBottom: '12px',
                       fontSize: '12px'
@@ -377,24 +377,80 @@ const DailyCard = () => {
         </div>
 
         {isRevealed && (
-          <div style={{ 
+          <div style={{
             padding: '16px',
             display: 'flex',
             flexDirection: 'column',
             gap: '12px'
           }}>
-            <Button onClick={() => {
-              // 현재 페이지를 히스토리에서 제거하고 새 페이지로 이동
-              navigate('/topic-selection', { replace: true });
-            }}>
+            <button
+              onClick={() => {
+                // 고민 더 깊게 보기 버튼 클릭 추적
+                const event = {
+                  event_name: 'topic_selection_clicked_from_daily',
+                  topic: selectedTopic || 'unknown',
+                  source: 'daily_card'
+                };
+                Analytics.click(event);
+                trackClickEvent(event);
+                // 현재 페이지를 히스토리에서 제거하고 새 페이지로 이동
+                navigate('/topic-selection', { replace: true });
+              }}
+              style={{
+                width: '100%',
+                padding: '16px',
+                backgroundColor: adaptive.grey200,
+                border: 'none',
+                borderRadius: '16px',
+                fontSize: '16px',
+                fontWeight: '600',
+                color: adaptive.grey900,
+                cursor: 'pointer',
+                transition: 'background-color 0.2s'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = adaptive.grey300;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = adaptive.grey200;
+              }}
+            >
               고민 더 깊게 보기
-            </Button>
-            <Button onClick={() => {
-              // 현재 페이지를 히스토리에서 제거하고 새 페이지로 이동
-              navigate('/tarot-talisman', { replace: true });
-            }}>
+            </button>
+            <button
+              onClick={() => {
+                // 부족한 운 채우기 버튼 클릭 추적
+                const event = {
+                  event_name: 'guardian_card_clicked_from_daily',
+                  topic: selectedTopic || 'unknown',
+                  source: 'daily_card'
+                };
+                Analytics.click(event);
+                trackClickEvent(event);
+                // 현재 페이지를 히스토리에서 제거하고 새 페이지로 이동
+                navigate('/tarot-talisman', { replace: true });
+              }}
+              style={{
+                width: '100%',
+                padding: '16px',
+                backgroundColor: '#3b82f6',
+                border: 'none',
+                borderRadius: '16px',
+                fontSize: '16px',
+                fontWeight: '600',
+                color: '#ffffff',
+                cursor: 'pointer',
+                transition: 'background-color 0.2s'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#2563eb';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#3b82f6';
+              }}
+            >
               부족한 운 채우기
-            </Button>
+            </button>
           </div>
         )}
 

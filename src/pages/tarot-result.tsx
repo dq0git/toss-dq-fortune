@@ -137,7 +137,7 @@ const TarotResultPage = () => {
     console.log('🔮 [광고 테스트] 결과 페이지 로드 - 광고 로드 시작 (카드 뒤집기와 동시 진행)');
     console.log('📝 [광고 테스트] 전면형 광고 ID:', INTERSTITIAL_AD_GROUP_ID);
     console.log('📝 [광고 테스트] 리워드 광고 ID:', REWARDED_AD_GROUP_ID);
-    
+
     // 광고 지원 여부 확인
     if (GoogleAdMob.loadAppsInTossAdMob.isSupported() !== true) {
       console.warn('⚠️ [광고 테스트] GoogleAdMob이 지원되지 않는 환경입니다.');
@@ -162,7 +162,7 @@ const TarotResultPage = () => {
           case 'failedToLoad':
             console.error('❌ [광고 테스트] 리워드 광고 로드 실패:', event.data);
             console.log('🔄 [광고 테스트] 전면형 광고 로드 시도');
-            
+
             // 리워드 실패 시 전면형 광고 로드 시도
             const interstitialCleanup = GoogleAdMob.loadAppsInTossAdMob({
               options: {
@@ -198,7 +198,7 @@ const TarotResultPage = () => {
       onError: (error) => {
         console.error('❌ [광고 테스트] 리워드 광고 불러오기 오류:', error);
         console.log('🔄 [광고 테스트] 전면형 광고 로드 시도');
-        
+
         // 리워드 오류 시 전면형 광고 로드 시도
         const interstitialCleanup = GoogleAdMob.loadAppsInTossAdMob({
           options: {
@@ -267,7 +267,7 @@ const TarotResultPage = () => {
       console.log('🔮 [광고 테스트] 카드 3장 모두 뒤집힘 - 광고 로드 시작');
       console.log('📝 [광고 테스트] 전면형 광고 ID:', INTERSTITIAL_AD_GROUP_ID);
       console.log('📝 [광고 테스트] 리워드 광고 ID:', REWARDED_AD_GROUP_ID);
-      
+
       // 광고 지원 여부 확인
       if (GoogleAdMob.loadAppsInTossAdMob.isSupported() !== true) {
         console.warn('⚠️ [광고 테스트] GoogleAdMob이 지원되지 않는 환경입니다.');
@@ -304,7 +304,7 @@ const TarotResultPage = () => {
             case 'failedToLoad':
               console.error('❌ [광고 테스트] 리워드 광고 로드 실패:', event.data);
               console.log('🔄 [광고 테스트] 전면형 광고 로드 시도');
-              
+
               // 리워드 실패 시 전면형 광고 로드 시도
               const interstitialCleanup = GoogleAdMob.loadAppsInTossAdMob({
                 options: {
@@ -344,7 +344,7 @@ const TarotResultPage = () => {
         onError: (error) => {
           console.error('❌ [광고 테스트] 리워드 광고 불러오기 오류:', error);
           console.log('🔄 [광고 테스트] 전면형 광고 로드 시도');
-          
+
           // 리워드 오류 시 전면형 광고 로드 시도
           const interstitialCleanup = GoogleAdMob.loadAppsInTossAdMob({
             options: {
@@ -420,15 +420,15 @@ const TarotResultPage = () => {
       allCards = await tarotAPI.getAllCards();
       setAllCardsCache(allCards);
     }
-    
+
     // 이미 선택된 카드 제외
     const availableCards = allCards.filter(card => !selectedCards.includes(card.tarot_id));
-    
+
     if (availableCards.length > 0) {
       // 랜덤으로 조언 카드 선택
       const randomIndex = Math.floor(Math.random() * availableCards.length);
       const selectedAdviceCard = availableCards[randomIndex];
-      
+
       // 주제에 맞는 조언 가져오기
       const topicMap: Record<string, keyof TarotReading> = {
         'love': 'final_advice_love',
@@ -437,10 +437,10 @@ const TarotResultPage = () => {
         'money': 'final_advice_money',
         'wealth': 'final_advice_money'
       };
-      
+
       const adviceKey = topicMap[topic] || 'final_advice_love';
       const adviceText = selectedAdviceCard[adviceKey] as string || '';
-      
+
       setAdviceCard({
         cardId: selectedAdviceCard.tarot_id,
         cardData: selectedAdviceCard,
@@ -592,10 +592,10 @@ const TarotResultPage = () => {
     // URL 파라미터에서 데이터 가져오기
     const cardsParam = searchParams.get('cards');
     const designParam = searchParams.get('design');
-    
+
     console.log('Cards param:', cardsParam);
     console.log('Design param:', designParam);
-    
+
     if (cardsParam) {
       try {
         const decoded = decodeURIComponent(cardsParam);
@@ -606,7 +606,7 @@ const TarotResultPage = () => {
         console.error('Failed to parse cards:', e, cardsParam);
       }
     }
-    
+
     if (designParam) {
       try {
         const decoded = decodeURIComponent(designParam);
@@ -630,10 +630,10 @@ const TarotResultPage = () => {
       };
       Analytics.click(flipEvent);
       trackClickEvent(flipEvent);
-      
+
       const newFlippedCards = [...flippedCards, index];
       setFlippedCards(newFlippedCards);
-      
+
       // 3장 모두 뒤집혔을 때 추적
       if (newFlippedCards.length === 3) {
         const allRevealedEvent = {
@@ -709,10 +709,10 @@ const TarotResultPage = () => {
       />
 
       <div style={{ padding: '16px 20px', overflow: 'visible', maxWidth: '100%' }}>
-        <div style={{ 
-          display: 'flex', 
-          flexWrap: 'wrap', 
-          justifyContent: 'center', 
+        <div style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
           gap: '32px',
           marginBottom: '48px',
           width: '100%',
@@ -723,9 +723,9 @@ const TarotResultPage = () => {
             const cardInfo = cardDataMap.get(cardId);
 
             return (
-              <div 
-                key={cardId} 
-                style={{ 
+              <div
+                key={cardId}
+                style={{
                   textAlign: 'left',
                   width: '100%',
                   maxWidth: '100%',
@@ -744,7 +744,7 @@ const TarotResultPage = () => {
                     overflow: 'visible'
                   }}
                 >
-                  <div 
+                  <div
                     style={{
                       position: 'relative',
                       width: '220px',
@@ -767,7 +767,7 @@ const TarotResultPage = () => {
                       }}
                     >
                       {/* 카드 뒷면 */}
-                      <div 
+                      <div
                         style={{
                           position: 'absolute',
                           inset: 0,
@@ -799,7 +799,7 @@ const TarotResultPage = () => {
                       </div>
 
                       {/* 카드 앞면 - 이미지만 표시 */}
-                      <div 
+                      <div
                         style={{
                           position: 'absolute',
                           inset: 0,
@@ -884,7 +884,7 @@ const TarotResultPage = () => {
                             borderLeft: `4px solid #1d4ed8`,
                             textAlign: 'left'
                           }}>
-                            <div style={{ 
+                            <div style={{
                               color: '#1d4ed8',
                               fontWeight: 600,
                               lineHeight: 1.8,
@@ -896,14 +896,14 @@ const TarotResultPage = () => {
                               letterSpacing: 'normal'
                             }}>
                               {(() => {
-                                const text = idx === 0 ? cardInfo.timeline.past : 
-                                            idx === 1 ? cardInfo.timeline.present : 
-                                            cardInfo.timeline.future;
+                                const text = idx === 0 ? cardInfo.timeline.past :
+                                  idx === 1 ? cardInfo.timeline.present :
+                                    cardInfo.timeline.future;
                                 // 문장 단위로 분리 (마침표, 느낌표, 물음표 기준)
                                 const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
-                                
+
                                 return sentences.map((sentence, i) => (
-                                  <div key={i} style={{ 
+                                  <div key={i} style={{
                                     marginBottom: i < sentences.length - 1 ? '12px' : '0',
                                     textAlign: 'left',
                                     wordBreak: 'normal',
@@ -918,7 +918,7 @@ const TarotResultPage = () => {
                           </div>
                         </>
                       ) : (
-                        <Post.Paragraph style={{ 
+                        <Post.Paragraph style={{
                           color: adaptive.grey600,
                           marginBottom: '12px',
                           fontSize: '12px'
@@ -926,7 +926,7 @@ const TarotResultPage = () => {
                           카드 {cardId}번
                         </Post.Paragraph>
                       )}
-                      
+
                     </div>
                   )}
                 </div>
@@ -936,8 +936,8 @@ const TarotResultPage = () => {
 
           {/* 조언 카드 */}
           {showAdvice && adviceCard && (
-            <div 
-              style={{ 
+            <div
+              style={{
                 textAlign: 'left',
                 width: '100%',
                 maxWidth: '100%',
@@ -956,7 +956,7 @@ const TarotResultPage = () => {
                   overflow: 'visible'
                 }}
               >
-                <div 
+                <div
                   style={{
                     position: 'relative',
                     width: '220px',
@@ -979,7 +979,7 @@ const TarotResultPage = () => {
                     }}
                   >
                     {/* 카드 뒷면 */}
-                    <div 
+                    <div
                       style={{
                         position: 'absolute',
                         inset: 0,
@@ -1011,7 +1011,7 @@ const TarotResultPage = () => {
                     </div>
 
                     {/* 카드 앞면 - 이미지만 표시 */}
-                    <div 
+                    <div
                       style={{
                         position: 'absolute',
                         inset: 0,
@@ -1102,7 +1102,7 @@ const TarotResultPage = () => {
                             borderLeft: `4px solid #1d4ed8`,
                             textAlign: 'left'
                           }}>
-                            <div style={{ 
+                            <div style={{
                               color: '#1d4ed8',
                               fontWeight: 600,
                               lineHeight: 1.8,
@@ -1117,9 +1117,9 @@ const TarotResultPage = () => {
                                 const text = adviceCard.adviceText;
                                 // 문장 단위로 분리 (마침표, 느낌표, 물음표 기준)
                                 const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
-                                
+
                                 return sentences.map((sentence, i) => (
-                                  <div key={i} style={{ 
+                                  <div key={i} style={{
                                     marginBottom: i < sentences.length - 1 ? '12px' : '0',
                                     textAlign: 'left',
                                     wordBreak: 'normal',
@@ -1165,9 +1165,9 @@ const TarotResultPage = () => {
                                   const text = adviceCardInfo.caution;
                                   // 문장 단위로 분리 (마침표, 느낌표, 물음표 기준)
                                   const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
-                                  
+
                                   return sentences.map((sentence, i) => (
-                                    <div key={i} style={{ 
+                                    <div key={i} style={{
                                       marginBottom: i < sentences.length - 1 ? '12px' : '0',
                                       textAlign: 'left',
                                       wordBreak: 'normal',
@@ -1206,7 +1206,7 @@ const TarotResultPage = () => {
                             padding: '16px',
                             borderLeft: `4px solid #1d4ed8`
                           }}>
-                            <Post.Paragraph style={{ 
+                            <Post.Paragraph style={{
                               color: '#1d4ed8',
                               fontWeight: 600,
                               lineHeight: 1.8,
@@ -1235,7 +1235,7 @@ const TarotResultPage = () => {
             marginBottom: '100px'
           }}>
             {!showAdvice && (
-              <div 
+              <div
                 onClick={loadAdviceCard}
                 onMouseMove={(e) => {
                   const rect = e.currentTarget.getBoundingClientRect();
@@ -1243,7 +1243,7 @@ const TarotResultPage = () => {
                   const y = ((e.clientY - rect.top) / rect.height) * 100;
                   setGlarePosition({ x, y });
                 }}
-                style={{ 
+                style={{
                   textAlign: 'left',
                   width: '100%',
                   maxWidth: '380px',
@@ -1294,7 +1294,7 @@ const TarotResultPage = () => {
                       color: adaptive.grey900,
                       marginBottom: '8px'
                     }}>
-                      ▶️ 광고 보고 조언카드 무료로 받기
+                      🔒 숨겨진 조언카드 무료로 확인하기(광고시청)
                     </div>
                   </div>
                 </div>
@@ -1306,7 +1306,7 @@ const TarotResultPage = () => {
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    background: isHovering 
+                    background: isHovering
                       ? `radial-gradient(circle 300px at ${glarePosition.x}% ${glarePosition.y}%, rgba(255, 255, 255, 0.5), transparent 70%)`
                       : undefined,
                     pointerEvents: 'none',
@@ -1349,7 +1349,7 @@ const TarotResultPage = () => {
                     pointerEvents: 'none'
                   }}
                 >
-                  <div 
+                  <div
                     style={{
                       position: 'relative',
                       width: '220px',
@@ -1359,7 +1359,7 @@ const TarotResultPage = () => {
                       boxShadow: '0 25px 45px rgba(15,23,42,0.25)'
                     }}
                   >
-                    <div 
+                    <div
                       style={{
                         position: 'absolute',
                         inset: 0,
@@ -1412,7 +1412,7 @@ const TarotResultPage = () => {
                     }}>
                       조언 카드
                     </Post.H3>
-                    <Post.Paragraph style={{ 
+                    <Post.Paragraph style={{
                       color: '#1d4ed8',
                       marginBottom: '10px',
                       fontWeight: 600,
@@ -1425,17 +1425,65 @@ const TarotResultPage = () => {
               </div>
             )}
             <button
-              onClick={() => navigate('/topic-selection')}
+              onClick={() => {
+                // 다른 주제도 확인 버튼 클릭 추적
+                const event = {
+                  event_name: 'other_topic_clicked_from_result',
+                  topic: topic || 'unknown',
+                  source: 'tarot_result'
+                };
+                Analytics.click(event);
+                trackClickEvent(event);
+                navigate('/topic-selection');
+              }}
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
-                padding: '12px 24px',
+                padding: '16px',
+                backgroundColor: adaptive.grey200,
+                border: 'none',
+                borderRadius: '16px',
+                fontSize: '16px',
+                fontWeight: '600',
+                color: adaptive.grey900,
+                cursor: 'pointer',
+                transition: 'background-color 0.2s',
+                width: '100%',
+                maxWidth: '380px',
+                justifyContent: 'center'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = adaptive.grey300;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = adaptive.grey200;
+              }}
+            >
+              <span>다른 주제도 확인</span>
+            </button>
+            <button
+              onClick={() => {
+                // tarot-result 화면에서 수호카드로 이동 추적
+                const event = {
+                  event_name: 'guardian_card_clicked_from_result',
+                  topic: topic || 'unknown',
+                  source: 'tarot_result'
+                };
+                Analytics.click(event);
+                trackClickEvent(event);
+                navigate('/tarot-talisman');
+              }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '16px',
                 backgroundColor: '#3b82f6',
                 border: 'none',
-                borderRadius: '8px',
-                fontSize: '14px',
-                fontWeight: '500',
+                borderRadius: '16px',
+                fontSize: '16px',
+                fontWeight: '600',
                 color: '#ffffff',
                 cursor: 'pointer',
                 transition: 'background-color 0.2s',
@@ -1448,34 +1496,6 @@ const TarotResultPage = () => {
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.backgroundColor = '#3b82f6';
-              }}
-            >
-              <span>다른 주제도 확인</span>
-            </button>
-            <button
-              onClick={() => navigate('/daily-card')}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '12px 24px',
-                backgroundColor: '#8b5cf6',
-                border: 'none',
-                borderRadius: '8px',
-                fontSize: '14px',
-                fontWeight: '500',
-                color: '#ffffff',
-                cursor: 'pointer',
-                transition: 'background-color 0.2s',
-                width: '100%',
-                maxWidth: '380px',
-                justifyContent: 'center'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#7c3aed';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = '#8b5cf6';
               }}
             >
               <span>오늘의 수호카드 받기</span>

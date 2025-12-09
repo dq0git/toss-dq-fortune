@@ -14,7 +14,7 @@ var global = typeof globalThis !== 'undefined' ? globalThis : typeof global !== 
     host: ''
   };
   global.__appsInToss = {
-    deploymentId: "019ade10-c961-7a5d-9059-0bc0b593d763",
+    deploymentId: "019aed85-b5d1-709d-8a47-0bf5ced8afd5",
     brandBridgeColorMode: "basic",
     brandDisplayName: "\uC810\uC220\uAC00",
     brandPrimaryColor: "#3182F6",
@@ -138,7 +138,7 @@ if (global.__MICRO_FRONTEND__ == null) {
     host: ''
   };
   global.__appsInToss = {
-    deploymentId: "019ade10-c961-7a5d-9059-0bc0b593d763",
+    deploymentId: "019aed85-b5d1-709d-8a47-0bf5ced8afd5",
     brandBridgeColorMode: "basic",
     brandDisplayName: "\uC810\uC220\uAC00",
     brandPrimaryColor: "#3182F6",
@@ -9809,10 +9809,12 @@ if (global.__MICRO_FRONTEND__ == null) {
         });
       },
       event: function (groupId, params) {
+        var log_name = params.log_name,
+          otherParams = _object_without_properties(params, ["log_name"]);
         loggerFunction === null || loggerFunction === void 0 ? void 0 : loggerFunction({
           log_type: "event",
-          log_name: createLogName(groupId, params.event_type),
-          params
+          log_name: log_name !== null && log_name !== void 0 ? log_name : createLogName(groupId, params.event_type),
+          params: otherParams
         });
       }
     };

@@ -39,7 +39,7 @@ const TarotTalisman = () => {
   const [guardianCard, setGuardianCard] = useState<Guardian | null>(null);
   const [hasUsedFreeToday, setHasUsedFreeToday] = useState(false);
   const [updating, setUpdating] = useState(false);
-  const [choices, setChoices] = useState<{current: Guardian, new: Guardian} | null>(null);
+  const [choices, setChoices] = useState<{ current: Guardian, new: Guardian } | null>(null);
   const [revealed, setRevealed] = useState([false, false]);
   const [modalOpen, setModalOpen] = useState(false);
   const [confirmMode, setConfirmMode] = useState(false);
@@ -63,7 +63,7 @@ const TarotTalisman = () => {
   });
   const [detailModalOpen, setDetailModalOpen] = useState(false);
   const [detailModalType, setDetailModalType] = useState<GuardianType | null>(null);
-  
+
   // 광고 관련 상태
   const [interstitialAdCleanup, setInterstitialAdCleanup] = useState<(() => void) | null>(null);
   const [interstitialAdLoaded, setInterstitialAdLoaded] = useState(false);
@@ -133,7 +133,7 @@ const TarotTalisman = () => {
       career: null,
       money: null,
     };
-    
+
     (['love', 'career', 'money'] as GuardianType[]).forEach((type) => {
       try {
         const saved = localStorage.getItem(`guardianCard_${type}`);
@@ -154,9 +154,9 @@ const TarotTalisman = () => {
         localStorage.removeItem(`guardianFreeDraw_${type}`);
       }
     });
-    
+
     setAllGuardianCards(cards);
-    
+
     // 설정된 카드가 하나라도 있으면 전체 카드 화면 표시
     const hasAnyCard = Object.values(cards).some(card => card !== null);
     setShowAllCards(hasAnyCard);
@@ -170,7 +170,7 @@ const TarotTalisman = () => {
     setIsLoadingAd(true);
 
     console.log('🔮 [수호카드 광고 테스트] 페이지 로드 - 전면형 광고 로드 시작');
-    
+
     // 광고 지원 여부 확인
     if (GoogleAdMob.loadAppsInTossAdMob.isSupported() !== true) {
       console.warn('⚠️ [수호카드 광고 테스트] GoogleAdMob이 지원되지 않는 환경입니다.');
@@ -258,7 +258,7 @@ const TarotTalisman = () => {
         }
         return;
       }
-      
+
       // 주제별 화면에서 뒤로가기: 전체 목록 화면으로 이동
       if (selectedTopic && !showDetails) {
         const params = new URLSearchParams();
@@ -270,7 +270,7 @@ const TarotTalisman = () => {
         loadAllGuardianCards();
         return;
       }
-      
+
       // 전체 카드 목록 화면에서 뒤로가기: 메인 화면으로 이동
       if (showAllCards && !selectedTopic) {
         // 메인으로 이동 전에 히스토리 상태 설정
@@ -317,7 +317,7 @@ const TarotTalisman = () => {
   const checkDateReset = () => {
     const today = getDateString(new Date());
     const lastCheck = localStorage.getItem('lastDateCheck');
-    
+
     if (lastCheck !== today) {
       // 날짜가 바뀌었으므로 초기화
       localStorage.setItem('lastDateCheck', today);
@@ -382,11 +382,11 @@ const TarotTalisman = () => {
       };
       // cards_graded.json의 grade 값을 powerLevel로 사용 (1-5)
       const powerLevel = selectedCard.grade || 2;
-      return { 
-        card, 
-        meaning: selectedCard.meaning, 
+      return {
+        card,
+        meaning: selectedCard.meaning,
         description: selectedCard.description,
-        powerLevel 
+        powerLevel
       };
     }
     // fallback, but since we have data, should not reach here
@@ -408,7 +408,7 @@ const TarotTalisman = () => {
     };
     Analytics.click(event);
     trackClickEvent(event);
-    
+
     const params = new URLSearchParams();
     params.set('topic', type);
     // navigate를 사용하여 히스토리 스택에 명시적으로 추가
@@ -428,7 +428,7 @@ const TarotTalisman = () => {
       }, 0);
       return;
     }
-    
+
     if (selectedTopic) {
       // 주제별 화면에서 뒤로가기: 전체 목록 화면으로 이동
       const params = new URLSearchParams();
@@ -451,17 +451,17 @@ const TarotTalisman = () => {
   // 무료 뽑기 핸들러
   const handleFreeDraw = async () => {
     if (!selectedTopic || hasUsedFreeToday || isDrawing) return;
-    
+
     const event = {
       event_name: 'guardian_free_draw',
       topic: selectedTopic
     };
     Analytics.click(event);
     trackClickEvent(event);
-    
+
     setIsDrawing(true);
     setIsFlipping(true);
-    
+
     // 카드 뒤집기 애니메이션을 위한 딜레이
     setTimeout(async () => {
       const guardian = await generateGuardian(selectedTopic);
@@ -469,7 +469,7 @@ const TarotTalisman = () => {
         setGuardianCard(guardian);
         setIsCardRevealed(true);
         setHasUsedFreeToday(true);
-        
+
         // 로컬스토리지에 저장 (임시 저장, 아직 메인에 표시 안됨)
         const today = getDateString(new Date());
         localStorage.setItem(`guardianCard_${selectedTopic}`, JSON.stringify({
@@ -477,10 +477,10 @@ const TarotTalisman = () => {
           date: today
         }));
         localStorage.setItem(`guardianFreeDraw_${selectedTopic}`, today);
-        
+
         // 전체 카드 목록 새로고침
         loadAllGuardianCards();
-        
+
         setIsFlipping(false);
         setIsDrawing(false);
       }
@@ -490,10 +490,10 @@ const TarotTalisman = () => {
   // 실제 카드 뽑기 함수 (광고 시청 완료 후 호출)
   const performDraw = async () => {
     if (!selectedTopic) return;
-    
+
     setIsDrawing(true);
     setIsFlipping(true);
-    
+
     // 카드 뒤집기 애니메이션을 위한 딜레이
     setTimeout(async () => {
       const newGuardian = await generateGuardian(selectedTopic);
@@ -502,33 +502,33 @@ const TarotTalisman = () => {
         setIsFlipping(false);
         return;
       }
-      
+
       // 카드가 없으면 바로 설정
       if (!guardianCard) {
         setGuardianCard(newGuardian);
         setIsCardRevealed(true);
         setIsFlipping(false);
         setIsDrawing(false);
-        
+
         // 로컬스토리지에 저장
         const today = getDateString(new Date());
         localStorage.setItem(`guardianCard_${selectedTopic}`, JSON.stringify({
           card: newGuardian,
           date: today
         }));
-        
+
         // 전체 카드 목록 새로고침
         loadAllGuardianCards();
         return;
       }
-      
+
       // 기존 카드와 비교 모달 표시
       setUpdating(true);
       setChoices({ current: guardianCard, new: newGuardian });
       setRevealed([true, false]);
       setModalDetails([false, false]);
       setModalOpen(true);
-      
+
       setIsFlipping(false);
       setIsDrawing(false);
     }, 800); // 카드 뒤집기 애니메이션 시간
@@ -537,7 +537,7 @@ const TarotTalisman = () => {
   // 광고 보고 재뽑기 핸들러
   const handleRenewWithAd = async () => {
     if (!selectedTopic || isDrawing) return;
-    
+
     // 수호카드 다시뽑기 시도 추적
     const event = {
       event_name: 'guardian_card_renew_attempt',
@@ -546,7 +546,7 @@ const TarotTalisman = () => {
     };
     Analytics.click(event);
     trackClickEvent(event);
-    
+
     // 광고 지원 여부 확인
     if (GoogleAdMob.showAppsInTossAdMob.isSupported() !== true) {
       toast.openToast('광고를 받아올 수 없어요. 나중에 다시 시도해주세요.', {
@@ -558,7 +558,7 @@ const TarotTalisman = () => {
 
     // 광고가 로드 완료되지 않은 경우
     if (!interstitialAdLoaded) {
-      
+
       // 광고 로드 실패 상태라면 재시도
       if (allAdsFailed) {
         console.log('🔄 [수호카드 광고 테스트] 광고 로드 실패 상태 - 재시도');
@@ -568,13 +568,13 @@ const TarotTalisman = () => {
         // 토스트 메시지 제거
         return;
       }
-      
+
       // 아직 로드 중인 경우
       if (isLoadingAd) {
         // 토스트 메시지 제거
         return;
       }
-      
+
       // 로드되지 않은 경우 재시도
       console.log('🔄 [수호카드 광고 테스트] 광고 미로드 상태 - 재시도');
       setIsLoadingAd(true);
@@ -588,7 +588,7 @@ const TarotTalisman = () => {
       console.log('📺 [수호카드 광고 테스트] 전면형 광고 표시 시도');
       // 광고 상태를 false로 리셋 (다음 광고를 위해)
       setInterstitialAdLoaded(false);
-      
+
       GoogleAdMob.showAppsInTossAdMob({
         options: {
           adGroupId: INTERSTITIAL_AD_GROUP_ID,
@@ -646,21 +646,21 @@ const TarotTalisman = () => {
   // 모달 내에서 실제 카드 뽑기 함수 (광고 시청 완료 후 호출)
   const performDrawFromModal = async () => {
     if (!selectedTopic || !choices || isDrawing) return;
-    
+
     setIsDrawing(true);
-    
+
     setTimeout(async () => {
       const newGuardian = await generateGuardian(selectedTopic);
       if (!newGuardian) {
         setIsDrawing(false);
         return;
       }
-      
+
       // 현재 선택된 카드와 새로운 카드 비교
       setChoices({ current: choices.current, new: newGuardian });
       setRevealed([true, false]); // 기존 카드는 이미 공개된 상태, 새로운 카드는 뒤집기 전
       setModalDetails([false, false]);
-      
+
       setIsDrawing(false);
     }, 500);
   };
@@ -668,7 +668,7 @@ const TarotTalisman = () => {
   // 모달 내에서 광고 보고 다시 뽑기 핸들러
   const handleRenewWithAdFromModal = async () => {
     if (!selectedTopic || !choices || isDrawing) return;
-    
+
     // 수호카드 다시뽑기 시도 추적 (모달 내)
     const modalEvent = {
       event_name: 'guardian_card_renew_attempt',
@@ -677,7 +677,7 @@ const TarotTalisman = () => {
     };
     Analytics.click(modalEvent);
     trackClickEvent(modalEvent);
-    
+
     // 광고 지원 여부 확인
     if (GoogleAdMob.showAppsInTossAdMob.isSupported() !== true) {
       toast.openToast('광고를 받아올 수 없어요. 나중에 다시 시도해주세요.', {
@@ -689,7 +689,7 @@ const TarotTalisman = () => {
 
     // 광고가 로드 완료되지 않은 경우
     if (!interstitialAdLoaded) {
-      
+
       // 광고 로드 실패 상태라면 재시도
       if (allAdsFailed) {
         console.log('🔄 [수호카드 광고 테스트] 모달 내 광고 로드 실패 상태 - 재시도');
@@ -699,13 +699,13 @@ const TarotTalisman = () => {
         // 토스트 메시지 제거
         return;
       }
-      
+
       // 아직 로드 중인 경우
       if (isLoadingAd) {
         // 토스트 메시지 제거
         return;
       }
-      
+
       // 로드되지 않은 경우 재시도
       console.log('🔄 [수호카드 광고 테스트] 모달 내 광고 미로드 상태 - 재시도');
       setIsLoadingAd(true);
@@ -719,7 +719,7 @@ const TarotTalisman = () => {
       console.log('📺 [수호카드 광고 테스트] 모달 내 전면형 광고 표시 시도');
       // 광고 상태를 false로 리셋 (다음 광고를 위해)
       setInterstitialAdLoaded(false);
-      
+
       GoogleAdMob.showAppsInTossAdMob({
         options: {
           adGroupId: INTERSTITIAL_AD_GROUP_ID,
@@ -782,7 +782,7 @@ const TarotTalisman = () => {
 
   const handleSelectGuardian = (selected: Guardian) => {
     if (!updating) return;
-    
+
     // 카드 선택 추적 (기존/신규 구분은 모달에서 확인)
     const isNewCard = choices?.new === selected;
     const selectEvent = {
@@ -794,7 +794,7 @@ const TarotTalisman = () => {
     };
     Analytics.click(selectEvent);
     trackClickEvent(selectEvent);
-    
+
     setPendingSelection(selected);
     setConfirmMode(true);
   };
@@ -802,28 +802,28 @@ const TarotTalisman = () => {
   const handleConfirmSelection = () => {
     if (pendingSelection && selectedTopic) {
       setGuardianCard(pendingSelection);
-      
+
       // 로컬스토리지 업데이트
       const today = getDateString(new Date());
       localStorage.setItem(`guardianCard_${selectedTopic}`, JSON.stringify({
         card: pendingSelection,
         date: today
       }));
-      
+
       setUpdating(false);
       setChoices(null);
       setConfirmMode(false);
       setPendingSelection(null);
       setModalOpen(false);
-      
+
       // 상태 초기화
       setSelectedTopic(null);
       setIsCardRevealed(false);
       setShowDetails(false);
-      
+
       // 전체 카드 목록 새로고침
       loadAllGuardianCards();
-      
+
       // 전체 카드 목록 화면으로 이동 (URL 파라미터 제거)
       navigate('/tarot-talisman');
     }
@@ -832,7 +832,7 @@ const TarotTalisman = () => {
   // 메인 화면에 표시할 수호카드로 결정
   const handleSetAsMainGuardian = () => {
     if (!guardianCard || !selectedTopic) return;
-    
+
     const today = getDateString(new Date());
     // 메인 화면 표시용 저장 (이 카드로 결정하기를 누른 카드만)
     localStorage.setItem('mainGuardianCard', JSON.stringify({
@@ -840,10 +840,10 @@ const TarotTalisman = () => {
       card: guardianCard,
       date: today
     }));
-    
+
     // 전체 카드 목록 새로고침
     loadAllGuardianCards();
-    
+
     // 전체 카드 목록 화면으로 이동
     const params = new URLSearchParams();
     navigate(`/tarot-talisman?${params.toString()}`);
@@ -870,16 +870,16 @@ const TarotTalisman = () => {
   // 수호력 별점 표시
   const renderPowerLevel = (level: number = 2) => {
     return (
-      <div style={{ 
-        display: 'flex', 
-        gap: '4px', 
+      <div style={{
+        display: 'flex',
+        gap: '4px',
         alignItems: 'center',
         lineHeight: 1,
         margin: 0,
         padding: 0
       }}>
         {[...Array(5)].map((_, i) => (
-          <span 
+          <span
             key={i}
             style={{
               fontSize: i < level ? '18px' : '18px',
@@ -934,9 +934,9 @@ const TarotTalisman = () => {
             const card = allGuardianCards[type];
             return (
               <div key={type} style={{ marginBottom: '24px' }}>
-                <div style={{ 
-                  display: 'flex', 
-                  justifyContent: 'space-between', 
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
                   alignItems: 'center',
                   marginBottom: '12px'
                 }}>
@@ -1148,8 +1148,8 @@ const TarotTalisman = () => {
                     shape="circle-masking"
                     name={
                       type === 'love' ? 'icon-emoji-two-hearts' :
-                      type === 'money' ? 'icon-money-bag-green' :
-                      'icon-trophy'
+                        type === 'money' ? 'icon-money-bag-green' :
+                          'icon-trophy'
                     }
                   />
                 }
@@ -1215,12 +1215,12 @@ const TarotTalisman = () => {
                 {hasUsedFreeToday ? '다른 카드를 뽑아보세요' : '오늘의 수호카드를 뽑아보세요'}
               </h3>
               <p style={{ fontSize: '14px', color: adaptive.grey600, lineHeight: 1.6 }}>
-                {hasUsedFreeToday 
+                {hasUsedFreeToday
                   ? '광고를 보고 더 강력한 카드를 뽑을 수 있어요'
                   : '하루 1회 무료로 카드를 뽑을 수 있어요'}
               </p>
             </div>
-            
+
             <div style={{ position: 'relative', display: 'inline-block' }}>
               <div
                 onClick={hasUsedFreeToday ? handleRenewWithAd : handleFreeDraw}
@@ -1229,7 +1229,7 @@ const TarotTalisman = () => {
                   height: '391px',
                   margin: '0 auto',
                   borderRadius: '22px',
-                  background: isFlipping 
+                  background: isFlipping
                     ? 'linear-gradient(145deg, #fbbf24, #f59e0b)'
                     : 'transparent',
                   display: 'flex',
@@ -1237,7 +1237,7 @@ const TarotTalisman = () => {
                   alignItems: 'center',
                   justifyContent: 'center',
                   cursor: isDrawing ? 'wait' : 'pointer',
-                  boxShadow: isFlipping 
+                  boxShadow: isFlipping
                     ? '0 25px 60px rgba(251, 191, 36, 0.4)'
                     : '0 25px 45px rgba(15,23,42,0.25)',
                   position: 'relative',
@@ -1249,7 +1249,7 @@ const TarotTalisman = () => {
                 }}
               >
                 {isFlipping ? (
-                  <div style={{ 
+                  <div style={{
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
@@ -1343,7 +1343,7 @@ const TarotTalisman = () => {
                   </>
                 )}
               </div>
-              
+
               {isDrawing && !isFlipping && (
                 <div style={{
                   position: 'absolute',
@@ -1371,7 +1371,7 @@ const TarotTalisman = () => {
                 </div>
               )}
             </div>
-            
+
             {hasUsedFreeToday && (
               <div style={{ marginTop: '32px', padding: '16px', background: adaptive.grey50, borderRadius: '12px' }}>
                 <p style={{ fontSize: '13px', color: adaptive.grey600, lineHeight: 1.6 }}>
@@ -1383,16 +1383,16 @@ const TarotTalisman = () => {
         ) : guardianCard ? (
           // 카드 결과 화면
           <div>
-            <div style={{ 
-              display: 'flex', 
-              flexWrap: 'wrap', 
-              justifyContent: 'center', 
+            <div style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
               gap: '36px',
               marginBottom: '48px',
               width: '100%'
             }}>
-              <div 
-                style={{ 
+              <div
+                style={{
                   textAlign: 'left',
                   width: '100%',
                   maxWidth: '380px',
@@ -1413,7 +1413,7 @@ const TarotTalisman = () => {
                     gap: '24px'
                   }}
                 >
-                  <div 
+                  <div
                     className="guardian-card-container"
                     style={{
                       position: 'relative',
@@ -1480,13 +1480,13 @@ const TarotTalisman = () => {
                         {renderPowerLevel(guardianCard.powerLevel)}
                       </div>
                     </div>
-                    
+
                     {/* 설명 텍스트 영역 */}
                     <div style={{
                       flex: 1,
                       marginBottom: '16px'
                     }}>
-                      <div style={{ 
+                      <div style={{
                         color: '#1d4ed8',
                         marginBottom: showDetails ? '12px' : '0',
                         fontWeight: 600,
@@ -1530,7 +1530,7 @@ const TarotTalisman = () => {
                         </div>
                       )}
                     </div>
-                    
+
                     {/* 상세보기 버튼 영역 (맨 아래) */}
                     {guardianCard.description && (
                       <div style={{
@@ -1595,11 +1595,11 @@ const TarotTalisman = () => {
                 </div>
               </div>
             </div>
-            
-            <div style={{ 
-              display: 'flex', 
-              flexDirection: 'column', 
-              gap: '12px', 
+
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px',
               alignItems: 'center',
               marginBottom: '100px',
               width: '100%'
@@ -1612,14 +1612,14 @@ const TarotTalisman = () => {
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: '8px',
-                  padding: '12px 24px',
+                  padding: '16px',
                   width: '100%',
                   maxWidth: '320px',
                   backgroundColor: isDrawing ? adaptive.grey300 : '#3b82f6',
                   border: 'none',
-                  borderRadius: '8px',
-                  fontSize: '14px',
-                  fontWeight: '500',
+                  borderRadius: '16px',
+                  fontSize: '16px',
+                  fontWeight: '600',
                   color: '#ffffff',
                   cursor: isDrawing ? 'wait' : 'pointer',
                   transition: 'background-color 0.2s',
@@ -1636,7 +1636,7 @@ const TarotTalisman = () => {
                   }
                 }}
               >
-                <span>📺 한 번 더 카드 뽑기 (짧은 광고)</span>
+                <span>한 번 더 카드 뽑기 (짧은 광고)</span>
               </button>
               <button
                 onClick={() => {
@@ -1652,14 +1652,14 @@ const TarotTalisman = () => {
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: '8px',
-                  padding: '12px 24px',
+                  padding: '16px',
                   width: '100%',
                   maxWidth: '320px',
                   backgroundColor: adaptive.grey200,
                   border: 'none',
-                  borderRadius: '8px',
-                  fontSize: '14px',
-                  fontWeight: '500',
+                  borderRadius: '16px',
+                  fontSize: '16px',
+                  fontWeight: '600',
                   color: adaptive.grey900,
                   cursor: 'pointer',
                   transition: 'background-color 0.2s'
@@ -1671,21 +1671,21 @@ const TarotTalisman = () => {
                   e.currentTarget.style.backgroundColor = adaptive.grey200;
                 }}
               >
-                <span>🔍 다른 수호카드 확인하기</span>
+                <span>다른 수호카드 확인하기</span>
               </button>
             </div>
           </div>
         ) : null}
       </div>
       {modalOpen && (
-        <div 
-          style={{ 
-            position: 'fixed', 
-            top: 0, 
-            left: 0, 
-            width: '100vw', 
-            height: '100vh', 
-            backgroundColor: 'rgba(0,0,0,0.6)', 
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            backgroundColor: 'rgba(0,0,0,0.6)',
             zIndex: 1000,
             display: 'flex',
             alignItems: 'center',
@@ -1694,8 +1694,8 @@ const TarotTalisman = () => {
           }}
           onClick={handleCloseModal}
         >
-          <div 
-            style={{ 
+          <div
+            style={{
               width: '100%',
               maxWidth: '600px',
               maxHeight: '90vh',
@@ -2107,13 +2107,13 @@ const TarotTalisman = () => {
                                 {renderPowerLevel(option.guardian.powerLevel)}
                               </div>
                             </div>
-                            
+
                             {/* 설명 텍스트 영역 */}
                             <div style={{
                               flex: 1,
                               marginBottom: '16px'
                             }}>
-                              <div style={{ 
+                              <div style={{
                                 color: '#1d4ed8',
                                 marginBottom: modalDetails[index] ? '12px' : '0',
                                 fontWeight: 600,
@@ -2157,7 +2157,7 @@ const TarotTalisman = () => {
                                 </div>
                               )}
                             </div>
-                            
+
                             {/* 버튼 영역 (맨 아래) */}
                             <div style={{
                               marginTop: 'auto',
@@ -2250,7 +2250,7 @@ const TarotTalisman = () => {
                                   <span>{isDrawing ? '뽑는 중...' : '광고 보고 다시 뽑기'}</span>
                                 </button>
                               )}
-                              
+
                               <button
                                 onClick={(e) => {
                                   e.stopPropagation();

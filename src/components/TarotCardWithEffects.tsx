@@ -26,7 +26,7 @@ const TarotCardWithEffects: React.FC<TarotCardWithEffectsProps> = ({
   enableTilt = true,
   enableMobileTilt = true,
   mobileTiltSensitivity = 0.5,
-  touchAction = 'none',
+  touchAction = 'pan-y',
   onError
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
