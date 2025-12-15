@@ -52,12 +52,12 @@ const TarotCardWithEffects: React.FC<TarotCardWithEffectsProps> = ({
     const rect = cardRef.current.getBoundingClientRect();
     const x = ((clientX - rect.left) / rect.width) * 100;
     const y = ((clientY - rect.top) / rect.height) * 100;
-    
+
     setPointerPos({ x, y });
 
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
-    
+
     const pointerFromLeft = (clientX - rect.left) / rect.width;
     const pointerFromTop = (clientY - rect.top) / rect.height;
     const pointerFromCenter = Math.sqrt(
@@ -89,7 +89,7 @@ const TarotCardWithEffects: React.FC<TarotCardWithEffectsProps> = ({
       // 가로 움직임을 2배로 증가
       const backgroundPosition = (offsetX / 2.5 + offsetY / 5);
       const opacity = Math.min(offsetX / 200, 1);
-      
+
       overlayRef.current.style.backgroundPosition = `${backgroundPosition}%`;
       overlayRef.current.style.filter = `opacity(${opacity}) brightness(1.2)`;
     }
@@ -97,16 +97,16 @@ const TarotCardWithEffects: React.FC<TarotCardWithEffectsProps> = ({
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!enableTilt || !cardRef.current) return;
-    
+
     updatePointerPosition(e.clientX, e.clientY);
-    
+
     const rect = cardRef.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
-    
+
     const x = (e.clientX - centerX) / (rect.width / 2);
     const y = (e.clientY - centerY) / (rect.height / 2);
-    
+
     setTilt({ x: x * 15, y: y * -15 });
   };
 
@@ -134,17 +134,17 @@ const TarotCardWithEffects: React.FC<TarotCardWithEffectsProps> = ({
 
     const touch = e.touches[0];
     updatePointerPosition(touch.clientX, touch.clientY);
-    
+
     const rect = cardRef.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
-    
+
     const x = (touch.clientX - centerX) / (rect.width / 2);
     const y = (touch.clientY - centerY) / (rect.height / 2);
-    
-    setTilt({ 
-      x: x * 15 * mobileTiltSensitivity, 
-      y: y * -15 * mobileTiltSensitivity 
+
+    setTilt({
+      x: x * 15 * mobileTiltSensitivity,
+      y: y * -15 * mobileTiltSensitivity
     });
   };
 
@@ -169,9 +169,9 @@ const TarotCardWithEffects: React.FC<TarotCardWithEffectsProps> = ({
 
   const tiltStyle = (enableTilt || (enableMobileTilt && isMobile))
     ? {
-        transform: `perspective(1000px) rotateX(${tilt.y}deg) rotateY(${tilt.x}deg)`,
-        transition: isHovered ? 'none' : 'transform 1s ease',
-      }
+      transform: `perspective(1000px) rotateX(${tilt.y}deg) rotateY(${tilt.x}deg)`,
+      transition: isHovered ? 'none' : 'transform 1s ease',
+    }
     : {};
 
   useEffect(() => {
@@ -234,14 +234,20 @@ const TarotCardWithEffects: React.FC<TarotCardWithEffectsProps> = ({
               right: 0,
               bottom: 0,
               zIndex: 1,
+              pointerEvents: 'none',
+              userSelect: 'none',
+              WebkitUserSelect: 'none',
+              WebkitTouchCallout: 'none',
             }}
+            draggable={false}
+            onContextMenu={(e) => e.preventDefault()}
             onError={onError}
           />
           {/* 모든 효과 활성화 - 원래 설정으로 복원 */}
           {/* <div className="pc-inside tarot-card-inside" style={{ zIndex: 1, display: 'none' }} /> */}
           <div className="pc-shine tarot-card-shine" />
           <div className="pc-glare tarot-card-glare" />
-          
+
           {/* 빛나는 효과 overlay */}
           <div
             ref={overlayRef}
