@@ -114,7 +114,7 @@ const TopicSelection = () => {
         </header>
 
         {/* Spacing 컴포넌트 등으로 헤더와 카드 목록 사이에 간격 추가 */}
-        <Spacing size={0} /> 
+        <Spacing size={0} />
 
         <div className="topic-options">
           {Object.entries(topics)
@@ -153,8 +153,8 @@ const TopicSelection = () => {
                       shape="circle-masking"
                       name={
                         topicKey === 'love' ? 'icon-emoji-two-hearts' :
-                        topicKey === 'money' ? 'icon-money-bag-green' :
-                        'icon-trophy'
+                          topicKey === 'money' ? 'icon-money-bag-green' :
+                            'icon-trophy'
                       }
                     />
                   }
@@ -176,9 +176,9 @@ const TopicSelection = () => {
                         size="small"
                         color={
                           topicKey === 'love' ? 'red' :
-                          topicKey === 'success' ? 'yellow' :
-                          topicKey === 'money' ? 'green' :
-                          'blue'
+                            topicKey === 'success' ? 'yellow' :
+                              topicKey === 'money' ? 'green' :
+                                'blue'
                         }
                         variant="weak"
                       >
@@ -186,24 +186,25 @@ const TopicSelection = () => {
                       </Badge>
                     ))}
                   </div>
-                  
+
                   {/* 각 topic별 3줄 스크롤 질문 표시 */}
                   {isPrimaryTopic(topicKey) ? (
-                    <div style={{ 
-                      display: 'flex', 
-                      flexDirection: 'column', 
+                    <div style={{
+                      display: 'flex',
+                      flexDirection: 'column',
                       gap: '6px',
                       overflow: 'hidden',
                       position: 'relative',
-                      marginTop: '6px'
+                      marginTop: '6px',
+                      touchAction: 'pan-y'
                     }}>
                       {topicQuestions[topicKey].map((questions, lineIndex) => {
                         const palette = topicTagStyles[topicKey];
                         const repeatedQuestions = Array.from({ length: 6 }, () => questions).flat();
                         return (
-                          <div 
+                          <div
                             key={lineIndex}
-                            style={{ 
+                            style={{
                               overflow: 'hidden',
                               width: '100%',
                               maskImage: 'linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%)',

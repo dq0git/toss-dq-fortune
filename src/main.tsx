@@ -29,6 +29,11 @@ window.addEventListener('unhandledrejection', (event) => {
   }
 });
 
+// iOS Safari 핀치 줌 방지 (gesturestart 이벤트 차단)
+document.addEventListener('gesturestart', (e) => {
+  e.preventDefault();
+}, { passive: false });
+
 // Firebase Analytics 초기화 (환경 설정 포함)
 initializeAnalytics();
 
